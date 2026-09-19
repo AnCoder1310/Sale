@@ -95,11 +95,11 @@ uvicorn src.main:app --reload
 
 ## Team
 
-| Member | Role | Student ID |
-|--------|------|-----------|
-| [Phạm Đình Duy] | [Role] | [ID] |
-| [Name] | [Role] | [ID] |
-| [Name] | [Role] | [ID] |
+| Member          | Role   | Student ID  |
+| -----------------| --------| -------------|
+| [Phạm Đình Duy] | [Role] | 2A202602913 |
+| [Name]          | [Role] | [ID]        |
+| [Name]          | [Role] | [ID]        |
 
 ## License
 
