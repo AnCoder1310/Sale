@@ -97,7 +97,7 @@ uvicorn src.main:app --reload
 
 | Member          | Role   | Student ID  |
 | -----------------| --------| -------------|
-| [Phạm Đình Duy] | [Role] | 2A202602913 |
+| [Phạm Đình Duy] | Leader | 2A202602913 |
 | [Name]          | [Role] | [ID]        |
 | [Name]          | [Role] | [ID]        |
 
