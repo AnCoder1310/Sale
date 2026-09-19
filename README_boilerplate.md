@@ -97,7 +97,7 @@ uvicorn src.main:app --reload
 
 | Member | Role | Student ID |
 |--------|------|-----------|
-| [Name] | [Role] | [ID] |
+| [Phạm Đình Duy] | [Role] | [ID] |
 | [Name] | [Role] | [ID] |
 | [Name] | [Role] | [ID] |
 
