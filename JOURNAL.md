@@ -1,6 +1,15 @@
-# Weekly Journal — Team [Tên Team]
+# Weekly Journal — Nhóm dự án
 
 > Ghi lại mỗi tuần: học được gì, khó khăn gì, quyết định gì, kế hoạch tiếp.
+
+## Thành viên
+
+| Họ và tên | Mã sinh viên |
+|---|---|
+| Phạm Đình Duy | 2A202602913 |
+| Phạm Quốc Đạt | 2A202602384 |
+| Võ Trường An | 2A20262656 |
+| Nguyễn Hữu Chương | 2A202602601 |
 
 ---
 

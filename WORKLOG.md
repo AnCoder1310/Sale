@@ -1,6 +1,15 @@
-# Worklog — Team [Tên Team]
+# Worklog — Nhóm dự án
 
 > Ghi lại tất cả công việc đã làm theo ngày. Ai làm gì, kết quả gì.
+
+## Thành viên
+
+| Họ và tên | Mã sinh viên |
+|---|---|
+| Phạm Đình Duy | 2A202602913 |
+| Phạm Quốc Đạt | 2A202602384 |
+| Võ Trường An | 2A20262656 |
+| Nguyễn Hữu Chương | 2A202602601 |
 
 ---
 

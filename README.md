@@ -189,6 +189,15 @@ online, nên mọi thay đổi ở đó cần review của
 
 Báo lỗ hổng bảo mật theo [SECURITY.md](SECURITY.md), đừng mở public issue.
 
+## Thành viên
+
+| Họ và tên | Mã sinh viên |
+|---|---|
+| Phạm Đình Duy | 2A202602913 |
+| Phạm Quốc Đạt | 2A202602384 |
+| Võ Trường An | 2A20262656 |
+| Nguyễn Hữu Chương | 2A202602601 |
+
 ## License
 
 [MIT](LICENSE) — dùng tự do cho mục đích giáo dục.
