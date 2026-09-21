@@ -1,161 +1,46 @@
-Dưới đây là timeline bám trực tiếp theo task division hiện tại của team.
+# Kế hoạch thời gian & Checkpoint — Team P-043
 
-## Mốc chung
-
-| Mốc             | Kết quả bắt buộc                                     |
-| -----------------| ------------------------------------------------------|
-| **21–22/09**    | Freeze Gate 1 + API/schema/interface                 |
-| **23–24/09**    | Walking Skeleton chạy end-to-end                     |
-| **25–26/09**    | Copilot + Role-play core chạy thật                   |
-| **27–28/09**    | Evaluator + persistence + UI integration             |
-| **29/09**       | Integration freeze + bug fixing                      |
-| **30/09 — MVP** | Deploy được, salesperson có thể dùng từ đầu đến cuối |
-| **01–02/10**    | Hoàn thiện product + eval + HITL + polish            |
-| **03/10**       | Release cho sales testers                            |
-| **03–05/10**    | Thu feedback + bug/UX observations                   |
+**Mục tiêu chính**
+- **30/09/2026:** Có MVP deploy được và chạy end-to-end.
+- **02/10/2026:** Hoàn thiện product core, evaluation, HITL và độ ổn định.
+- **03/10/2026:** Release cho sales tester để thu feedback thực tế.
 
 ---
 
-# 1. Duy — Role-play AI + Practice Backend
+# 1. Mốc chung của toàn team
 
-### Checkpoint D1 — 21–22/09
+| Ngày | Milestone | Điều kiện pass |
+|---|---|---|
+| **21–22/09** | Gate 1 + Contract Freeze | Chốt PRD, Wireframe, API contract, RoleplayState, scenario schema, knowledge metadata, evaluation schema |
+| **23–24/09** | Walking Skeleton | Frontend → FastAPI → LangGraph/LLM → persistence → frontend chạy được |
+| **25–26/09** | Core AI | Copilot RAG v1 + Role-play multi-turn v1 chạy thật |
+| **27–28/09** | Product Loop | Practice → Finish → Evaluate → Result chạy end-to-end |
+| **29/09** | Feature Freeze | Không thêm major feature; chỉ integration, bug fix, deployment |
+| **30/09** | MVP Release | Deployed product dùng được từ đầu đến cuối |
+| **01–02/10** | Product Complete | HITL, benchmark, hardening, progress/history, polish |
+| **03/10** | Sales Tester Release | Sales tester nhận URL + task + feedback form |
 
-**Freeze Role-play contract**
+---
+
+# 2. Duy — AI Customer Role-play, Coaching Logic & Practice Chat Backend
+
+## Checkpoint D1 — 21–22/09
+### Mục tiêu: Freeze Role-play contract
 
 Hoàn thành:
 
 ```text
 RoleplayState schema
 Scenario schema
-5-dimension rubric
+AI Customer behavior contract
 conversation stages
-termination rules
-disclosure rules
 adaptive objection rules
+disclosure rules
+termination rules
+5-dimension rubric skeleton
 ```
 
-Có ít nhất **3 scenario mẫu**:
-
-```text
-Scenario 1: khách quan tâm giá
-Scenario 2: khách lo pin / charging
-Scenario 3: khách đang so sánh 2 mẫu xe
-```
-
-Freeze interface với Chương:
-
-```text
-RoleplayGraph
-knowledge tools
-checkpoint
-session ID
-evaluation output
-```
-
-Deliverable:
-
-```text
-roleplay/state.py
-roleplay/scenario_loader.py
-sample scenarios
-PRD role-play section
-```
-
----
-
-### Checkpoint D2 — 23–24/09
-
-**AI Customer conversation chạy multi-turn**
-
-Implement:
-
-```text
-customer_agent.py
-turn_analyzer.py
-basic RoleplayGraph
-POST /practice/sessions
-POST /practice/{id}/message
-```
-
-Flow phải chạy được:
-
-```text
-select scenario
-→ AI Customer nói câu đầu
-→ salesperson trả lời
-→ AI phân tích
-→ state update
-→ AI Customer trả lời tiếp
-→ tiếp tục nhiều turn
-```
-
-Yêu cầu:
-
-- Không reset memory mỗi turn.
-    
-- Persona không đổi lung tung.
-    
-- Hidden information được giữ.
-    
-- Objection có thể unresolved/resolved.
-    
-- Có conversation history.
-    
-
----
-
-### Checkpoint D3 — 25–26/09
-
-**Adaptive Customer v1**
-
-Thêm:
-
-```text
-trust_level
-interest_level
-resolved_objections
-unresolved_objections
-revealed_facts
-conversation_stage
-```
-
-Các behavior phải thấy được:
-
-```text
-salesperson hỏi đúng
-→ reveal relevant information
-
-xử lý objection tốt
-→ trust tăng
-
-né objection
-→ customer hỏi lại / challenge
-
-premature closing
-→ customer resist
-```
-
-Tích hợp knowledge tool của Chương:
-
-```text
-search_product()
-search_policy()
-get_current_promotion()
-```
-
----
-
-### Checkpoint D4 — 27–28/09
-
-**Evaluator v1**
-
-Implement:
-
-```text
-evaluator.py
-```
-
-Output:
+Rubric:
 
 ```text
 Need Discovery
@@ -165,30 +50,164 @@ Policy Accuracy
 Closing / Next Step
 ```
 
-Mỗi criterion có:
+Chuẩn bị tối thiểu 3 scenario mẫu:
+- Khách nhạy cảm về giá.
+- Khách lo pin / charging.
+- Khách đang so sánh hai mẫu xe.
+
+Freeze interface với Chương:
 
 ```text
-score
-evidence
-reason
-improvement suggestion
+RoleplayGraph interface
+knowledge-tool interface
+checkpoint interface
+session lifecycle
+evaluation output schema
 ```
 
-Kết nối evaluator với transcript thật.
-
-Phối hợp Đạt chạy các case đầu tiên.
+### Acceptance
+- `RoleplayState` được chốt.
+- Scenario schema được chốt.
+- Duy + Chương thống nhất graph interface.
+- Duy + Đạt thống nhất rubric schema.
+- An có đủ contract để mock Practice Room.
 
 ---
 
-### Checkpoint D5 — 29/09
+## Checkpoint D2 — 23–24/09
+### Mục tiêu: Multi-turn AI Customer chạy được
 
-**Role-play integration freeze**
-
-Test full flow:
+Implement:
 
 ```text
-Scenario
-→ Practice Room
+backend/roleplay/state.py
+backend/roleplay/scenario_loader.py
+backend/roleplay/customer_agent.py
+backend/roleplay/turn_analyzer.py
+backend/api/practice_chat.py
+backend/services/practice_service.py
+```
+
+API:
+
+```text
+POST /practice/sessions
+POST /practice/{id}/message
+```
+
+Flow tối thiểu:
+
+```text
+select scenario
+→ create session
+→ AI Customer first turn
+→ salesperson reply
+→ analyze advisor turn
+→ update state
+→ AI Customer next turn
+```
+
+### Acceptance
+- Chat được ít nhất 5 turns.
+- Conversation history không bị mất.
+- Persona không đổi ngẫu nhiên.
+- Hidden information vẫn được giữ.
+- Session ID được duy trì xuyên suốt.
+
+---
+
+## Checkpoint D3 — 25–26/09
+### Mục tiêu: Adaptive Customer v1
+
+Implement:
+
+```text
+trust_level
+interest_level
+active_objections
+resolved_objections
+unresolved_objections
+revealed_facts
+conversation_stage
+```
+
+Behavior:
+
+```text
+good discovery question
+→ reveal relevant hidden fact
+
+good objection handling
+→ resolve objection
+→ increase trust
+
+poor objection handling
+→ objection remains
+→ customer challenges again
+
+premature closing
+→ customer resists
+```
+
+Tích hợp shared knowledge tools của Chương:
+
+```text
+search_product()
+search_policy()
+get_current_promotion()
+get_product_comparison()
+```
+
+### Acceptance
+- AI Customer phản ứng khác nhau với câu trả lời tốt/xấu.
+- Có thể resolve/unresolve objection.
+- Có factual lookup khi scenario cần policy/product fact.
+- Không hard-code product facts riêng trong role-play.
+
+---
+
+## Checkpoint D4 — 27–28/09
+### Mục tiêu: Evaluator v1 + Coaching output
+
+Implement:
+
+```text
+backend/roleplay/evaluator.py
+```
+
+Output mỗi criterion:
+
+```text
+criterion
+score
+evidence
+reason
+improvement_suggestion
+```
+
+Evaluator chạy trên:
+- transcript thật
+- final RoleplayState
+- scenario
+- rubric
+- relevant knowledge evidence
+
+### Acceptance
+- Session finish có thể sinh 5 criterion scores.
+- Mỗi score có evidence.
+- Output đúng schema để Chương persist và An render.
+- Đạt có thể chạy benchmark trên evaluator.
+
+---
+
+## Checkpoint D5 — 29/09
+### Mục tiêu: Role-play feature freeze
+
+Run full flow:
+
+```text
+Scenario Selection
+→ Practice
 → 5–10 turns
 → Finish
 → Evaluation
@@ -196,73 +215,64 @@ Scenario
 ```
 
 Fix:
-
-- broken state
-    
+- state reset
 - memory loss
-    
-- repeated customer responses
-    
-- hallucinated scenario information
-    
+- repeated replies
 - premature termination
-    
-- evaluator output malformed
-    
+- malformed evaluator JSON
+- unsupported tool calls
+- factual hallucination trong role-play
 
-Không thêm feature mới sau checkpoint này trước MVP.
+### Acceptance
+- Không thêm major role-play feature sau checkpoint này.
+- Core flow pass E2E.
+- Không có blocker P0.
 
 ---
 
-### Checkpoint D6 — 30/09 — MVP
+## Checkpoint D6 — 30/09
+### MVP Gate
 
-Role-play MVP phải dùng được:
+Role-play MVP phải có:
 
 ```text
 ✓ choose scenario
-✓ multi-turn conversation
-✓ adaptive customer
-✓ persistent conversation
+✓ multi-turn AI Customer
+✓ persistent context
+✓ adaptive response
 ✓ knowledge lookup
 ✓ finish session
-✓ 5-dimension evaluation
-✓ result shown on frontend
+✓ evaluator
+✓ 5-dimension result
 ```
 
 ---
 
-### Checkpoint D7 — 01–02/10
+## Checkpoint D7 — 01–02/10
+### Mục tiêu: Role-play completion
 
-**Role-play completion**
-
-Thêm/fix:
-
-- Difficulty handling.
-    
+Hoàn thiện:
 - Better persona consistency.
-    
-- Better adaptive objections.
-    
+- Better difficulty behavior.
+- Better objection escalation.
 - Better termination logic.
-    
 - Improve evaluator prompt.
-    
-- Fix issues từ Đạt benchmark.
-    
-- More realistic scenarios.
-    
+- Fix benchmark failures.
+- Add more realistic scenarios.
 - Improve coaching feedback.
-    
-- Support manager-reviewed evaluation flow.
-    
+- Support manager-reviewed score flow.
+
+### Acceptance
+- Không còn P0/P1 bug trên role-play.
+- Benchmark regressions đã xử lý.
+- Sales tester có ít nhất 3–5 scenario đủ tốt để thử.
 
 ---
 
-# 2. Chương — Copilot + Knowledge + Platform + Role-play Runtime
+# 3. Chương — AI Sales Copilot, Shared Backend Platform & Role-play Runtime
 
-### Checkpoint C1 — 21–22/09
-
-**Freeze backend architecture**
+## Checkpoint C1 — 21–22/09
+### Mục tiêu: Backend/platform contract freeze
 
 Hoàn thành:
 
@@ -272,30 +282,60 @@ PostgreSQL connection
 pgvector setup
 shared LLM client
 API schemas
-knowledge metadata schema
+knowledge runtime contract
 Role-play checkpoint interface
+logging/config skeleton
 ```
 
-Freeze APIs với Duy + An:
+Freeze API với Duy + An:
 
 ```text
 POST /copilot/query
+GET  /copilot/sources/{id}
 
 POST /practice/sessions
 POST /practice/{id}/message
 POST /practice/{id}/finish
 GET  /practice/{id}/evaluation
 
-GET/PATCH /manager/reviews
+GET   /manager/reviews
+PATCH /manager/reviews/{id}
+GET   /progress
 ```
+
+Freeze interface với Đạt:
+
+```text
+normalized document schema
+chunk input schema
+ingestion contract
+metadata requirements
+```
+
+### Acceptance
+- Backend chạy local.
+- DB connection pass.
+- Shared LLM client gọi được model.
+- API schemas được freeze.
 
 ---
 
-### Checkpoint C2 — 23–24/09
+## Checkpoint C2 — 23–24/09
+### Mục tiêu: Walking Skeleton + Role-play persistence
 
-**Backend Walking Skeleton**
+Implement:
 
-Phải chạy được:
+```text
+backend/platform/database.py
+backend/platform/llm_client.py
+backend/platform/config.py
+backend/platform/logging.py
+
+backend/roleplay/checkpoint.py
+backend/roleplay/persistence.py
+```
+
+Flow:
 
 ```text
 React
@@ -308,83 +348,68 @@ và:
 
 ```text
 RoleplayGraph
-→ checkpoint
+→ save checkpoint
 → Postgres
 → reload session
 ```
 
-Implement:
-
-```text
-database.py
-llm_client.py
-config.py
-logging.py
-
-roleplay/checkpoint.py
-roleplay/persistence.py
-```
-
-Duy có thể gọi persistence API/service mà không cần biết DB implementation.
+### Acceptance
+- Session survive qua nhiều request.
+- Conversation turn được persist.
+- Có thể restore session.
+- Duy gọi được persistence/checkpoint interface.
 
 ---
 
-### Checkpoint C3 — 25–26/09
-
-**Copilot RAG v1**
+## Checkpoint C3 — 25–26/09
+### Mục tiêu: Copilot RAG v1
 
 Implement:
 
 ```text
-ingestion
-chunking
-embeddings
-pgvector
-retrieval
-metadata filtering
-grounded generation
-citation
+backend/knowledge/chunking.py
+backend/knowledge/embeddings.py
+backend/knowledge/vector_store.py
+backend/knowledge/retrieval_service.py
+
+backend/copilot/retrieval.py
+backend/copilot/answer_generator.py
+backend/copilot/graph.py
 ```
 
-Copilot flow:
+Flow:
 
 ```text
-question
-→ retrieval
-→ evidence
-→ answer
+advisor query
+→ retrieve evidence
+→ grounded answer
 → citation
 ```
 
 Support tối thiểu:
+- product facts
+- price
+- policy
+- promotion
+- product comparison
 
-```text
-product facts
-price
-policy
-promotion
-product comparison
-```
-
-Có:
-
-```text
-POST /copilot/query
-```
+### Acceptance
+- `POST /copilot/query` chạy với corpus thật.
+- Có source/citation.
+- Có retrieval evidence.
+- An có thể kết nối UI thật.
 
 ---
 
-### Checkpoint C4 — 27/09
+## Checkpoint C4 — 27/09
+### Mục tiêu: Policy-aware Copilot + Guardrails
 
-**Copilot grounding + policy logic**
-
-Thêm:
+Implement:
 
 ```text
-effective_from
-effective_to
-version
-status
+policy_versioning.py
+citation_validator.py
+guardrails.py
 ```
 
 Handle:
@@ -392,171 +417,188 @@ Handle:
 ```text
 current policy
 expired policy
-missing information
+conflicting policy
 unsupported query
+missing evidence
 ```
 
 Output:
 
 ```text
 answer
-source
-effective date
 evidence
+source
+effective_date
 ```
+
+### Acceptance
+- Expired policy không được ưu tiên như current policy.
+- Unsupported query có abstention.
+- Citation mapping đúng source.
 
 ---
 
-### Checkpoint C5 — 28–29/09
-
-**Role-play runtime + Evaluation backend**
+## Checkpoint C5 — 28–29/09
+### Mục tiêu: Role-play runtime + Evaluation persistence
 
 Hoàn thiện:
 
 ```text
-knowledge_tools.py
+backend/roleplay/knowledge_tools.py
 checkpoint integration
-conversation persistence
-session restore
+persistence integration
+session recovery
 evaluation persistence
+criterion-score persistence
 ```
 
-Implement:
+API:
 
 ```text
 POST /practice/{id}/finish
-GET /practice/{id}/evaluation
+GET  /practice/{id}/evaluation
 ```
 
-Support Duy's evaluator output.
+### Acceptance
+- Duy evaluator output được persist.
+- Result có thể reload.
+- Knowledge tool chạy bên trong RoleplayGraph.
+- Session recovery hoạt động.
 
 ---
 
-### Checkpoint C6 — 30/09 — MVP
+## Checkpoint C6 — 30/09
+### MVP Gate
 
-Copilot/backend MVP phải có:
+Backend/Copilot MVP:
 
 ```text
-✓ deployed FastAPI
-✓ Postgres working
+✓ FastAPI deployed
+✓ PostgreSQL working
 ✓ pgvector working
 ✓ Copilot RAG
 ✓ citations
-✓ current-policy filtering
+✓ policy/date filtering
 ✓ Role-play persistence
 ✓ checkpoint/session restore
-✓ evaluator persistence
-✓ APIs connected to frontend
+✓ evaluation persistence
+✓ frontend APIs stable
 ```
 
 ---
 
-### Checkpoint C7 — 01–02/10
-
-**Platform completion**
+## Checkpoint C7 — 01–02/10
+### Mục tiêu: Platform completion
 
 Hoàn thiện:
+- Manager Review API.
+- Progress API.
+- Error handling.
+- Retry/timeout.
+- Token/cost guard.
+- Better logging.
+- Deployment hardening.
+- Retrieval fixes từ Đạt benchmark.
+- Citation reliability fixes.
+- Session recovery fixes.
 
-```text
-Manager Review API
-progress API
-error handling
-retry
-timeout
-logging
-cost/token guards
-deployment reliability
-```
-
-Improve:
-
-- retrieval quality
-    
-- citation reliability
-    
-- policy conflict handling
-    
-- session recovery
-    
-- API error responses
-    
+### Acceptance
+- Không còn P0/P1 backend issue.
+- API contract ổn định.
+- Production deployment không cần manual intervention cho happy path.
 
 ---
 
-# 3. Đạt — Data + Evaluation
+# 4. Đạt — Data, Knowledge Ingestion, Evaluation & Benchmark
 
-### Checkpoint Đ1 — 21–22/09
+## Checkpoint Đ1 — 21–22/09
+### Mục tiêu: Data contract + minimum usable corpus
 
-**Data contract + minimum corpus**
-
-Freeze metadata:
+Freeze:
 
 ```text
 document_id
+title
 document_type
 product_model
 policy_type
 effective_date
 expiry_date
-version
 source
+version
 status
 content
 ```
 
-Chuẩn bị corpus tối thiểu đủ để build:
+Chuẩn bị minimum corpus:
+- product information
+- price
+- policy
+- promotion
+- battery information
+
+Freeze với Chương:
 
 ```text
-product information
-price
-policy
-promotion
-battery information
+normalized-document schema
+metadata schema
+ingestion contract
+chunk/input interface
 ```
 
-Đồng thời freeze scenario schema với Duy.
+Freeze với Duy:
+- scenario schema
+- objection schema
+- expected-fact fields
+
+### Acceptance
+- Chương có data contract để code RAG.
+- Duy có scenario contract để code role-play.
+- An có mock data đủ để dựng UI.
 
 ---
 
-### Checkpoint Đ2 — 23–24/09
+## Checkpoint Đ2 — 23–24/09
+### Mục tiêu: Preprocessing + ingestion code v1
 
-**Usable corpus v1**
-
-Có cleaned/normalized dataset Chương có thể ingest.
-
-Tạo:
+Implement:
 
 ```text
-data/knowledge/
-data/scenarios/
+scripts/ingestion/
+├── normalize_documents.py
+├── validate_metadata.py
+├── deduplicate.py
+└── build_corpus.py
+
+backend/knowledge/
+├── ingestion.py
+└── metadata.py
 ```
 
-Có ít nhất:
+Support:
+- metadata validation
+- required-field validation
+- date validation
+- duplicate detection
+- invalid-record report
+- call Chương's chunking/vector-store interfaces
 
-```text
-3 usable scenarios
-objection library
-buyer intent examples
-sales question examples
-```
+### Acceptance
+- Có một lệnh chạy được từ raw/processed data → corpus ingest.
+- Invalid docs được report.
+- Duplicate/version conflict cơ bản được phát hiện.
+- Corpus thật đã vào được knowledge runtime.
 
 ---
 
-### Checkpoint Đ3 — 25–26/09
+## Checkpoint Đ3 — 25–26/09
+### Mục tiêu: Copilot benchmark + Eval runner v1
 
-**Copilot benchmark v1**
-
-Tạo khoảng:
-
-```text
-20–30 questions
-```
-
-Bao gồm:
+Tạo 20–30 câu benchmark:
 
 ```text
-product fact
-comparison
+single-product facts
+product comparison
 promotion
 current policy
 expired policy
@@ -564,110 +606,148 @@ battery
 unsupported query
 ```
 
-Có expected evidence/source.
+Implement:
 
-Chạy first RAG evaluation cùng Chương.
+```text
+eval/runner.py
+eval/metrics.py
+eval/copilot_eval/run.py
+eval/retrieval_eval/run.py
+```
+
+Metrics v1:
+- retrieval hit rate
+- Recall@K
+- citation correctness
+- policy-version correctness
+
+### Acceptance
+- Có thể chạy benchmark bằng command/script.
+- Có machine-readable result.
+- Có danh sách failed cases cho Chương.
 
 ---
 
-### Checkpoint Đ4 — 27–28/09
+## Checkpoint Đ4 — 27–28/09
+### Mục tiêu: Role-play benchmark + Judge calibration v1
 
-**Role-play benchmark + Judge set**
+Tạo Role-play tests:
+- persona consistency
+- hidden information disclosure
+- objection consistency
+- adaptive behavior
+- policy grounding
+- termination behavior
 
-Tạo Role-play tests cho:
-
-```text
-persona consistency
-hidden-info disclosure
-objection handling
-adaptive behavior
-policy grounding
-termination
-```
-
-Bắt đầu expert-labelled evaluator set.
-
-MVP target có thể dùng:
+Chuẩn bị evaluator labelled set ban đầu:
 
 ```text
-10+ labelled transcripts
+10+ annotated transcripts
 ```
 
-sau đó tăng lên ≥20.
+Implement:
+
+```text
+eval/roleplay_eval/run.py
+eval/judge_eval/run.py
+eval/report_generator.py
+```
+
+### Acceptance
+- Có automated Role-play test runner.
+- Có judge MAE / criterion agreement cơ bản.
+- `eval/reports/latest.md` sinh tự động.
 
 ---
 
-### Checkpoint Đ5 — 29/09
-
-**MVP evaluation report**
+## Checkpoint Đ5 — 29/09
+### Mục tiêu: MVP evaluation report
 
 Chạy:
 
 ```text
 Copilot benchmark
+Retrieval benchmark
 Role-play benchmark
 Evaluator benchmark
 ```
 
-Report lỗi theo nhóm:
+Phân lỗi:
 
 ```text
-Critical
-Major
-Minor
+P0 Critical
+P1 Major
+P2 Minor
 ```
 
-Gửi issue cụ thể cho Duy/Chương.
+Output:
+
+```text
+eval/reports/latest.json
+eval/reports/latest.md
+```
+
+### Acceptance
+- Duy và Chương có danh sách lỗi cụ thể cần fix trước MVP.
+- Không còn P0 chưa được assign owner.
 
 ---
 
-### Checkpoint Đ6 — 30/09 — MVP
+## Checkpoint Đ6 — 30/09
+### MVP Gate
 
-Có ít nhất:
+Đạt phải có:
 
 ```text
-✓ clean usable corpus
+✓ clean/normalized corpus
+✓ working ingestion pipeline
+✓ metadata validation
 ✓ scenario dataset
 ✓ Copilot eval set
 ✓ Role-play eval set
-✓ evaluator-labelled examples
+✓ automated eval runner
 ✓ MVP evaluation report
 ```
 
 ---
 
-### Checkpoint Đ7 — 01–02/10
+## Checkpoint Đ7 — 01–02/10
+### Mục tiêu: Final evaluation + tester preparation
 
-**Final evaluation**
-
-Tăng evaluator set đến khoảng:
+Tăng evaluator set lên:
 
 ```text
 ≥20 annotated cases
 ```
 
 Chạy:
+- Recall@K.
+- Citation correctness.
+- Groundedness aggregation.
+- Policy-version correctness.
+- Role-play behavioral tests.
+- Judge MAE.
+- Criterion-level agreement.
 
-```text
-retrieval hit / Recall@K
-citation correctness
-groundedness
-policy version correctness
-role-play behavior tests
-judge agreement / MAE
-```
+Chuẩn bị:
+- tester task list
+- feedback categories
+- known limitations list
+- baseline metrics trước khi test thật
 
-Chuẩn bị feedback form / tester observation fields cho sales testers.
+### Acceptance
+- Có final pre-tester report.
+- Có benchmark snapshot để so sánh sau tester feedback.
+- Feedback form/questionnaire sẵn sàng.
 
 ---
 
-# 4. An — Frontend + UX
+# 5. An — Frontend, Product UX & Client Integration
 
-### Checkpoint A1 — 21–22/09
+## Checkpoint A1 — 21–22/09
+### Mục tiêu: UI flow + frontend skeleton
 
-**UI Flow freeze**
-
-Freeze screens:
+Freeze:
 
 ```text
 Home
@@ -680,105 +760,111 @@ Progress
 Manager Review
 ```
 
-Freeze API contracts với Chương/Duy.
-
-Hoàn thành frontend skeleton:
+Implement skeleton:
 
 ```text
 routing
 layout
-API client
+typed API client
 types
+hooks structure
 mock data
 ```
 
+### Acceptance
+- Tất cả core page route tồn tại.
+- Có mock navigation.
+- API contract đã sync với Duy/Chương.
+
 ---
 
-### Checkpoint A2 — 23–24/09
+## Checkpoint A2 — 23–24/09
+### Mục tiêu: Walking Skeleton UI
 
-**Walking Skeleton UI**
-
-Có navigation chạy được:
+Hoàn thiện flow mock:
 
 ```text
 Home
 → Copilot
-
-Home
-→ Scenario
-→ Practice Room
-→ Result
 ```
 
-Dùng mock API nếu backend chưa xong.
-
-Practice Room phải support:
+và:
 
 ```text
-multi-turn chat
-conversation history
-loading
-error
-finish
+Home
+→ Scenario Selection
+→ Practice Room
+→ Session Result
 ```
+
+Practice Room có:
+- message list
+- input
+- loading
+- error
+- finish button
+- conversation history
+
+### Acceptance
+- UX core flow chạy với mock data.
+- Không phải đợi backend mới tiếp tục frontend.
 
 ---
 
-### Checkpoint A3 — 25–26/09
+## Checkpoint A3 — 25–26/09
+### Mục tiêu: Connect real Copilot + Practice API
 
-**Connect real Copilot + Practice**
-
-Tích hợp:
+Integrate:
 
 ```text
 POST /copilot/query
-
 POST /practice/sessions
 POST /practice/{id}/message
 ```
 
 Copilot UI show:
+- answer
+- citation
+- source
+- effective date
 
-```text
-answer
-citation
-source
-effective date
-```
+Practice Room:
+- session thật
+- multi-turn thật
+- loading/error thật
 
-Practice Room chạy với AI thật.
-
----
-
-### Checkpoint A4 — 27–28/09
-
-**Results + Manager UI**
-
-Implement:
-
-```text
-Session Result
-5 rubric dimensions
-evidence
-reason
-improvement suggestion
-transcript
-```
-
-Implement Manager Review basic:
-
-```text
-AI score
-manager score
-note
-approve
-```
+### Acceptance
+- Advisor có thể dùng AI thật từ frontend.
+- Core happy path không còn mock.
 
 ---
 
-### Checkpoint A5 — 29/09
+## Checkpoint A4 — 27–28/09
+### Mục tiêu: Results + Manager Review v1
 
-**Frontend freeze**
+Implement Session Result:
+- 5 rubric dimensions
+- score
+- evidence
+- reason
+- improvement suggestion
+- transcript
+
+Implement Manager Review:
+- pending review
+- AI score
+- edit score
+- note
+- approve
+
+### Acceptance
+- Full practice loop hiện được trên UI.
+- Evaluation result render đúng schema.
+
+---
+
+## Checkpoint A5 — 29/09
+### Mục tiêu: Frontend feature freeze
 
 Run E2E:
 
@@ -791,21 +877,22 @@ Result
 ```
 
 Fix:
+- broken state
+- API errors
+- loading/error states
+- conversation overflow
+- citation rendering
+- responsive issues
+- broken navigation
 
-```text
-broken states
-loading states
-API errors
-responsive layout
-conversation overflow
-citation display
-```
-
-Không thêm major page trước MVP.
+### Acceptance
+- Không thêm major page trước MVP.
+- Không còn P0 frontend blocker.
 
 ---
 
-### Checkpoint A6 — 30/09 — MVP
+## Checkpoint A6 — 30/09
+### MVP Gate
 
 Frontend MVP:
 
@@ -822,80 +909,82 @@ Frontend MVP:
 
 ---
 
-### Checkpoint A7 — 01–02/10
-
-**Product completion**
+## Checkpoint A7 — 01–02/10
+### Mục tiêu: Product completion
 
 Hoàn thiện:
+- Manager Review.
+- History.
+- Progress Dashboard.
+- Empty states.
+- Better errors.
+- Telemetry.
+- UX polish.
+- Responsive polish.
+- Tester-friendly onboarding/instructions.
 
-```text
-Manager Review
-History
-Progress Dashboard
-empty states
-error states
-telemetry
-responsive polish
-UX polish
-```
+### Acceptance
+- Sales tester có thể dùng mà không cần developer đứng cạnh hướng dẫn.
+- Happy path rõ ràng từ Home.
 
 ---
 
-# 5. Integration checkpoints bắt buộc
+# 6. Integration Gates bắt buộc
 
-### 22/09 — Contract Freeze
+## Gate I1 — 22/09: Contract Freeze
 
-Team freeze:
+Freeze:
 
 ```text
-scenario schema
-RoleplayState
 API schemas
+RoleplayState
+scenario schema
 knowledge metadata
+ingestion contract
 evaluation result schema
 ```
 
-Không tự ý đổi interface sau đó mà không báo owner liên quan.
+Sau gate này, thay đổi shared interface phải báo các owner liên quan.
 
 ---
 
-### 24/09 — Walking Skeleton Gate
+## Gate I2 — 24/09: Walking Skeleton
 
-Phải chạy được một flow thật dù còn rất thô:
+Phải chạy:
 
 ```text
 Frontend
 → FastAPI
-→ RoleplayGraph
-→ LLM
-→ response
-→ persisted session
+→ LangGraph/LLM
+→ persistence
 → frontend
 ```
 
-Nếu gate này chưa pass, ưu tiên sửa nó trước khi build advanced features.
+Một scenario fake hoặc simple cũng được.
+
+Nếu gate này fail, ưu tiên sửa trước khi làm feature nâng cao.
 
 ---
 
-### 26/09 — Core AI Gate
+## Gate I3 — 26/09: Core AI
 
-Phải có hai hệ thống:
+Phải có:
 
 ```text
 Copilot
-→ query → grounded answer → citation
+query → retrieval → grounded answer → citation
 ```
 
 và:
 
 ```text
 Role-play
-→ scenario → multi-turn AI Customer
+scenario → multi-turn AI Customer
 ```
 
 ---
 
-### 28/09 — Product Loop Gate
+## Gate I4 — 28/09: Full Product Loop
 
 Phải chạy:
 
@@ -907,44 +996,41 @@ Select Scenario
 → Show Result
 ```
 
-Copilot cũng phải chạy trên frontend.
+Copilot cũng phải chạy trên frontend thật.
 
 ---
 
-### 29/09 — Feature Freeze
+## Gate I5 — 29/09: Feature Freeze
 
-Từ đây tới MVP:
+Từ đây đến MVP:
 
 ```text
 NO major new features
 ```
 
 Chỉ:
-
-```text
-bug fixing
-integration
-eval failures
-deployment
-critical UX
-```
+- bug fixing
+- integration
+- benchmark failures
+- deployment
+- critical UX
 
 ---
 
-# 6. MVP Gate — 30/09/2026
+# 7. MVP Gate — 30/09/2026
 
-MVP chỉ được coi là pass nếu salesperson có thể tự thực hiện toàn bộ:
+MVP pass khi salesperson có thể:
 
 ```text
 1. Open deployed website
 2. Ask Copilot a product/policy question
 3. Receive grounded answer + citation
 
-4. Select Role-play scenario
-5. Talk with AI Customer for multiple turns
-6. AI remembers conversation
-7. AI Customer reacts to salesperson behavior
-8. Finish practice
+4. Select a Role-play scenario
+5. Chat with AI Customer for multiple turns
+6. AI remembers context
+7. AI reacts to salesperson behavior
+8. Finish session
 
 9. Receive scores:
    - Need Discovery
@@ -953,14 +1039,22 @@ MVP chỉ được coi là pass nếu salesperson có thể tự thực hiện t
    - Policy Accuracy
    - Closing / Next Step
 
-10. See evidence + feedback
+10. See evidence + improvement feedback
 ```
+
+MVP không bắt buộc:
+- advanced analytics
+- complex progression logic
+- many difficulty tiers
+- voice mode
+- advanced personalization
+- polished manager analytics
 
 ---
 
-# 7. Completion Gate — 02/10/2026
+# 8. Product Complete Gate — 02/10/2026
 
-Trước khi gửi sales tester:
+Trước khi đưa sales tester:
 
 ```text
 ✓ Copilot grounded + citation
@@ -969,83 +1063,103 @@ Trước khi gửi sales tester:
 ✓ adaptive customer behavior
 ✓ session persistence
 ✓ evaluation + evidence
-✓ Manager Review
-✓ ≥20 evaluator calibration cases hoặc dataset đã chuẩn bị đủ
-✓ core benchmark run
+✓ Manager HITL
+✓ ≥20 annotated evaluator cases hoặc dataset đã hoàn tất
+✓ benchmark run hoàn chỉnh
 ✓ deployed frontend
 ✓ deployed backend
 ✓ production DB
 ✓ logging
+✓ core telemetry
 ✓ major bugs resolved
-✓ tester accounts / test instructions ready
+✓ tester instructions ready
 ```
 
 ---
 
-# 8. Sales Tester Release — 03/10/2026
+# 9. Sales Tester Release — 03/10/2026
 
-Sales tester nhận:
+Tester nhận:
 
 ```text
 deployed URL
-short login/instruction
-3–5 suggested scenarios/tasks
+short usage guide
+3–5 suggested tasks/scenarios
 feedback form
+known limitations nếu có
 ```
 
-Tester tasks nên yêu cầu họ thử cả:
+Tester tasks:
+- Copilot product lookup.
+- Product comparison.
+- Policy/promotion lookup.
+- Easy Role-play.
+- Difficult objection Role-play.
+- Review evaluation feedback.
+
+Feedback cần thu:
+- AI Customer realism.
+- Copilot usefulness.
+- Information correctness.
+- Objection realism.
+- Feedback usefulness.
+- Score fairness.
+- Missing sales situations.
+- UX problems.
+- Would-use-in-real-training.
+- Free-text comments.
+
+---
+
+# 10. Critical Path
 
 ```text
-Copilot lookup
-product comparison
-policy lookup
-easy Role-play
-difficult objection Role-play
-evaluation feedback
-```
-
-Thu feedback theo:
-
-```text
-realism of AI Customer
-usefulness of Copilot
-correctness of information
-quality of objections
-quality of AI feedback
-score fairness
-missing sales situations
-UX problems
-would-use-in-real-training
+21–22 Sep
+Gate 1 + Contract Freeze
+        ↓
+23–24 Sep
+Walking Skeleton
+        ↓
+25–26 Sep
+Copilot + Role-play Core
+        ↓
+27–28 Sep
+Full Practice Loop + Evaluator
+        ↓
+29 Sep
+Feature Freeze
+        ↓
+30 Sep
+MVP Deployed
+        ↓
+01–02 Oct
+HITL + Evaluation + Hardening + Polish
+        ↓
+03 Oct
+Sales Tester Release
 ```
 
 ---
 
-## Critical path
+# 11. Daily team sync rule
+
+Mỗi ngày chỉ cần update 4 dòng/người:
 
 ```text
-22 Sep
-Contracts frozen
-      ↓
-24 Sep
-Walking Skeleton
-      ↓
-26 Sep
-Copilot + Role-play core
-      ↓
-28 Sep
-Full practice loop
-      ↓
-29 Sep
-Feature freeze
-      ↓
-30 Sep
-MVP deployed
-      ↓
-1–2 Oct
-Evaluate + fix + HITL + polish
-      ↓
-3 Oct
-Sales tester release
+DONE:
+TODAY:
+BLOCKED:
+NEED FROM:
 ```
 
-Với deadline này, **30/09 nên được coi là “usable MVP”, không phải bản đầy đủ**; các phần Progress Dashboard, Manager analytics nâng cao, nhiều difficulty levels và polish nên ưu tiên sau khi core loop đã pass. Điều này giữ đúng các ownership đã chốt trong bản phân công hiện tại.
+Ví dụ:
+
+```text
+Duy
+DONE: Multi-turn RoleplayGraph v1
+TODAY: Adaptive objection logic
+BLOCKED: waiting knowledge tool interface
+NEED FROM: Chương - search_policy() contract
+```
+
+Các checkpoint trong tài liệu này nên được tạo thành GitHub Issues và đặt Target Date tương ứng trong GitHub Project.

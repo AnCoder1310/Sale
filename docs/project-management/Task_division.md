@@ -371,7 +371,7 @@ Phụ trách:
 - grounding
 - citations
 - policy versioning
-- shared knowledge layer
+- shared knowledge runtime
 - FastAPI platform
 - PostgreSQL
 - pgvector
@@ -484,32 +484,31 @@ Xử lý:
 
 Hỗ trợ controlled abstention.
 
-#### 4. Shared Knowledge Layer
-Phụ trách:
+#### 4. Shared Knowledge Runtime
+
+Chương phụ trách phần runtime sau khi corpus đã được Đạt chuẩn hóa, validate và đưa qua ingestion contract.
+
+Chương phụ trách:
 
 ```text
 backend/knowledge/
-├── ingestion.py
 ├── chunking.py
 ├── embeddings.py
 ├── vector_store.py
-├── metadata.py
 ├── policy_versioning.py
 └── retrieval_service.py
 ```
 
-Metadata:
-- document_id
-- document_type
-- product_model
-- policy_type
-- effective_from
-- effective_to
-- source
-- version
-- status
+Chương định nghĩa interface để `ingestion.py` của Đạt gọi các bước:
 
-Expose shared tools:
+```text
+normalized document
+→ chunking
+→ embeddings
+→ vector-store upsert
+```
+
+Chương expose shared tools:
 
 ```text
 search_product()
@@ -519,7 +518,21 @@ get_product_comparison()
 citation_validator()
 ```
 
-Dùng chung bởi `CopilotGraph` và `RoleplayGraph`.
+Các tools này dùng chung bởi:
+
+```text
+CopilotGraph
+RoleplayGraph
+```
+
+Đạt phụ trách:
+
+```text
+backend/knowledge/ingestion.py
+backend/knowledge/metadata.py
+```
+
+bao gồm ingestion orchestration và metadata schema/validation.
 
 #### 5. Shared LangGraph infrastructure
 Phụ trách:
@@ -697,6 +710,8 @@ Với Duy:
 
 Với Đạt:
 - corpus metadata
+- ingestion contract
+- chunk/input schema
 - retrieval evaluation
 - policy versioning
 - RAG benchmark
@@ -714,7 +729,8 @@ Chương phụ trách:
 - retrieval
 - reranking
 - citations
-- knowledge services
+- knowledge runtime services
+- chunking / embeddings / vector-store runtime
 - policy versioning infrastructure
 - shared tools
 - shared backend platform
@@ -737,10 +753,18 @@ Cần phối hợp với Duy trước khi thay đổi:
 - evaluation reasoning
 
 Cần phối hợp với Đạt trước khi thay đổi:
+- ingestion contract
+- metadata schema
 - ground-truth format
 - evaluation datasets
 - benchmark definitions
 - corpus labeling conventions
+
+Không tự ý thay đổi phần do Đạt owner:
+- `backend/knowledge/ingestion.py`
+- `backend/knowledge/metadata.py`
+- raw/normalized corpus preprocessing
+- automated evaluation runner và metrics implementation
 
 Cần phối hợp với An trước khi thay đổi:
 - frontend-facing API schemas
@@ -755,12 +779,15 @@ Cần phối hợp với An trước khi thay đổi:
 Phụ trách:
 - knowledge datasets
 - product/policy corpus
+- knowledge ingestion orchestration
+- metadata schema / validation
 - sales conversation data
 - objection data
 - scenario evidence
 - benchmark datasets
 - ground truth
 - evaluation harness
+- automated evaluation runner / metrics / report generation
 - RAG evaluation
 - Role-play evaluation
 - Judge calibration
@@ -809,9 +836,63 @@ Data format:
 - status
 - content
 
-Cung cấp normalized data cho ingestion pipeline của Chương.
+Cung cấp normalized data cho knowledge runtime của Chương.
 
-#### 2. Sales dialogue / objection data
+#### 2. Knowledge ingestion + metadata validation
+
+Đạt phụ trách coding cho data-to-knowledge boundary:
+
+```text
+backend/knowledge/
+├── ingestion.py
+└── metadata.py
+```
+
+`metadata.py` phụ trách:
+
+```text
+metadata schema
+metadata validation
+required-field checks
+effective/expiry date validation
+document status validation
+version/source validation
+```
+
+Các helper dự kiến:
+
+```text
+validate_metadata()
+validate_policy_dates()
+is_active_policy()
+detect_missing_metadata()
+detect_duplicate_version()
+```
+
+`ingestion.py` phụ trách orchestration:
+
+```text
+normalized corpus
+→ validate metadata
+→ reject/report invalid documents
+→ call Chương's chunking interface
+→ call embedding/vector-store interfaces
+→ collect ingestion result
+```
+
+Đạt không implement chunking algorithm, embeddings hay pgvector internals; các interface này do Chương cung cấp.
+
+Ngoài ra Đạt phụ trách preprocessing scripts:
+
+```text
+scripts/ingestion/
+├── normalize_documents.py
+├── validate_metadata.py
+├── deduplicate.py
+└── build_corpus.py
+```
+
+#### 3. Sales dialogue / objection data
 Thu thập và structure:
 - customer objections
 - buyer intents
@@ -825,7 +906,7 @@ Thu thập và structure:
 - conversation stages
 - closing patterns
 
-#### 3. Scenario dataset
+#### 4. Scenario dataset
 Co-own scenario content với Duy.
 
 Đạt phụ trách data/evidence side:
@@ -841,7 +922,7 @@ Co-own scenario content với Duy.
 
 Duy phụ trách runtime behavior.
 
-#### 4. Copilot evaluation dataset
+#### 5. Copilot evaluation dataset
 Tạo benchmark:
 - single-product facts
 - multi-product comparison
@@ -860,7 +941,7 @@ Initial benchmark:
 20–30+ grounded questions
 ```
 
-#### 5. RAG evaluation
+#### 6. RAG evaluation
 Theo dõi:
 - retrieval hit rate
 - Recall@K
@@ -871,7 +952,7 @@ Theo dõi:
 
 Chạy trên Copilot implementation của Chương.
 
-#### 6. Role-play benchmark
+#### 7. Role-play benchmark
 Tạo tests:
 - persona consistency
 - objection consistency
@@ -884,7 +965,7 @@ Tạo tests:
 
 Chạy cùng Duy.
 
-#### 7. Judge / evaluator calibration
+#### 8. Judge / evaluator calibration
 Chuẩn bị expert-labelled transcripts.
 
 Initial target:
@@ -905,7 +986,7 @@ Metrics:
 - weighted agreement
 - rank correlation
 
-#### 8. HITL evaluation
+#### 9. HITL evaluation
 Phân tích:
 - AI score
 - manager score
@@ -916,22 +997,56 @@ Phân tích:
 
 Dùng cho evaluator calibration.
 
-#### 9. Evaluation harness
-Phụ trách:
+#### 10. Evaluation harness + automated eval coding
+
+Đạt phụ trách code để benchmark có thể chạy lặp lại tự động:
 
 ```text
 eval/
+├── runner.py
+├── metrics.py
+├── report_generator.py
 ├── copilot_eval/
+│   └── run.py
 ├── retrieval_eval/
+│   └── run.py
 ├── roleplay_eval/
+│   └── run.py
 ├── judge_eval/
+│   └── run.py
 ├── datasets/
 └── reports/
 ```
 
-Automate repeatable evaluation runs khi khả thi.
+`runner.py`:
+- load evaluation dataset
+- call target system/API
+- collect predictions/results
+- handle repeatable batch runs
 
-#### 10. Integration responsibilities
+`metrics.py`:
+- Recall@K
+- retrieval hit rate
+- citation correctness
+- groundedness result aggregation
+- policy-version correctness
+- evaluator MAE
+- criterion-level agreement
+
+`report_generator.py`:
+- generate machine-readable JSON results
+- generate Markdown summary
+- list failed cases
+- group failures by category
+
+Output:
+
+```text
+eval/reports/latest.json
+eval/reports/latest.md
+```
+
+#### 11. Integration responsibilities
 Với Duy:
 - scenario data
 - objection library
@@ -941,6 +1056,8 @@ Với Duy:
 
 Với Chương:
 - corpus schema
+- ingestion contract
+- chunk/input schema
 - metadata
 - policy versioning data
 - retrieval benchmark
@@ -956,19 +1073,27 @@ Với An:
 Đạt phụ trách:
 - source data
 - normalized corpus
+- knowledge ingestion orchestration
+- metadata schema / validation
+- preprocessing / deduplication scripts
 - scenario evidence
 - benchmark datasets
 - ground truth
-- evaluation metrics
+- evaluation runner
+- evaluation metrics implementation
+- automated evaluation reports
 - evaluation scripts
-- evaluation reports
 - judge calibration
 
 Không tự ý thay đổi:
-- Copilot runtime
+- Copilot reasoning/runtime
+- retrieval/reranker logic
+- chunking algorithm
+- embeddings implementation
+- pgvector/vector-store internals
 - RoleplayGraph runtime
 - production prompts
-- FastAPI implementation
+- shared FastAPI platform
 - database infrastructure
 - frontend components
 
@@ -1254,6 +1379,9 @@ Không tự ý thay đổi:
 | Citation validation | Chương | Đạt |
 | Abstention | Chương | Đạt |
 | Knowledge corpus | Đạt | Chương |
+| Knowledge ingestion orchestration | Đạt | Chương |
+| Metadata schema / validation | Đạt | Chương |
+| Chunking / embeddings / vector store | Chương | Đạt |
 | Copilot benchmark | Đạt | Chương |
 | Copilot UI | An | Chương |
 | Sales-use-case taxonomy | Duy + Chương | Đạt |
@@ -1267,6 +1395,8 @@ Không tự ý thay đổi:
 | FastAPI platform | Chương | Duy + An |
 | PostgreSQL | Chương | Đạt |
 | pgvector | Chương | Đạt |
+| Knowledge ingestion pipeline | Đạt | Chương |
+| Knowledge metadata validation | Đạt | Chương |
 | Shared LLM client | Chương | Duy |
 | Shared logging | Chương | Cả team |
 | AI-call logging | Chương | Cả team |
@@ -1289,6 +1419,9 @@ Không tự ý thay đổi:
 | Ground truth | Đạt | Duy |
 | Corpus benchmark | Đạt | Chương |
 | Retrieval benchmark | Đạt | Chương |
+| Automated eval runner | Đạt | Chương |
+| Metrics implementation | Đạt | Duy + Chương |
+| Evaluation report generator | Đạt | Chương |
 | Role-play benchmark | Đạt | Duy |
 | Judge benchmark | Đạt | Duy |
 | Evaluation reasoning | Duy | Đạt |
@@ -1311,6 +1444,7 @@ Không tự ý thay đổi:
 | Scenario specification | Duy | Đạt |
 | Rubric skeleton | Duy + Đạt | Chương |
 | Data/source plan | Đạt | Chương |
+| Knowledge metadata + ingestion contract | Đạt | Chương |
 | Evaluation plan | Đạt | Duy + Chương |
 | API contracts | Chương + An | Duy |
 | Database model draft | Chương | Đạt + Duy |
@@ -1326,10 +1460,10 @@ Không tự ý thay đổi:
 |---|---|---|---|---|
 | **Gate 1** | Product + Role-play specification | Copilot + architecture | Data + evaluation plan | Wireframe/UI Flow |
 | **Walking Skeleton** | Basic RoleplayGraph + Practice API | Platform + graph runtime + persistence | Test fixtures | React shell + mocks |
-| **Knowledge Layer** | Role-play knowledge requirements | Knowledge service + RAG | Corpus preparation | Source/citation UI |
+| **Knowledge Layer** | Role-play knowledge requirements | Chunking + embeddings + vector store + RAG runtime | Corpus preparation + ingestion + metadata validation | Source/citation UI |
 | **Copilot** | Sales behavior support | Copilot lead | Copilot benchmark | Copilot UI |
 | **Role-play** | AI Customer lead | Runtime/tools/checkpoint/persistence | Scenario dataset | Practice Room |
-| **Evaluator** | Evaluation reasoning | Evaluation backend/persistence | Calibration + benchmark | Results UI |
+| **Evaluator** | Evaluation reasoning | Evaluation backend/persistence | Calibration + benchmark + eval runner/metrics/report | Results UI |
 | **Manager HITL** | Coaching semantics | Manager APIs | AI-vs-manager analysis | Manager UI |
 | **Progress** | Skill semantics | Progress backend | Metric definition | Dashboard |
 | **Final Integration** | Role-play fixes | Platform/Copilot fixes | E2E evaluation | UX/E2E fixes |
@@ -1376,11 +1510,9 @@ backend/
 │   └── guardrails.py
 │
 ├── knowledge/
-│   ├── ingestion.py
 │   ├── chunking.py
 │   ├── embeddings.py
 │   ├── vector_store.py
-│   ├── metadata.py
 │   ├── policy_versioning.py
 │   └── retrieval_service.py
 │
@@ -1413,16 +1545,33 @@ data/
 ├── scenarios/
 └── evaluation/
 
+backend/
+└── knowledge/
+    ├── ingestion.py
+    └── metadata.py
+
 scripts/
+├── ingestion/
+│   ├── normalize_documents.py
+│   ├── validate_metadata.py
+│   ├── deduplicate.py
+│   └── build_corpus.py
 ├── normalize/
 ├── validate/
 └── prepare_eval/
 
 eval/
+├── runner.py
+├── metrics.py
+├── report_generator.py
 ├── copilot_eval/
+│   └── run.py
 ├── retrieval_eval/
+│   └── run.py
 ├── roleplay_eval/
+│   └── run.py
 ├── judge_eval/
+│   └── run.py
 ├── datasets/
 └── reports/
 ```
@@ -1473,7 +1622,10 @@ frontend/src/
 
 ## Chương ↔ Đạt
 - corpus schema
-- metadata
+- ingestion contract
+- normalized-document schema
+- chunk/input interface
+- metadata schema
 - policy versions
 - retrieval benchmark
 - Copilot evaluation
