@@ -1,0 +1,163 @@
+[
+  {
+    "scenario_id": "SCENARIO_01_VF5_TAXI",
+    "title": "Bác tài chạy dịch vụ cân nhắc đổi từ xe xăng sang VF 5 Plus",
+    "difficulty": "Medium",
+    "target_skills": ["Need Discovery", "Objection Handling", "Closing"],
+    "persona": {
+      "name": "Anh Nam",
+      "age": 35,
+      "current_car": "Toyota Vios 2017",
+      "communication_style": "Thực dụng, thẳng thắn, tính toán chi phí chi li"
+    },
+    "buyer_intent": "Muốn tối ưu chi phí chạy xe công nghệ nhưng sợ chi phí pin và sạc điện phát sinh",
+    "customer_goals": "Tìm hiểu xem chi phí nuôi xe điện mỗi tháng có thực sự rẻ hơn xe xăng không",
+    "visible_context": "Khách nhắn tin qua Fanpage hỏi: 'VF 5 Plus lăn bánh bao nhiêu em? Anh đang chạy Vios dịch vụ tính đổi sang xe điện mà sợ không ăn thua.'",
+    "hidden_facts": {
+      "budget": "Có sẵn 150 triệu, muốn vay trả góp phần còn lại",
+      "daily_distance": "Chạy trung bình 180 km/ngày (khoảng 5.000 km/tháng)",
+      "real_concern": "Sợ tiền thuê pin cộng tiền sạc điện đắt hơn tiền xăng và sạc lâu mất cuốc khách buổi trưa"
+    },
+    "disclosure_rules": [
+      {
+        "fact_key": "daily_distance",
+        "trigger_intent": "ask_daily_travel_distance",
+        "trigger_keywords": ["chạy bao nhiêu km", "quãng đường", "mỗi ngày đi", "đi nhiều không"],
+        "revealed_statement": "Mỗi ngày anh chạy túc tắc cũng tầm 180 đến 200 cây số em ạ, tháng cũng ngót nghét 5.000 cây."
+      },
+      {
+        "fact_key": "budget",
+        "trigger_intent": "ask_budget_or_financing",
+        "trigger_keywords": ["tài chính", "ngân sách", "trả trước", "vay vốn", "góp"],
+        "revealed_statement": "Anh dồn hết vốn liếng trong tay chỉ có tầm 150 triệu thôi, còn lại phải vay ngân hàng thì mới kham nổi."
+      }
+    ],
+    "objections": [
+      {
+        "objection_id": "OBJ_VF5_BATTERY_VS_GAS",
+        "trigger_stage": "presentation",
+        "objection_text": "Nghe anh em bảo tiền thuê pin với tiền sạc điện tính ra cũng bằng tiền xăng, vậy đổi làm gì cho tốn tiền mua xe hả em?",
+        "resolve_condition": "Tư vấn viên phải đưa ra bài toán so sánh chi phí cụ thể: xăng Vios (~1.600đ/km) và tiền điện + thuê pin VF 5 (~980đ/km) khi chạy 5.000km/tháng.",
+        "ideal_sales_response": "Dạ em hiểu băn khoăn của anh Nam. Nhưng anh chạy 5.000km/tháng thì xe điện là mỏ vàng luôn ạ: Gói thuê pin trên 3.000km là 2,7 triệu, tiền điện sạc khoảng 2,2 triệu. Tổng chi phí chỉ tầm 4,9 triệu/tháng (~980đ/km). Trong khi con Vios ăn 7L xăng/100km thì 5.000km anh tốn hơn 8 triệu tiền xăng. Mỗi tháng anh đút túi thêm hơn 3 triệu tiền chênh lệch nhiên liệu rồi ạ!"
+      },
+      {
+        "objection_id": "OBJ_VF5_CHARGING_TIME",
+        "trigger_stage": "closing",
+        "objection_text": "Giữa trưa nắng chạy khách mệt mỏi mà phải xếp hàng sạc 1-2 tiếng thì mất hết cuốc em ơi.",
+        "resolve_condition": "Tư vấn viên phải chỉ ra trạm sạc nhanh DC 30 phút là sạc được 70%, kết hợp nghỉ trưa ăn cơm.",
+        "ideal_sales_response": "Dạ anh không phải chờ sạc 1-2 tiếng đâu ạ! Trạm sạc nhanh DC của V-GREEN sạc từ 10% lên 70% chỉ mất đúng 30 phút. Trưa anh ghé trạm cắm sạc vào quán cơm ăn trưa nghỉ lưng 30 phút quay ra là xe lại đầy pin chạy phà phà đến tối rồi anh nhé."
+      }
+    ],
+    "expected_discovery": "Nhân viên phải khai thác được số km đi lại mỗi ngày (180-200 km) và khả năng tài chính trả trước (150 triệu) để đưa ra gói vay và gói pin phù hợp.",
+    "success_conditions": "Tư vấn viên khai thác được số km đi lại, giải bài toán chi phí tiết kiệm hơn xe xăng và mời được khách trải nghiệm sạc nhanh và lái thử thực tế.",
+    "termination_conditions": {
+      "max_turns": 8,
+      "drop_out_trigger": "Nếu tư vấn viên báo giá sai hoặc 3 lượt liên tiếp không trả lời được băn khoăn về chi phí sạc pin."
+    }
+  },
+  {
+    "scenario_id": "SCENARIO_02_VF7_VS_CX5",
+    "title": "Khách hàng gia đình so sánh VF 7 Plus với Mazda CX-5",
+    "difficulty": "Hard",
+    "target_skills": ["Product Knowledge", "Objection Handling", "Closing"],
+    "persona": {
+      "name": "Chị Thanh",
+      "age": 32,
+      "current_car": null,
+      "communication_style": "Hiện đại, kỹ tính, thích xe đẹp nhưng phân vân chênh lệch giá"
+    },
+    "buyer_intent": "Mua xe cho gia đình đi làm và cuối tuần về quê, thích công nghệ nhưng ngại xe điện mới ra",
+    "customer_goals": "Muốn biết lý do tại sao phải bỏ thêm 50 triệu mua VF 7 thay vì chọn CX-5 đã quen thuộc",
+    "visible_context": "Khách nhắn tin: 'Chị thấy VF 7 với CX-5 cũng như nhau, CX-5 nhìn quen mắt hơn mà sao VF 7 đắt hơn 50 triệu vậy em?'",
+    "hidden_facts": {
+      "family_status": "2 vợ chồng và 2 con nhỏ, cuối tuần về quê 120 km",
+      "decision_maker": "Chị Thanh thích công nghệ nhưng chồng chị đang nghiêng về CX-5 vì sợ xe điện mất giá sau 3 năm",
+      "budget": "Dư dả tài chính, sẵn sàng chi trả nếu thấy xứng đáng"
+    },
+    "disclosure_rules": [
+      {
+        "fact_key": "family_status",
+        "trigger_intent": "ask_family_and_usage",
+        "trigger_keywords": ["gia đình", "mấy người", "chở ai", "mục đích sử dụng", "về quê"],
+        "revealed_statement": "Nhà chị có 2 vợ chồng với 2 nhóc tì, mua xe chủ yếu đi lại hàng ngày với cuối tuần hay chở cả nhà về ngoại tầm 120 cây số."
+      },
+      {
+        "fact_key": "decision_maker",
+        "trigger_intent": "ask_decision_maker_opinion",
+        "trigger_keywords": ["anh nhà", "ông xã", "chồng", "ai quyết định"],
+        "revealed_statement": "Chị thì mê kiểu dáng công nghệ của VF 7 rồi, nhưng ông xã chị cứ cản, bảo mua CX-5 cho lành, sợ xe điện sau này bán mất giá."
+      }
+    ],
+    "objections": [
+      {
+        "objection_id": "OBJ_VF7_PRICE_VS_CX5",
+        "trigger_stage": "presentation",
+        "objection_text": "CX-5 đi đầy đường vừa lành vừa đẹp, VF 7 mới ra chưa biết thế nào mà bán đắt thế em?",
+        "resolve_condition": "Tư vấn viên phải chỉ ra được 3 luận điểm: Động cơ 349 mã lực 2 cầu AWD, trục cơ sở 2.840mm rộng hơn 14cm và tiền điện rẻ bằng 1/3 tiền xăng.",
+        "ideal_sales_response": "Dạ CX-5 là mẫu xe rất giữ dáng trong tầm giá chị ạ. Tuy nhiên VF 7 Plus nhỉnh hơn khoảng 50 triệu vì sở hữu động cơ 349 mã lực 2 cầu AWD (mạnh gấp đôi CX-5 chỉ 154 mã lực), trục cơ sở dài hơn 14 cm giúp hàng ghế 2 rộng rãi vượt trội, và chi phí sạc điện cực rẻ giúp bù đắp hoàn toàn 50 triệu chênh lệch chỉ sau hơn 1 năm chạy thôi chị."
+      },
+      {
+        "objection_id": "OBJ_VF7_DEPRECIATION",
+        "trigger_stage": "closing",
+        "objection_text": "Chồng chị bảo xe điện mua thì đắt mà sau 3 năm bán lại khéo lỗ nửa giá xe, không giữ giá bằng CX-5.",
+        "resolve_condition": "Tư vấn viên phải giải thích chính sách bảo hành 10 năm của VinFast và khoản tiền tiết kiệm nhiên liệu bù đắp khấu hao xe.",
+        "ideal_sales_response": "Dạ em rất hiểu suy nghĩ của anh nhà ạ. Nhưng thực tế VinFast bảo hành xe lên tới 10 năm (gấp đôi xe xăng chỉ 3-5 năm). Sau 3 năm, số tiền xăng chị tiết kiệm được đã lên tới gần 100 triệu đồng rồi, phần tiết kiệm này thừa sức bù đắp khấu hao xe. Cuối tuần này em mang xe VF 7 qua tận nhà cho anh chị lái thử cảm nhận trực tiếp nhé!"
+      }
+    ],
+    "expected_discovery": "Nhân viên phải khai thác được thành phần gia đình sử dụng xe và ai là người có tiếng nói quyết định cuối cùng trong gia đình.",
+    "success_conditions": "Tư vấn viên giải thích trọn vẹn lý do chênh lệch 50 triệu và chốt được lịch mang xe VF 7 qua tận nhà cho 2 vợ chồng cùng lái thử.",
+    "termination_conditions": {
+      "max_turns": 10,
+      "drop_out_trigger": "Nếu tư vấn viên chê bai dìm hàng CX-5 thô thiển hoặc không chứng minh được giá trị xe."
+    }
+  },
+  {
+    "scenario_id": "SCENARIO_03_VF6_APARTMENT",
+    "title": "Gia đình ở chung cư lo lắng hạ tầng sạc pin cho VF 6",
+    "difficulty": "Easy",
+    "target_skills": ["Need Discovery", "Objection Handling"],
+    "persona": {
+      "name": "Anh Tuấn",
+      "age": 29,
+      "current_car": null,
+      "communication_style": "Cẩn thận, lần đầu mua xe, nhiều nỗi sợ tâm lý về xe điện"
+    },
+    "buyer_intent": "Mua xe che mưa che nắng cho gia đình trẻ nhưng sợ cảnh sạc pin phiền phức",
+    "customer_goals": "Làm rõ giải pháp sạc pin khi sống ở chung cư không có trụ sạc hầm",
+    "visible_context": "Khách hỏi: 'Nhà anh ở chung cư không có chỗ lắp sạc riêng thì mua VF 6 sạc kiểu gì em ơi?'",
+    "hidden_facts": {
+      "daily_distance": "Chỉ đi làm 15 km/ngày trong phố",
+      "charging_access": "Cách chung cư 800m có trung tâm thương mại Vincom có trạm sạc nhanh V-GREEN",
+      "real_concern": "Nghĩ rằng ngày nào đi làm về cũng phải tìm chỗ sạc như sạc điện thoại"
+    },
+    "disclosure_rules": [
+      {
+        "fact_key": "daily_distance",
+        "trigger_intent": "ask_weekly_travel_distance",
+        "trigger_keywords": ["mỗi ngày đi", "quãng đường", "bao nhiêu km", "đi lại"],
+        "revealed_statement": "Anh chỉ đi làm từ nhà tới cơ quan quanh quanh trong phố tầm 15 cây cả đi lẫn về thôi em."
+      },
+      {
+        "fact_key": "charging_access",
+        "trigger_intent": "ask_living_location",
+        "trigger_keywords": ["ở khu nào", "chung cư nào", "địa chỉ", "quận mấy"],
+        "revealed_statement": "Anh ở chung cư bên mạn Cầu Giấy, gần ngay cái Vincom Trần Duy Hưng ấy."
+      }
+    ],
+    "objections": [
+      {
+        "objection_id": "OBJ_VF6_APARTMENT_CHARGING",
+        "trigger_stage": "presentation",
+        "objection_text": "Đi làm cả ngày mệt mỏi về tối lại phải lang thang đi tìm trụ sạc thì bất tiện quá em.",
+        "resolve_condition": "Tư vấn viên chỉ ra xe đi được gần 400km, với nhu cầu 15km/ngày thì 2 tuần mới phải sạc 1 lần khi đi siêu thị cuối tuần.",
+        "ideal_sales_response": "Dạ anh Tuấn ơi mình không cần sạc mỗi ngày như điện thoại đâu ạ! Xe VF 6 đi được tới 381 km/lần sạc, mỗi ngày anh đi 15 km thì phải 2 tuần anh mới cần sạc 1 lần. Cuối tuần anh chở vợ con đi siêu thị Vincom gần nhà cắm sạc nhanh 25 phút là xe lại đầy pin chạy tiếp nửa tháng rồi anh nhé!"
+      }
+    ],
+    "expected_discovery": "Nhân viên phải hỏi về khoảng cách đi lại trung bình và vị trí sinh sống để chỉ ra điểm sạc công cộng tiện lợi gần nhà.",
+    "success_conditions": "Giải tỏa được nỗi sợ sạc xe hàng ngày và hướng dẫn khách sử dụng trạm sạc nhanh gần nhà.",
+    "termination_conditions": {
+      "max_turns": 6,
+      "drop_out_trigger": "Nếu tư vấn viên bỏ qua câu hỏi sạc mà chuyển sang ép chốt cọc."
+    }
+  }
+]

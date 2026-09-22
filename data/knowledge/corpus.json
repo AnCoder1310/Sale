@@ -1,0 +1,187 @@
+[
+  {
+    "document_id": "SPECS_VF3_2026",
+    "title": "Thông số kỹ thuật và tính năng vận hành VinFast VF 3",
+    "document_type": "product_specs",
+    "product_model": "VF 3",
+    "competitor_model": null,
+    "policy_type": "general",
+    "effective_date": "2026-01-01",
+    "expiry_date": null,
+    "source": "Catalog Kỹ thuật VinFast 2026",
+    "version": "1.0",
+    "status": "active",
+    "content": "VinFast VF 3 là mẫu mini-eSUV đô thị 4 chỗ ngồi. Xe trang bị động cơ điện công suất tối đa 32 kW (~43 mã lực), mô-men xoắn cực đại 110 Nm, dẫn động cầu sau RWD. Bộ pin LFP dung lượng khả dụng 18.64 kWh cho quãng đường di chuyển tối đa 215 km sau mỗi lần sạc đầy (theo chuẩn NEDC). Xe hỗ trợ sạc nhanh DC từ 10% lên 70% trong khoảng 36 phút, sạc chậm AC tại nhà khoảng 5 giờ. Khoảng sáng gầm xe 191 mm vượt trội giúp xe leo vỉa hè và vượt đường ngập nước đô thị dễ dàng.",
+    "sales_script": {
+      "core_arguments": [
+        "Thiết kế mini-eSUV cá tính: Gầm cao 191 mm, dẫn động cầu sau bốc và leo lề ngập nước cực tốt trong phố.",
+        "Chi phí lăn bánh siêu rẻ: Giá từ 240 triệu (thuê pin), miễn 100% thuế trước bạ, chi phí sạc điện chỉ khoảng 300đ/km."
+      ],
+      "suggested_message": "Dạ VF 3 đang là mẫu xe cực kỳ hot hiện nay đó anh! Xe dáng vuông vắn cá tính, gầm cao tới 191mm tha hồ leo vỉa hè không lo cạ gầm ngập nước. Pin đi được 215 km/lần sạc và tiền sạc chỉ tầm 300đ/km rẻ hơn cả đi xe máy tay ga. Giá thuê pin chỉ từ 240 triệu lại được Nhà nước miễn 100% trước bạ, anh đặt sớm để nhận xe đợt này nhé!"
+    }
+  },
+  {
+    "document_id": "SPECS_VF5_PLUS_2026",
+    "title": "Thông số kỹ thuật và khả năng vận hành VinFast VF 5 Plus",
+    "document_type": "product_specs",
+    "product_model": "VF 5",
+    "competitor_model": null,
+    "policy_type": "general",
+    "effective_date": "2026-01-01",
+    "expiry_date": null,
+    "source": "Catalog Kỹ thuật VinFast 2026",
+    "version": "1.0",
+    "status": "active",
+    "content": "VinFast VF 5 Plus là mẫu A-SUV đô thị trang bị động cơ điện công suất tối đa 100 kW (~134 mã lực), mô-men xoắn cực đại 135 Nm, dẫn động cầu trước FWD. Xe sử dụng bộ pin Lithium ternary dung lượng khả dụng 37.23 kWh, cho quãng đường di chuyển tối đa 326 km sau một lần sạc đầy (theo chuẩn NEDC). Xe hỗ trợ sạc nhanh DC từ 10% đến 70% chỉ trong 30 phút. Chi phí tiêu hao điện trung bình chỉ khoảng 12 kWh/100 km (~450 - 500 VNĐ/km).",
+    "sales_script": {
+      "core_arguments": [
+        "Vận hành vượt trội: 134 mã lực, bốc và êm hơn hẳn xe xăng cùng tầm giá (Vios/i10 chỉ khoảng 83-105 mã lực).",
+        "Sạc nhanh thực chiến: 30 phút từ 10% lên 70% tại trạm V-GREEN, vừa khớp thời gian tài xế ăn trưa nghỉ ngơi.",
+        "Tiết kiệm chi phí: Tiêu hao điện chỉ 450-500đ/km, rẻ hơn 60% so với tiền xăng xe truyền thống."
+      ],
+      "suggested_message": "Dạ VF 5 Plus công suất lên tới 134 mã lực nên đạp ga rất bốc và mượt, không có độ trễ như xe xăng ạ. Pin đi được 326 km mỗi lần sạc đầy và có sạc nhanh 30 phút là được 70% pin rồi, vừa vặn thời gian anh nghỉ trưa ăn cơm là xe lại đầy pin chạy tiếp buổi chiều anh nhé!"
+    }
+  },
+  {
+    "document_id": "SPECS_VF6_PLUS_2026",
+    "title": "Thông số kỹ thuật và trang bị VinFast VF 6 Plus",
+    "document_type": "product_specs",
+    "product_model": "VF 6",
+    "competitor_model": null,
+    "policy_type": "general",
+    "effective_date": "2026-01-01",
+    "expiry_date": null,
+    "source": "Catalog Kỹ thuật VinFast 2026",
+    "version": "1.0",
+    "status": "active",
+    "content": "VinFast VF 6 Plus thuộc phân khúc B-SUV, trang bị động cơ điện công suất tối đa 150 kW (~201 mã lực), mô-men xoắn cực đại 310 Nm, dẫn động cầu trước FWD. Dung lượng pin 59.6 kWh cho quãng đường di chuyển 381 km sau mỗi lần sạc đầy (theo chuẩn WLTP). Xe tích hợp gói ADAS cấp độ 2: Kiểm soát hành trình thích ứng, hỗ trợ giữ làn khẩn cấp, camera 360 độ và phanh khẩn cấp tự động.",
+    "sales_script": {
+      "core_arguments": [
+        "Công suất mạnh mẽ: 201 mã lực, mô-men xoắn 310 Nm, mạnh nhất phân khúc B-SUV.",
+        "An toàn công nghệ cao: Gói ADAS cấp độ 2 đầy đủ hỗ trợ lái nhàn nhã trong phố và cao tốc."
+      ],
+      "suggested_message": "Dạ VF 6 Plus sở hữu công suất lên tới 201 mã lực và mô-men xoắn 310 Nm, xe bốc và cách âm cực kỳ tốt. Pin 59.6 kWh đi được 381 km/lần sạc đầy nên dù ở chung cư thì cả tuần mình chỉ cần sạc 1 lần thôi ạ!"
+    }
+  },
+  {
+    "document_id": "BATTLECARD_VF7_PLUS_VS_MAZDA_CX5",
+    "title": "Battlecard so sánh đối đầu: VinFast VF 7 Plus vs Mazda CX-5 2.0",
+    "document_type": "battlecard",
+    "product_model": "VF 7",
+    "competitor_model": "Mazda CX-5",
+    "policy_type": "general",
+    "effective_date": "2026-09-01",
+    "expiry_date": null,
+    "source": "Sales Battlecard Hub VinFast 2026",
+    "version": "1.0",
+    "status": "active",
+    "content": "So sánh VF 7 Plus và Mazda CX-5 2.0 Premium: VF 7 Plus dẫn động 4 bánh toàn thời gian (AWD), công suất 349 mã lực, mô-men xoắn 500 Nm. CX-5 dẫn động FWD, công suất 154 mã lực, mô-men xoắn 200 Nm. Trục cơ sở VF 7 đạt 2.840 mm (tương đương xe hạng D), dài hơn CX-5 (2.700 mm) tới 14 cm giúp hàng ghế sau ngồi cực kỳ rộng rãi. Về mặt kinh tế: Dù giá mua VF 7 Plus nhỉnh hơn CX-5 khoảng 50 triệu nhưng chi phí điện chỉ ~450đ/km so với 1.600đ/km tiền xăng của CX-5. Sau khoảng 30.000 km, tiền tiết kiệm nhiên liệu đạt hơn 34 triệu, nhanh chóng bù đắp chênh lệch giá ban đầu.",
+    "sales_script": {
+      "core_arguments": [
+        "Sức mạnh vượt trội: VF 7 Plus có 349 mã lực, 2 cầu AWD (mạnh hơn gấp đôi CX-5 chỉ 154 mã lực, 1 cầu).",
+        "Không gian rộng rãi: Trục cơ sở dài hơn CX-5 tới 14 cm (2.840 mm vs 2.700 mm), ngồi không bị đứng lưng.",
+        "Bài toán hoàn vốn: Chênh lệch 50 triệu ban đầu sẽ được bù đắp hoàn toàn sau hơn 1 năm chạy nhờ tiền điện rẻ bằng 1/3 tiền xăng."
+      ],
+      "suggested_message": "Dạ CX-5 là mẫu xe xăng rất lành và quen thuộc trong phân khúc đó chị. Tuy nhiên lý do VF 7 Plus có giá nhỉnh hơn khoảng 50 triệu là vì giá trị chị nhận lại vượt trội hơn hẳn: Xe dẫn động 2 cầu AWD với 349 mã lực (mạnh gấp đôi CX-5) giúp vượt xe và đi đường đèo dốc an toàn tuyệt đối; hàng ghế sau rộng rãi hơn nhiều nhờ trục cơ sở dài hơn 14cm; đặc biệt tiền sạc điện rẻ hơn tiền xăng rất nhiều nên chỉ sau hơn 1 năm chạy là tiền tiết kiệm nhiên liệu đã bù lại hoàn toàn 50 triệu đó rồi ạ. Cuối tuần này em đánh xe VF 7 qua tận nhà cho chị và gia đình lái thử trải nghiệm thực tế nhé!"
+    }
+  },
+  {
+    "document_id": "PRICE_LIST_VINFAST_092026",
+    "title": "Bảng giá niêm yết xe ô tô điện VinFast áp dụng tháng 09/2026",
+    "document_type": "price_list",
+    "product_model": "ALL",
+    "competitor_model": null,
+    "policy_type": "general",
+    "effective_date": "2026-09-01",
+    "expiry_date": "2026-09-30",
+    "source": "Bảng giá niêm yết Số 09/2026/V-PRICELIST",
+    "version": "1.0",
+    "status": "active",
+    "content": "Bảng giá niêm yết xe ô tô điện VinFast (Đã bao gồm VAT, áp dụng T9/2026): 1) VF 3: Thuê pin 240.000.000 VNĐ; Kèm pin 322.000.000 VNĐ. 2) VF 5 Plus: Thuê pin 468.000.000 VNĐ; Kèm pin 548.000.000 VNĐ. 3) VF 6 Plus: Thuê pin 765.000.000 VNĐ; Kèm pin 855.000.000 VNĐ. 4) VF 7 Plus: Thuê pin 999.000.000 VNĐ; Kèm pin 1.199.000.000 VNĐ. Giá lăn bánh xe điện được miễn 100% lệ phí trước bạ theo quy định nhà nước.",
+    "sales_script": {
+      "core_arguments": [
+        "Ưu thế lăn bánh: Miễn 100% lệ phí trước bạ, giúp tiết kiệm ngay từ 50 đến 120 triệu đồng so với mua xe xăng cùng giá.",
+        "Lựa chọn linh hoạt: Có thể chọn gói thuê pin để giảm chi phí đầu tư ban đầu."
+      ],
+      "suggested_message": "Dạ giá niêm yết thuê pin của VF 5 Plus tháng 09 này là 468 triệu, còn VF 7 Plus là 999 triệu ạ. Đặc biệt xe điện đang được Nhà nước miễn 100% lệ phí trước bạ nên chi phí lăn bánh gần như chỉ thêm tiền biển số và bảo hiểm, tiết kiệm hơn xe xăng cả trăm triệu tiền thuế trước bạ anh nhé!"
+    }
+  },
+  {
+    "document_id": "PROMOTION_AUTUMN_092026",
+    "title": "Chương trình ưu đãi tài chính và sạc pin VinFast mùa thu tháng 09/2026",
+    "document_type": "promotion",
+    "product_model": "ALL",
+    "competitor_model": null,
+    "policy_type": "financing",
+    "effective_date": "2026-09-01",
+    "expiry_date": "2026-09-30",
+    "source": "Chính sách Bán hàng Số 42/2026/V-SALES",
+    "version": "1.0",
+    "status": "active",
+    "content": "Chương trình ưu đãi tháng 09/2026: Khách hàng mua xe VF 5 Plus được hỗ trợ gói vay trả góp lãi suất ưu đãi 5% cố định trong 2 năm đầu, chỉ cần trả trước từ 120 triệu là nhận xe. Đối với dòng VF 6 và VF 7, khách hàng được tặng 01 năm miễn phí sạc công cộng tại hệ thống trạm sạc V-GREEN trên toàn quốc hoặc quy đổi thành voucher 15 triệu đồng trừ trực tiếp vào giá lăn bánh.",
+    "sales_script": {
+      "core_arguments": [
+        "Vốn ban đầu thấp: VF 5 chỉ cần từ 120 triệu trả trước, lãi suất cố định 5% trong 2 năm đầu.",
+        "Ưu đãi đặc quyền: Tặng 1 năm sạc miễn phí tại hệ thống trạm sạc V-GREEN toàn quốc cho VF 6 và VF 7."
+      ],
+      "suggested_message": "Dạ tháng 09 này VinFast đang có ưu đãi rất tốt ạ: VF 5 chỉ cần thanh toán trước từ 120 triệu là nhận xe, lãi suất cố định chỉ 5% trong 2 năm đầu. Ngoài ra các dòng VF 6 và VF 7 còn được tặng hẳn 1 năm sạc pin miễn phí tại toàn bộ trạm V-GREEN trên toàn quốc nữa anh nhé!"
+    }
+  },
+  {
+    "document_id": "POLICY_BATTERY_092026",
+    "title": "Chính sách thuê pin ô tô điện VinFast áp dụng tháng 09/2026",
+    "document_type": "policy",
+    "product_model": "ALL",
+    "competitor_model": null,
+    "policy_type": "battery",
+    "effective_date": "2026-09-01",
+    "expiry_date": "2026-10-31",
+    "source": "Quyết định số 188/2026/V-POLICY",
+    "version": "2.1",
+    "status": "active",
+    "content": "Chính sách thuê pin tháng 09/2026: VF 3 gói cố định 900.000 VNĐ/tháng. VF 5 gói dưới 3.000 km/tháng giá 1.600.000 VNĐ/tháng; trên 3.000 km/tháng giá 2.700.000 VNĐ/tháng. VF 6 và VF 7 gói dưới 3.000 km/tháng giá 1.800.000 VNĐ/tháng; trên 3.000 km/tháng giá 3.000.000 VNĐ/tháng. Đặt cọc thuê pin hoàn lại: 20.000.000 VNĐ. Khách hàng thuê pin được bảo hành pin trọn đời và thay pin mới miễn phí khi dung lượng pin khả dụng xuống dưới 70%.",
+    "sales_script": {
+      "core_arguments": [
+        "Xóa bỏ hoàn toàn rủi ro chai pin: VinFast chịu 100% chi phí thay mới khi pin chai dưới 70%.",
+        "Linh hoạt 2 gói cước: Dưới 3.000 km cho gia đình và trên 3.000 km không giới hạn cho bác tài chạy dịch vụ."
+      ],
+      "suggested_message": "Dạ gói thuê pin tháng 09/2026 giúp mình hoàn toàn không phải lo rủi ro chai pin hay hỏng pin ạ. Cứ khi nào pin chai dưới 70% là VinFast thay mới miễn phí ngay cho mình. Tiền cọc pin 20 triệu cũng được hoàn lại 100% khi thanh lý hợp đồng anh nhé!"
+    }
+  },
+  {
+    "document_id": "POLICY_CHARGING_VGREEN_2026",
+    "title": "Chính sách trạm sạc V-GREEN và giải pháp sạc cho cư dân chung cư 2026",
+    "document_type": "policy",
+    "product_model": "ALL",
+    "competitor_model": null,
+    "policy_type": "charging",
+    "effective_date": "2026-01-01",
+    "expiry_date": null,
+    "source": "Công văn V-GREEN số 15/2026",
+    "version": "1.0",
+    "status": "active",
+    "content": "Hạ tầng trạm sạc V-GREEN đã phủ sóng 63/63 tỉnh thành, mật độ trung bình dưới 3 km có 1 điểm sạc tại các đô thị lớn. Đối với cư dân chung cư không có trụ sạc riêng: Khách hàng có thể sử dụng các trạm sạc nhanh công cộng tại trung tâm thương mại Vincom, cây xăng Petrolimex hoặc bãi đỗ xe công cộng lân cận. Với dung lượng pin đi được 300 - 400 km, khách hàng chỉ cần sạc 1 - 2 lần mỗi tuần kết hợp khi đi siêu thị, mua sắm hoặc cà phê (thời gian sạc nhanh từ 20 - 30 phút).",
+    "sales_script": {
+      "core_arguments": [
+        "Không cần sạc hàng ngày: Quãng đường 380 km giúp cư dân chung cư chỉ cần sạc 1 lần mỗi tuần.",
+        "Mạng lưới trạm sạc phủ rộng: Tận dụng trạm sạc nhanh tại Vincom hoặc cây xăng gần nhà, sạc 25 phút trong lúc mua sắm."
+      ],
+      "suggested_message": "Dạ ở chung cư mình không cần phải sạc hàng ngày như điện thoại đâu anh ơi! Xe VF 6 đi được gần 400 km mỗi lần sạc, nếu anh đi làm trong phố 15-20 km/ngày thì phải cả tuần đến 10 ngày mới cần sạc 1 lần. Mình chỉ cần kết hợp lúc cuối tuần đi siêu thị Vincom hoặc uống cà phê cắm sạc nhanh tầm 25 phút là xe lại đầy pin chạy cả tuần rồi ạ!"
+    }
+  },
+  {
+    "document_id": "POLICY_BATTERY_UNLIMITED_EXPIRED",
+    "title": "Chính sách thuê pin không giới hạn km đời đầu (Hết hiệu lực)",
+    "document_type": "policy",
+    "product_model": "ALL",
+    "competitor_model": null,
+    "policy_type": "battery",
+    "effective_date": "2022-01-01",
+    "expiry_date": "2023-12-31",
+    "source": "Công văn 45/2022/V-POLICY",
+    "version": "1.0",
+    "status": "expired",
+    "content": "Gói thuê pin cố định không giới hạn quãng đường di chuyển dành riêng cho khách hàng tiên phong đời đầu.",
+    "sales_script": null
+  }
+]
