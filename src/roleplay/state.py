@@ -1,6 +1,13 @@
 """Business state only. Runtime graph, persistence, and LLM behavior begin in D2."""
 
-from enum import StrEnum
+try:
+    from enum import StrEnum
+except ImportError:
+    from enum import Enum
+
+    class StrEnum(str, Enum):
+        pass
+
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field
