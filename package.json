@@ -1,0 +1,8 @@
+{
+  "name": "sale",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "pnpm --prefix frontend install && pnpm --prefix frontend run build"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "framework": null,
+  "buildCommand": "pnpm --prefix frontend install && pnpm --prefix frontend run build",
+  "outputDirectory": "frontend/out"
+}
