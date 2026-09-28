@@ -75,7 +75,7 @@ export interface KnowledgeDoc {
   category: "vehicle" | "policy" | "warranty_charging" | "sales_technique" | "competitor_battlecard";
   version: string;
   effectiveDate: string;
-  status: "active" | "updating" | "archive";
+  status: "active" | "updating" | "archive" | "expired";
   summary: string;
   content: string;
   tags: string[];
