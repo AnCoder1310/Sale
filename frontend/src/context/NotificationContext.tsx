@@ -232,10 +232,10 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         <div className="fixed top-20 right-6 z-50 max-w-sm w-full p-4 rounded-2xl bg-slate-900/95 backdrop-blur-xl border border-slate-700 text-white shadow-2xl animate-slide-left flex items-start gap-3 select-none">
           <div className={`h-9 w-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
             activeToast.type === "review_approved"
-              ? "bg-emerald-500/20 text-emerald-400"
+              ? "bg-white/10 text-white"
               : activeToast.type === "practice_completed"
-              ? "bg-blue-500/20 text-blue-400"
-              : "bg-purple-500/20 text-purple-400"
+              ? "bg-white/10 text-white"
+              : "bg-white/10 text-white"
           }`}>
             {activeToast.type === "review_approved" ? (
               <ShieldCheck className="h-5 w-5" />
@@ -249,7 +249,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-1">
               <span className="font-bold text-xs text-white truncate">{activeToast.title}</span>
-              <span className="text-[10px] text-cyan-400 font-semibold">{activeToast.timestamp}</span>
+              <span className="text-[10px] text-slate-400 font-semibold">{activeToast.timestamp}</span>
             </div>
             <p className="text-xs text-slate-300 mt-1 line-clamp-2 leading-relaxed">
               {activeToast.message}

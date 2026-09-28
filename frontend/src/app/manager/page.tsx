@@ -50,7 +50,7 @@ export default function ManagerWorkspacePage() {
           <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm max-w-2xl mx-auto text-xs space-y-4">
             <h2 className="text-base font-bold text-slate-900">Training Management & HITL Settings</h2>
             <p className="text-slate-500">Department: Khối Đào Tạo & Phát Triển Năng Lực Bán Hàng</p>
-            <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 space-y-1">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 space-y-1">
               <p className="font-bold">HITL Governance Policy:</p>
               <p>Every AI-evaluated session can be overridden with official manager scores and qualitative feedback before being logged into quarterly KPI records.</p>
             </div>
@@ -63,7 +63,7 @@ export default function ManagerWorkspacePage() {
 
   return (
     <RouteGuard allowedRoles={["manager", "admin"]}>
-      <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
+      <div className="min-h-screen flex flex-col bg-[#FFFFFF]">
         <AppTopNav
           activeTab={activeTab}
           onTabChange={setActiveTab}

@@ -45,4 +45,18 @@ export const practiceApi = {
     apiClient<PracticeSessionResult>(`/practice/${sessionId}/finish`, {
       method: "POST",
     }),
+  getCompetencyRadar: (advisorId: string = "adv-001") =>
+    apiClient<any>(`/advisor/${advisorId}/competency-radar`),
+  getDatabaseStats: () =>
+    apiClient<any>("/database/stats"),
+  getLiveWhisper: (customerMessage: string, stage: string = "discovery", vehicleModel?: string) =>
+    apiClient<any>("/whisper/live-assist", {
+      method: "POST",
+      body: JSON.stringify({ customerMessage, stage, vehicleModel }),
+    }),
+  generateDealSheet: (data: { sessionId?: string; vehicleModel: string; province: string; batteryOption?: string; customerName?: string }) =>
+    apiClient<any>("/deal-sheet/generate", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
 };

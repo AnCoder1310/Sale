@@ -52,7 +52,7 @@ async def list_scenarios():
 @router.post("/practice/sessions")
 async def create_practice_session(req: CreatePracticeSessionRequest):
     """Khởi tạo phiên luyện tập tương tác đa lượt với AI Customer."""
-    session = practice_service.create_session(
+    session = await practice_service.create_session(
         scenario_id=req.scenarioId,
         advisor_id=req.advisorId or "adv-001",
         advisor_name=req.advisorName or "Võ Trường An"
@@ -78,7 +78,7 @@ async def send_practice_message(session_id: str, req: SendPracticeMessageRequest
 @router.post("/practice/{session_id}/finish")
 async def finish_practice_session(session_id: str):
     """Kết thúc phiên luyện tập và tạo báo cáo đánh giá 5 tiêu chí Rubric."""
-    result = practice_service.finish_session(session_id)
+    result = await practice_service.finish_session(session_id)
     telemetry_service.record_event("session_finished", {
         "session_id": session_id,
         "overall_score": result["overallScore"]
@@ -351,3 +351,217 @@ async def api_admin_reject_user(req: RejectUserRequest):
     if not ok:
         raise HTTPException(status_code=404, detail="Không tìm thấy tài khoản")
     return {"success": True, "message": "Đã từ chối tài khoản"}
+
+# ----------------- Financial & TCO Calculator Endpoints -----------------
+from src.services.calculator_service import financial_calculator
+
+@router.post("/calculator/loan")
+async def calculate_loan_schedule(payload: Dict[str, Any]):
+    """Tính toán dự trù trả góp ngân hàng hàng tháng."""
+    car_price = float(payload.get("carPrice", 850_000_000))
+    down_payment_pct = float(payload.get("downPaymentPct", 20.0))
+    interest_rate = float(payload.get("annualInterestRatePct", 5.0))
+    loan_years = int(payload.get("loanYears", 5))
+    res = financial_calculator.calculate_loan(
+        car_price=car_price,
+        down_payment_pct=down_payment_pct,
+        annual_interest_rate_pct=interest_rate,
+        loan_years=loan_years
+    )
+    telemetry_service.record_event("loan_calculator_used", {"car_price": car_price, "loan_years": loan_years})
+    return res
+
+
+@router.post("/calculator/tco")
+async def calculate_tco_comparison(payload: Dict[str, Any]):
+    """So sánh tổng chi phí sở hữu TCO giữa xe điện VinFast và xe xăng đối thủ."""
+    v_model = payload.get("vehicleModel", "VF 7")
+    comp_model = payload.get("competitorModel", "Mazda CX-5")
+    monthly_km = int(payload.get("monthlyKm", 1500))
+    years = int(payload.get("periodYears", 5))
+    battery = payload.get("batteryOption", "rental")
+    res = financial_calculator.calculate_tco(
+        vehicle_model=v_model,
+        competitor_model=comp_model,
+        monthly_km=monthly_km,
+        period_years=years,
+        battery_option=battery
+    )
+    telemetry_service.record_event("tco_calculator_used", {"vehicle": v_model, "competitor": comp_model})
+    return res
+
+
+# ----------------- Streaming SSE Endpoints -----------------
+from fastapi.responses import HTMLResponse, StreamingResponse
+import asyncio
+import json
+
+@router.post("/copilot/query/stream")
+async def stream_copilot_query(req: CopilotQueryRequest):
+    """Truy vấn Copilot với Server-Sent Events (SSE) stream từng từ (typing effect)."""
+    res = await copilot_service.query(req.query, req.vehicleModel)
+    answer_text = res.get("answer", "")
+    citations = res.get("citations", [])
+    talking_points = res.get("recommendedTalkingPoints", [])
+    follow_ups = res.get("followUpQuestions", [])
+
+    async def event_generator():
+        words = answer_text.split(" ")
+        for i in range(0, len(words), 3):
+            chunk = " ".join(words[i:i+3]) + " "
+            data = json.dumps({"type": "chunk", "text": chunk}, ensure_ascii=False)
+            yield f"data: {data}\n\n"
+            await asyncio.sleep(0.04)
+
+        final_meta = {
+            "type": "done",
+            "citations": citations,
+            "recommendedTalkingPoints": talking_points,
+            "followUpQuestions": follow_ups
+        }
+        yield f"data: {json.dumps(final_meta, ensure_ascii=False)}\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
+
+
+@router.post("/practice/{session_id}/message/stream")
+async def stream_practice_message(session_id: str, req: SendPracticeMessageRequest):
+    """Nhận phản hồi khách hàng theo SSE stream từng từ."""
+    res = await practice_service.send_message(session_id, req.message)
+    customer_msg = res.get("customer_message", {})
+    text = customer_msg.get("text", "")
+
+    async def event_generator():
+        words = text.split(" ")
+        for i in range(0, len(words), 2):
+            chunk = " ".join(words[i:i+2]) + " "
+            data = json.dumps({"type": "chunk", "text": chunk}, ensure_ascii=False)
+            yield f"data: {data}\n\n"
+            await asyncio.sleep(0.03)
+
+        final_meta = {
+            "type": "done",
+            "customer_message": customer_msg,
+            "advisor_message": res.get("advisor_message"),
+            "trust_level": res.get("trust_level"),
+            "interest_level": res.get("interest_level"),
+            "turn_count": res.get("turn_count"),
+            "revealed_facts": res.get("revealed_facts")
+        }
+        yield f"data: {json.dumps(final_meta, ensure_ascii=False)}\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
+
+
+# ----------------- Competency Radar & Certificate Endpoints -----------------
+from src.services.progress_service import progress_service
+from src.services.certificate_service import certificate_service
+
+@router.get("/advisor/{advisor_id}/competency-radar")
+async def get_advisor_competency_radar(advisor_id: str = "adv-001"):
+    """Lấy dữ liệu biểu đồ mạng nhện năng lực 5 tiêu chí Rubric của tư vấn viên."""
+    return progress_service.get_competency_radar(advisor_id)
+
+
+@router.get("/practice/{session_id}/certificate", response_class=HTMLResponse)
+async def export_practice_certificate(session_id: str):
+    """Xuất phiếu đánh giá / chứng nhận đào tạo chính thức (HTML Printable / Save PDF)."""
+    html = certificate_service.generate_certificate_html(session_id)
+    return HTMLResponse(content=html, status_code=200)
+
+
+# ----------------- Persistent Database Inspection Endpoint -----------------
+from src.platform.database import (
+    SessionLocal,
+    UserModel,
+    PracticeSessionModel,
+    SessionEvaluationModel,
+    TelemetryEventModel,
+    AssignmentModel
+)
+
+@router.get("/database/stats")
+async def get_database_statistics():
+    """Kiểm tra số lượng bản ghi lưu trữ bền vững trong SQLite data/app.db."""
+    db = SessionLocal()
+    try:
+        stats = {
+            "database_file": "data/app.db",
+            "status": "connected",
+            "tables": {
+                "users": db.query(UserModel).count(),
+                "practice_sessions": db.query(PracticeSessionModel).count(),
+                "session_evaluations": db.query(SessionEvaluationModel).count(),
+                "telemetry_events": db.query(TelemetryEventModel).count(),
+                "training_assignments": db.query(AssignmentModel).count()
+            }
+        }
+        return stats
+    finally:
+        db.close()
+
+# ----------------- Live Sales Whisper & Deal Sheet Endpoints -----------------
+from src.services.deal_sheet_service import deal_sheet_service
+
+@router.post("/whisper/live-assist")
+async def get_live_sales_whisper(payload: Dict[str, Any]):
+    """Trợ lý HUD nhắc bài thời gian thực (Live Whisper): Phân tích tâm lý ngầm & mớm câu phản xạ tức thì."""
+    msg = payload.get("customerMessage", "")
+    stage = payload.get("stage", "discovery")
+    model = payload.get("vehicleModel")
+    whisper = deal_sheet_service.generate_live_whisper(customer_message=msg, stage=stage, vehicle_model=model)
+    telemetry_service.record_event("live_whisper_invoked", {"sentiment": whisper["customer_sentiment"]})
+    return whisper
+
+
+@router.post("/deal-sheet/generate")
+async def generate_deal_sheet_quotation(payload: Dict[str, Any]):
+    """Tự động xuất bảng báo giá lăn bánh Deal Sheet & tin nhắn Zalo chốt đơn."""
+    sess_id = payload.get("sessionId")
+    v_model = payload.get("vehicleModel", "VF 7")
+    prov = payload.get("province", "TP. Hồ Chí Minh")
+    battery = payload.get("batteryOption", "rental")
+    cust_name = payload.get("customerName", "Quý Khách Hàng")
+    sheet = deal_sheet_service.generate_deal_sheet(
+        session_id=sess_id,
+        vehicle_model=v_model,
+        province=prov,
+        battery_option=battery,
+        customer_name=cust_name
+    )
+    telemetry_service.record_event("deal_sheet_generated", {"vehicle": v_model, "province": prov})
+    return sheet
+
+# ----------------- V-GREEN Charging Stations Endpoints -----------------
+from src.services.charging_service import charging_service
+
+@router.get("/charging/stations")
+async def list_charging_stations(
+    city: Optional[str] = None,
+    min_power: Optional[int] = None,
+    max_distance: Optional[float] = None
+):
+    """Danh sách các trạm sạc V-GREEN chuẩn hoá kèm trạng thái cổng sạc thời gian thực."""
+    stations = charging_service.get_stations(city=city, min_power=min_power, max_distance=max_distance)
+    telemetry_service.record_event("charging_stations_queried", {"city": city, "count": len(stations)})
+    return stations
+
+
+@router.get("/charging/stations/{station_id}")
+async def get_charging_station_detail(station_id: str):
+    """Chi tiết trạm sạc, loại trụ sạc và các tiện ích xung quanh."""
+    st = charging_service.get_station_by_id(station_id)
+    if not st:
+        raise HTTPException(status_code=404, detail="Không tìm thấy trạm sạc")
+    return st
+
+
+@router.post("/charging/plan-route")
+async def plan_charging_route(payload: Dict[str, Any]):
+    """AI EV Route Planner: Lập kế hoạch điểm dừng sạc trên hành trình và tạo lời tư vấn cho khách."""
+    from_city = payload.get("fromCity", "TP. Vinh")
+    to_city = payload.get("toCity", "Hà Nội")
+    vehicle = payload.get("vehicleModel", "VF 8")
+    plan = charging_service.plan_route(from_city=from_city, to_city=to_city, vehicle_model=vehicle)
+    telemetry_service.record_event("charging_route_planned", {"from": from_city, "to": to_city, "vehicle": vehicle})
+    return plan

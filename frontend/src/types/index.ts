@@ -64,6 +64,8 @@ export interface Vehicle {
   batteryWarranty: string;
   keyFeatures: string[];
   competitors: string[];
+  sourceUrl?: string;
+  fallbackImage?: string;
 }
 
 // Knowledge types

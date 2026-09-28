@@ -40,8 +40,8 @@ export const RoleplayView: React.FC<RoleplayViewProps> = ({
       {/* Top Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-8 rounded-3xl bg-white border border-slate-200 shadow-sm">
         <div className="max-w-2xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold mb-2">
-            <Theater className="h-3.5 w-3.5 text-indigo-600" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 text-slate-900 text-xs font-semibold mb-2">
+            <Theater className="h-3.5 w-3.5 text-slate-900" />
             <span>Phòng Luyện tập AI Customer Simulator</span>
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
@@ -91,7 +91,7 @@ export const RoleplayView: React.FC<RoleplayViewProps> = ({
               onClick={() => setSelectedDifficulty(d)}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
                 selectedDifficulty === d
-                  ? "bg-blue-600 text-white shadow-sm"
+                  ? "bg-slate-900 text-white shadow-sm"
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200"
               }`}
             >
@@ -106,21 +106,21 @@ export const RoleplayView: React.FC<RoleplayViewProps> = ({
         {filteredScenarios.map((scen) => (
           <div
             key={scen.id}
-            className="flex flex-col justify-between rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all duration-200 overflow-hidden group"
+            className="flex flex-col justify-between rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 overflow-hidden group"
           >
             <div className="p-6 space-y-4">
               {/* Header tags */}
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-blue-100 text-blue-800">
+                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-900">
                     {scen.vehicleModel}
                   </span>
                   <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${
                     scen.difficulty === "Cơ bản"
-                      ? "bg-emerald-100 text-emerald-800"
+                      ? "bg-slate-100 text-slate-900"
                       : scen.difficulty === "Tiêu chuẩn"
-                      ? "bg-amber-100 text-amber-800"
-                      : "bg-purple-100 text-purple-800"
+                      ? "bg-slate-100 text-slate-900"
+                      : "bg-slate-100 text-slate-900"
                   }`}>
                     Độ khó: {scen.difficulty}
                   </span>
@@ -132,7 +132,7 @@ export const RoleplayView: React.FC<RoleplayViewProps> = ({
               </div>
 
               {/* Title */}
-              <h3 className="text-base font-bold text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors">
+              <h3 className="text-base font-bold text-slate-900 leading-snug group-hover:text-slate-900 transition-colors">
                 {scen.title}
               </h3>
 
@@ -141,7 +141,7 @@ export const RoleplayView: React.FC<RoleplayViewProps> = ({
                 <img
                   src={scen.customerPersona.avatar}
                   alt={scen.customerPersona.name}
-                  className="h-12 w-12 rounded-xl object-cover ring-2 ring-indigo-200 flex-shrink-0"
+                  className="h-12 w-12 rounded-xl object-cover ring-2 ring-slate-200 flex-shrink-0"
                 />
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
@@ -185,7 +185,7 @@ export const RoleplayView: React.FC<RoleplayViewProps> = ({
 
               <button
                 onClick={() => onStartSession(scen)}
-                className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow hover:bg-blue-500 transition active:scale-95"
+                className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow hover:bg-slate-800 transition active:scale-95"
               >
                 <span>Vào phòng luyện tập</span>
                 <ArrowRight className="h-3.5 w-3.5" />

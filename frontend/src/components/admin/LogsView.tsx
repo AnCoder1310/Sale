@@ -24,7 +24,7 @@ export const LogsView: React.FC = () => {
             onClick={() => setActiveLogTab("ai")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
               activeLogTab === "ai"
-                ? "bg-purple-600 text-white"
+                ? "bg-slate-900 text-white"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
             }`}
           >
@@ -34,7 +34,7 @@ export const LogsView: React.FC = () => {
             onClick={() => setActiveLogTab("audit")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
               activeLogTab === "audit"
-                ? "bg-purple-600 text-white"
+                ? "bg-slate-900 text-white"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
             }`}
           >
@@ -64,12 +64,12 @@ export const LogsView: React.FC = () => {
                   <td className="px-6 py-3.5 font-bold text-slate-900">{l.id}</td>
                   <td className="px-6 py-3.5 text-slate-500">{l.timestamp}</td>
                   <td className="px-6 py-3.5 font-sans font-medium text-slate-800">{l.userName}</td>
-                  <td className="px-6 py-3.5 font-sans font-bold text-purple-700">{l.agent}</td>
+                  <td className="px-6 py-3.5 font-sans font-bold text-slate-800">{l.agent}</td>
                   <td className="px-6 py-3.5 text-slate-600">{l.model}</td>
                   <td className="px-6 py-3.5">{l.promptTokens} / {l.completionTokens}</td>
                   <td className="px-6 py-3.5 font-bold">{l.latencyMs}ms</td>
                   <td className="px-6 py-3.5">
-                    <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-bold">
+                    <span className="text-slate-800 bg-slate-50 px-2 py-0.5 rounded font-bold">
                       {l.status}
                     </span>
                   </td>
@@ -98,11 +98,11 @@ export const LogsView: React.FC = () => {
                   <td className="px-6 py-3.5 font-bold text-slate-900">{a.id}</td>
                   <td className="px-6 py-3.5 text-slate-500">{a.timestamp}</td>
                   <td className="px-6 py-3.5 font-sans font-medium text-slate-800">{a.user}</td>
-                  <td className="px-6 py-3.5 font-bold text-indigo-700">{a.action}</td>
+                  <td className="px-6 py-3.5 font-bold text-slate-900">{a.action}</td>
                   <td className="px-6 py-3.5 font-sans text-slate-600">{a.resource}</td>
                   <td className="px-6 py-3.5 text-slate-500">{a.ipAddress}</td>
                   <td className="px-6 py-3.5">
-                    <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-bold">
+                    <span className="text-slate-800 bg-slate-50 px-2 py-0.5 rounded font-bold">
                       {a.status}
                     </span>
                   </td>

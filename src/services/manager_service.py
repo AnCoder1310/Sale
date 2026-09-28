@@ -1,9 +1,16 @@
+"""
+Manager HITL Service.
+Chương & Duy co-ownership.
+Quản lý hàng đợi xét duyệt (HITL Review), hiệu chỉnh điểm số, và giao bài tập đào tạo.
+"""
 from datetime import datetime
 from typing import Any, Dict, List, Optional
-from src.services.practice_service import practice_service
+from src.roleplay.persistence import session_persistence
+
 
 class ManagerService:
     def __init__(self):
+        self.persistence = session_persistence
         self.assignments: List[Dict[str, Any]] = [
             {
                 "id": "asg-01",
@@ -29,25 +36,23 @@ class ManagerService:
         ]
 
     def get_pending_reviews(self) -> List[Dict[str, Any]]:
-        # Filter unreviewed results
-        return [r for r in practice_service.pending_reviews if not r.get("managerReviewed")]
+        """Lấy danh sách các phiên luyện tập đang chờ Quản lý phê duyệt."""
+        return self.persistence.get_pending_reviews()
 
-    def update_review(self, session_id: str, manager_score: int, manager_note: str, reviewer_name: str = "Lê Văn Hoàng") -> Optional[Dict[str, Any]]:
-        result = practice_service.results.get(session_id)
-        if not result:
-            for r in practice_service.pending_reviews:
-                if r.get("sessionId") == session_id:
-                    result = r
-                    break
-
-        if result:
-            result["managerReviewed"] = True
-            result["managerScore"] = manager_score
-            result["managerNote"] = manager_note
-            result["managerReviewerName"] = reviewer_name
-            result["managerReviewedAt"] = datetime.now().strftime("%d/%m/%Y %H:%M")
-            return result
-        return None
+    def update_review(
+        self,
+        session_id: str,
+        manager_score: int,
+        manager_note: str,
+        reviewer_name: str = "Lê Văn Hoàng"
+    ) -> Optional[Dict[str, Any]]:
+        """Quản lý điều chỉnh điểm và phê duyệt."""
+        return self.persistence.update_review(
+            session_id=session_id,
+            manager_score=manager_score,
+            manager_note=manager_note,
+            reviewer_name=reviewer_name
+        )
 
     def get_assignments(self) -> List[Dict[str, Any]]:
         return self.assignments
@@ -65,5 +70,6 @@ class ManagerService:
         }
         self.assignments.insert(0, asg)
         return asg
+
 
 manager_service = ManagerService()

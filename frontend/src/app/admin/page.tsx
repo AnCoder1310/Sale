@@ -62,7 +62,7 @@ export default function AdminWorkspacePage() {
 
   return (
     <RouteGuard allowedRoles={["admin"]}>
-      <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
+      <div className="min-h-screen flex flex-col bg-[#FFFFFF]">
         <AppTopNav
           activeTab={activeTab}
           onTabChange={setActiveTab}

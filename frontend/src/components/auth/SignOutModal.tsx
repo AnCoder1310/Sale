@@ -32,7 +32,7 @@ export const SignOutModal: React.FC = () => {
       >
         {/* Header with icon */}
         <div className="flex items-start justify-between gap-3">
-          <div className="h-11 w-11 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+          <div className="h-11 w-11 rounded-xl bg-slate-50 text-slate-700 flex items-center justify-center flex-shrink-0">
             <LogOut className="h-5 w-5" />
           </div>
           <button
@@ -66,7 +66,7 @@ export const SignOutModal: React.FC = () => {
             type="button"
             onClick={handleConfirm}
             disabled={isSubmitting}
-            className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md active:scale-95 transition flex items-center gap-1.5"
+            className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-md active:scale-95 transition flex items-center gap-1.5"
           >
             <LogOut className="h-3.5 w-3.5" />
             <span>{isSubmitting ? "Signing out..." : "Sign Out"}</span>

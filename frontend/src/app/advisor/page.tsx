@@ -101,15 +101,15 @@ export default function AdvisorWorkspacePage() {
             <p className="text-slate-500">Manage notifications, practice preferences, and vehicle training targets.</p>
             <div className="pt-2 space-y-3">
               <label className="flex items-center gap-3">
-                <input type="checkbox" defaultChecked className="rounded text-blue-600 accent-blue-600" />
+                <input type="checkbox" defaultChecked className="rounded text-slate-900 accent-slate-900" />
                 <span>Receive real-time alerts when Training Manager approves practice sessions</span>
               </label>
               <label className="flex items-center gap-3">
-                <input type="checkbox" defaultChecked className="rounded text-blue-600 accent-blue-600" />
+                <input type="checkbox" defaultChecked className="rounded text-slate-900 accent-slate-900" />
                 <span>Get daily AI Copilot recommended vehicle policy talking points</span>
               </label>
               <label className="flex items-center gap-3">
-                <input type="checkbox" defaultChecked className="rounded text-blue-600 accent-blue-600" />
+                <input type="checkbox" defaultChecked className="rounded text-slate-900 accent-slate-900" />
                 <span>Enable speech-to-text microphone support during role-play</span>
               </label>
             </div>
@@ -122,7 +122,7 @@ export default function AdvisorWorkspacePage() {
 
   return (
     <RouteGuard allowedRoles={["advisor", "admin"]}>
-      <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
+      <div className="min-h-screen flex flex-col bg-[#FFFFFF]">
         <AppTopNav
           activeTab={activeTab}
           onTabChange={setActiveTab}

@@ -106,12 +106,12 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-8 bg-[#F8FAFC] text-slate-900 select-none">
+    <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-8 bg-[#FFFFFF] text-slate-900 select-none">
       <div className="w-full max-w-lg space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
           <Link href="/login" className="inline-flex items-center gap-2 mb-1 group">
-            <div className="h-11 w-11 rounded-2xl bg-gradient-to-br from-blue-600 to-slate-900 border border-blue-400/30 flex items-center justify-center text-white shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
+            <div className="h-11 w-11 rounded-2xl bg-[#111111] border border-[#262626] flex items-center justify-center text-white group-hover:scale-105 transition-transform">
               <VinFastLogo size={24} variant="silver" />
             </div>
           </Link>
@@ -126,8 +126,8 @@ export default function RegisterPage() {
         {/* Form Card (Radius 16px, clean shadow) */}
         <div className="rounded-2xl bg-white border border-slate-200/90 p-8 shadow-xl space-y-5">
           {/* Admin Approval Notice Callout */}
-          <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 text-xs flex items-start gap-2.5">
-            <Clock className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs flex items-start gap-2.5">
+            <Clock className="h-4 w-4 text-slate-900 flex-shrink-0 mt-0.5" />
             <p className="leading-relaxed">
               <strong>Quy trình phân quyền:</strong> Mọi tài khoản mới đăng ký đều là <strong>Khách chờ duyệt</strong>. Quản trị viên (Admin) sẽ trực tiếp kiểm tra danh tính và phân quyền vai trò (Tư vấn viên / Quản lý) trước khi bạn bắt đầu làm việc.
             </p>
@@ -135,7 +135,7 @@ export default function RegisterPage() {
 
           {/* General Error Banner */}
           {generalError && (
-            <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2 animate-shake">
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs flex items-start gap-2 animate-shake">
               <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
               <span>{generalError}</span>
             </div>
@@ -143,8 +143,8 @@ export default function RegisterPage() {
 
           {/* Success Banner */}
           {successMessage && (
-            <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-start gap-2 animate-fade-in">
-              <CheckCircle2 className="h-4 w-4 flex-shrink-0 mt-0.5 text-emerald-600" />
+            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs flex items-start gap-2 animate-fade-in">
+              <CheckCircle2 className="h-4 w-4 flex-shrink-0 mt-0.5 text-slate-900" />
               <span className="leading-relaxed">{successMessage}</span>
             </div>
           )}
@@ -161,11 +161,11 @@ export default function RegisterPage() {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ví dụ: Nguyễn Văn A"
                   className={`w-full rounded-xl border pl-10 pr-4 py-2.5 text-xs text-slate-900 focus:outline-none transition ${
-                    errors.name ? "border-red-400 bg-red-50/20" : "border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
+                    errors.name ? "border-slate-300 bg-slate-50" : "border-slate-200 focus:border-slate-400 focus:ring-2 focus:ring-slate-400"
                   }`}
                 />
               </div>
-              {errors.name && <p className="text-[11px] text-red-600 pl-1">{errors.name}</p>}
+              {errors.name && <p className="text-[11px] text-slate-700 pl-1">{errors.name}</p>}
             </div>
 
             {/* Email & Phone grid */}
@@ -181,11 +181,11 @@ export default function RegisterPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="advisor@vinfast.vn"
                     className={`w-full rounded-xl border pl-10 pr-4 py-2.5 text-xs text-slate-900 focus:outline-none transition ${
-                      errors.email ? "border-red-400 bg-red-50/20" : "border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
+                      errors.email ? "border-slate-300 bg-slate-50" : "border-slate-200 focus:border-slate-400 focus:ring-2 focus:ring-slate-400"
                     }`}
                   />
                 </div>
-                {errors.email && <p className="text-[11px] text-red-600 pl-1">{errors.email}</p>}
+                {errors.email && <p className="text-[11px] text-slate-700 pl-1">{errors.email}</p>}
               </div>
 
               {/* Phone */}
@@ -199,11 +199,11 @@ export default function RegisterPage() {
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="0912 345 678"
                     className={`w-full rounded-xl border pl-10 pr-4 py-2.5 text-xs text-slate-900 focus:outline-none transition ${
-                      errors.phone ? "border-red-400 bg-red-50/20" : "border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
+                      errors.phone ? "border-slate-300 bg-slate-50" : "border-slate-200 focus:border-slate-400 focus:ring-2 focus:ring-slate-400"
                     }`}
                   />
                 </div>
-                {errors.phone && <p className="text-[11px] text-red-600 pl-1">{errors.phone}</p>}
+                {errors.phone && <p className="text-[11px] text-slate-700 pl-1">{errors.phone}</p>}
               </div>
             </div>
 
@@ -220,7 +220,7 @@ export default function RegisterPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Tối thiểu 8 ký tự"
                     className={`w-full rounded-xl border pl-10 pr-9 py-2.5 text-xs text-slate-900 focus:outline-none transition ${
-                      errors.password ? "border-red-400 bg-red-50/20" : "border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
+                      errors.password ? "border-slate-300 bg-slate-50" : "border-slate-200 focus:border-slate-400 focus:ring-2 focus:ring-slate-400"
                     }`}
                   />
                   <button
@@ -231,7 +231,7 @@ export default function RegisterPage() {
                     {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                   </button>
                 </div>
-                {errors.password && <p className="text-[11px] text-red-600 pl-1">{errors.password}</p>}
+                {errors.password && <p className="text-[11px] text-slate-700 pl-1">{errors.password}</p>}
               </div>
 
               {/* Confirm Password */}
@@ -245,7 +245,7 @@ export default function RegisterPage() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Nhập lại mật khẩu"
                     className={`w-full rounded-xl border pl-10 pr-9 py-2.5 text-xs text-slate-900 focus:outline-none transition ${
-                      errors.confirmPassword ? "border-red-400 bg-red-50/20" : "border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
+                      errors.confirmPassword ? "border-slate-300 bg-slate-50" : "border-slate-200 focus:border-slate-400 focus:ring-2 focus:ring-slate-400"
                     }`}
                   />
                   <button
@@ -256,7 +256,7 @@ export default function RegisterPage() {
                     {showConfirmPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                   </button>
                 </div>
-                {errors.confirmPassword && <p className="text-[11px] text-red-600 pl-1">{errors.confirmPassword}</p>}
+                {errors.confirmPassword && <p className="text-[11px] text-slate-700 pl-1">{errors.confirmPassword}</p>}
               </div>
             </div>
 
@@ -267,22 +267,22 @@ export default function RegisterPage() {
                   type="checkbox"
                   checked={agreedToTerms}
                   onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="rounded text-blue-600 accent-blue-600 mt-0.5"
+                  className="rounded text-slate-900 accent-slate-900 mt-0.5"
                 />
                 <span>
                   Tôi đồng ý với{" "}
-                  <span className="text-blue-600 font-semibold hover:underline">Điều khoản sử dụng</span> và{" "}
-                  <span className="text-blue-600 font-semibold hover:underline">Chính sách bảo mật nội bộ VinFast</span>.
+                  <span className="text-slate-900 font-semibold hover:underline">Điều khoản sử dụng</span> và{" "}
+                  <span className="text-slate-900 font-semibold hover:underline">Chính sách bảo mật nội bộ VinFast</span>.
                 </span>
               </label>
-              {errors.terms && <p className="text-[11px] text-red-600 pl-1 pt-1">{errors.terms}</p>}
+              {errors.terms && <p className="text-[11px] text-slate-700 pl-1 pt-1">{errors.terms}</p>}
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white font-bold text-xs shadow-md shadow-blue-600/25 flex items-center justify-center gap-2 transition disabled:opacity-60 mt-2"
+              className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.99] text-white font-bold text-xs shadow-md shadow-sm flex items-center justify-center gap-2 transition disabled:opacity-60 mt-2"
             >
               {isLoading ? (
                 <>
@@ -301,7 +301,7 @@ export default function RegisterPage() {
           {/* Link back to Login */}
           <div className="pt-2 text-center text-xs text-slate-500 border-t border-slate-100">
             Đã có tài khoản được duyệt?{" "}
-            <Link href="/login" className="text-blue-600 font-bold hover:underline">
+            <Link href="/login" className="text-slate-900 font-bold hover:underline">
               Đăng nhập ngay
             </Link>
           </div>

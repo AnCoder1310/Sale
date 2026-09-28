@@ -19,14 +19,14 @@ export default function NotFound() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center p-6 bg-[#0B1220] text-slate-100 select-none">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center p-6 bg-[#111111] text-slate-100 select-none">
       <div className="relative z-10 w-full max-w-md text-center space-y-6">
-        <div className="inline-flex h-16 w-16 rounded-2xl bg-blue-600/20 border border-blue-500/30 items-center justify-center text-blue-400 shadow-xl shadow-blue-500/20">
+        <div className="inline-flex h-16 w-16 rounded-2xl bg-white/10 border border-white/20 items-center justify-center text-white shadow-sm">
           <AlertCircle className="h-8 w-8" />
         </div>
 
         <div className="space-y-1">
-          <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 font-mono font-bold text-xs">
+          <span className="px-3 py-1 rounded-full bg-white/10 text-white border border-white/20 font-mono font-bold text-xs">
             404 NOT FOUND
           </span>
           <h1 className="text-3xl font-black text-white tracking-tight">
@@ -48,7 +48,7 @@ export default function NotFound() {
 
           <Link
             href={getHomeUrl()}
-            className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg transition flex items-center gap-1.5"
+            className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-lg transition flex items-center gap-1.5"
           >
             <Home className="h-4 w-4" />
             <span>Return to Workspace</span>

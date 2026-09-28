@@ -1,0 +1,523 @@
+{
+  "timestamp": "2026-09-28 10:34:32",
+  "team": "Team P-043",
+  "project": "VinFast AI Sales Enablement Coach (VFO2O-20)",
+  "members": [
+    {
+      "name": "Phạm Quốc Đạt",
+      "role": "Data, Knowledge Ingestion & Evaluation Benchmark"
+    },
+    {
+      "name": "Nguyễn Hữu Chương",
+      "role": "Platform, RAG Runtime, Copilot Agent & Checkpoint"
+    },
+    {
+      "name": "Phạm Đình Duy",
+      "role": "AI Customer Role-play, Turn Analyzer & Rubric Evaluator"
+    },
+    {
+      "name": "Võ Trường An",
+      "role": "Frontend Application, UX Design & System Integration"
+    }
+  ],
+  "copilot": {
+    "total_queries": 25,
+    "hit_rate_pct": 100.0,
+    "recall_at_3_pct": 96.0,
+    "citation_accuracy_pct": 88.0,
+    "groundedness_pct": 99.35,
+    "avg_latency_ms": 4.51,
+    "status": "PASS",
+    "detailed_results": [
+      {
+        "case_id": 1,
+        "query": "VF 3 pin đi được bao nhiêu km và gầm cao mấy mm?",
+        "model": "VF 3",
+        "retrieved": [
+          "SPECS_VF3_2026",
+          "SPECS_VF3_2026"
+        ],
+        "expected": [
+          "SPECS_VF3_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 32.97
+      },
+      {
+        "case_id": 2,
+        "query": "VF 5 Plus công suất bao nhiêu mã lực, sạc nhanh mất bao lâu?",
+        "model": "VF 5",
+        "retrieved": [
+          "SPECS_VF5_PLUS_2026",
+          "SPECS_VF5_PLUS_2026"
+        ],
+        "expected": [
+          "SPECS_VF5_PLUS_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.3
+      },
+      {
+        "case_id": 3,
+        "query": "VF 6 Plus trang bị gói an toàn ADAS cấp độ mấy và đi được bao xa?",
+        "model": "VF 6",
+        "retrieved": [
+          "SPECS_VF6_PLUS_2026",
+          "SPECS_VF6_PLUS_2026"
+        ],
+        "expected": [
+          "SPECS_VF6_PLUS_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.12
+      },
+      {
+        "case_id": 4,
+        "query": "VF 7 Plus công suất bao nhiêu, so với Mazda CX-5 thì xe nào mạnh hơn?",
+        "model": "VF 7",
+        "retrieved": [
+          "BATTLECARD_VF7_PLUS_VS_MAZDA_CX5",
+          "BATTLECARD_VF7_PLUS_VS_MAZDA_CX5"
+        ],
+        "expected": [
+          "BATTLECARD_VF7_PLUS_VS_MAZDA_CX5",
+          "SPECS_VF7_PLUS_2026"
+        ],
+        "hit": true,
+        "recall": 0.5,
+        "citation_acc": 1.0,
+        "latency_ms": 3.06
+      },
+      {
+        "case_id": 5,
+        "query": "VF 8 Plus tăng tốc 0-100km/h mất mấy giây, pin CATL đi được bao nhiêu km?",
+        "model": "VF 8",
+        "retrieved": [
+          "SPECS_VF8_PLUS_2026",
+          "SPECS_VF8_PLUS_2026"
+        ],
+        "expected": [
+          "SPECS_VF8_PLUS_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.33
+      },
+      {
+        "case_id": 6,
+        "query": "VF 9 Plus bản 6 chỗ có trang bị ghế cơ trưởng massage và treo khí nén không?",
+        "model": "VF 9",
+        "retrieved": [
+          "SPECS_VF9_PLUS_2026",
+          "BATTLECARD_VF9_VS_FORD_EXPLORER"
+        ],
+        "expected": [
+          "SPECS_VF9_PLUS_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 0.5,
+        "latency_ms": 3.62
+      },
+      {
+        "case_id": 7,
+        "query": "So sánh VF 8 với Hyundai Santa Fe về sức mạnh động cơ và tiền nhiên liệu?",
+        "model": "VF 8",
+        "retrieved": [
+          "BATTLECARD_VF8_VS_HYUNDAI_SANTAFE",
+          "BATTLECARD_VF8_VS_HYUNDAI_SANTAFE"
+        ],
+        "expected": [
+          "BATTLECARD_VF8_VS_HYUNDAI_SANTAFE"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.13
+      },
+      {
+        "case_id": 8,
+        "query": "So sánh VF 9 với Ford Explorer về độ rộng rãi và hệ thống treo khí nén?",
+        "model": "VF 9",
+        "retrieved": [
+          "BATTLECARD_VF9_VS_FORD_EXPLORER",
+          "BATTLECARD_VF9_VS_FORD_EXPLORER"
+        ],
+        "expected": [
+          "BATTLECARD_VF9_VS_FORD_EXPLORER"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.17
+      },
+      {
+        "case_id": 9,
+        "query": "So sánh VF 5 Plus với Toyota Raize về giá lăn bánh và sức mạnh?",
+        "model": "VF 5",
+        "retrieved": [
+          "BATTLECARD_VF5_VS_TOYOTA_RAIZE",
+          "BATTLECARD_VF5_VS_TOYOTA_RAIZE"
+        ],
+        "expected": [
+          "BATTLECARD_VF5_VS_TOYOTA_RAIZE"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.0
+      },
+      {
+        "case_id": 10,
+        "query": "Chính sách thuê pin tháng 09/2026 giá bao nhiêu và khi nào được đổi pin mới miễn phí?",
+        "model": "ALL",
+        "retrieved": [
+          "POLICY_BATTERY_092026",
+          "POLICY_BATTERY_092026"
+        ],
+        "expected": [
+          "POLICY_BATTERY_092026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.57
+      },
+      {
+        "case_id": 11,
+        "query": "Chính sách pin chai dưới 70% có được bảo hành đổi mới không?",
+        "model": "ALL",
+        "retrieved": [
+          "POLICY_BATTERY_092026",
+          "POLICY_BATTERY_092026"
+        ],
+        "expected": [
+          "POLICY_BATTERY_092026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.71
+      },
+      {
+        "case_id": 12,
+        "query": "Gói thuê pin không giới hạn đời đầu có còn áp dụng cho xe mới mua không?",
+        "model": "ALL",
+        "retrieved": [
+          "POLICY_BATTERY_092026",
+          "PRICE_LIST_VINFAST_092026"
+        ],
+        "expected": [
+          "POLICY_BATTERY_092026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 0.5,
+        "latency_ms": 3.49
+      },
+      {
+        "case_id": 13,
+        "query": "Mạng lưới trạm sạc V-GREEN đã phủ sóng bao nhiêu tỉnh thành, ở chung cư sạc thế nào?",
+        "model": "ALL",
+        "retrieved": [
+          "POLICY_CHARGING_VGREEN_2026",
+          "POLICY_CHARGING_VGREEN_2026"
+        ],
+        "expected": [
+          "POLICY_CHARGING_VGREEN_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.53
+      },
+      {
+        "case_id": 14,
+        "query": "Nghị định 10/2022 miễn 100% lệ phí trước bạ cho ô tô điện đến khi nào?",
+        "model": "ALL",
+        "retrieved": [
+          "POLICY_REGISTRATION_TAX_2026",
+          "POLICY_REGISTRATION_TAX_2026"
+        ],
+        "expected": [
+          "POLICY_REGISTRATION_TAX_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.39
+      },
+      {
+        "case_id": 15,
+        "query": "Xe ô tô điện VinFast được bảo hành mấy năm hoặc bao nhiêu km?",
+        "model": "ALL",
+        "retrieved": [
+          "POLICY_WARRANTY_2026",
+          "POLICY_WARRANTY_2026"
+        ],
+        "expected": [
+          "POLICY_WARRANTY_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.77
+      },
+      {
+        "case_id": 16,
+        "query": "Dịch vụ cứu hộ 24/7 và Mobile Service của VinFast có mất phí không?",
+        "model": "ALL",
+        "retrieved": [
+          "POLICY_WARRANTY_2026",
+          "POLICY_WARRANTY_2026"
+        ],
+        "expected": [
+          "POLICY_WARRANTY_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.6
+      },
+      {
+        "case_id": 17,
+        "query": "Gói vay trả góp mua xe VinFast lãi suất ưu đãi cố định mấy phần trăm?",
+        "model": "ALL",
+        "retrieved": [
+          "POLICY_FINANCING_INSTALLMENT_2026",
+          "PROMOTION_AUTUMN_092026"
+        ],
+        "expected": [
+          "POLICY_FINANCING_INSTALLMENT_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 0.5,
+        "latency_ms": 3.42
+      },
+      {
+        "case_id": 18,
+        "query": "Người nước ngoài có thẻ tạm trú TRC có được đứng tên đăng ký xe VinFast không?",
+        "model": "VF 8",
+        "retrieved": [
+          "FAQ_EXPAT_REGISTRATION_2026",
+          "FAQ_EXPAT_REGISTRATION_2026"
+        ],
+        "expected": [
+          "FAQ_EXPAT_REGISTRATION_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.15
+      },
+      {
+        "case_id": 19,
+        "query": "Trợ lý ảo VinFast có hỗ trợ điều khiển bằng giọng nói tiếng Anh không?",
+        "model": "VF 8",
+        "retrieved": [
+          "SPECS_VF8_PLUS_2026",
+          "FAQ_EXPAT_REGISTRATION_2026"
+        ],
+        "expected": [
+          "FAQ_EXPAT_REGISTRATION_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 0.5,
+        "latency_ms": 3.09
+      },
+      {
+        "case_id": 20,
+        "query": "VF 5 Plus lội nước ngập có bị giật điện hay chết máy không, chuẩn chống nước pin là gì?",
+        "model": "VF 5",
+        "retrieved": [
+          "BATTLECARD_VF5_VS_TOYOTA_RAIZE",
+          "SPECS_VF5_PLUS_2026"
+        ],
+        "expected": [
+          "SPECS_VF5_PLUS_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 0.5,
+        "latency_ms": 3.29
+      },
+      {
+        "case_id": 21,
+        "query": "Ưu đãi tháng 09/2026 mua xe VF 6 và VF 7 được tặng gì?",
+        "model": "VF 7",
+        "retrieved": [
+          "PROMOTION_AUTUMN_092026",
+          "PROMOTION_AUTUMN_092026"
+        ],
+        "expected": [
+          "PROMOTION_AUTUMN_092026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.06
+      },
+      {
+        "case_id": 22,
+        "query": "Bảng giá niêm yết các dòng xe VinFast tháng 09/2026?",
+        "model": "ALL",
+        "retrieved": [
+          "PRICE_LIST_VINFAST_092026",
+          "PROMOTION_AUTUMN_092026"
+        ],
+        "expected": [
+          "PRICE_LIST_VINFAST_092026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 0.5,
+        "latency_ms": 3.34
+      },
+      {
+        "case_id": 23,
+        "query": "Chi phí sạc điện xe VF 3 tính trên 1 km là bao nhiêu tiền?",
+        "model": "VF 3",
+        "retrieved": [
+          "SPECS_VF3_2026",
+          "SPECS_VF3_2026"
+        ],
+        "expected": [
+          "SPECS_VF3_2026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.17
+      },
+      {
+        "case_id": 24,
+        "query": "Tài xế chạy taxi dịch vụ 5000 km/tháng thì nên chọn gói thuê pin nào?",
+        "model": "VF 5",
+        "retrieved": [
+          "POLICY_BATTERY_092026",
+          "POLICY_BATTERY_092026"
+        ],
+        "expected": [
+          "POLICY_BATTERY_092026"
+        ],
+        "hit": true,
+        "recall": 1.0,
+        "citation_acc": 1.0,
+        "latency_ms": 3.1
+      },
+      {
+        "case_id": 25,
+        "query": "Trục cơ sở VF 7 dài bao nhiêu mm, hàng ghế sau có rộng hơn CX-5 không?",
+        "model": "VF 7",
+        "retrieved": [
+          "BATTLECARD_VF7_PLUS_VS_MAZDA_CX5",
+          "BATTLECARD_VF7_PLUS_VS_MAZDA_CX5"
+        ],
+        "expected": [
+          "BATTLECARD_VF7_PLUS_VS_MAZDA_CX5",
+          "SPECS_VF7_PLUS_2026"
+        ],
+        "hit": true,
+        "recall": 0.5,
+        "citation_acc": 1.0,
+        "latency_ms": 3.42
+      }
+    ]
+  },
+  "retrieval": {
+    "total_queries": 18,
+    "top_1_accuracy": 94.44,
+    "top_3_recall": 100.0,
+    "expired_policy_filter_passed": true,
+    "status": "PASS"
+  },
+  "roleplay": {
+    "total_scenarios_tested": 8,
+    "scenarios_passed": 8,
+    "disclosure_pass_rate": 100.0,
+    "objection_pass_rate": 100.0,
+    "finish_eval_pass_rate": 100.0,
+    "status": "PASS",
+    "scenario_details": [
+      {
+        "scenario_id": "SCENARIO_01_VF5_TAXI",
+        "title": "Bác tài chạy dịch vụ cân nhắc đổi từ xe xăng sang VF 5 Plus",
+        "turns": "8 phút",
+        "score": 96,
+        "revealed_count": 1
+      },
+      {
+        "scenario_id": "SCENARIO_02_VF7_VS_CX5",
+        "title": "Khách hàng gia đình so sánh VF 7 Plus với Mazda CX-5",
+        "turns": "8 phút",
+        "score": 88,
+        "revealed_count": 1
+      },
+      {
+        "scenario_id": "SCENARIO_03_VF6_APARTMENT",
+        "title": "Gia đình ở chung cư lo lắng hạ tầng sạc pin cho VF 6",
+        "turns": "8 phút",
+        "score": 88,
+        "revealed_count": 1
+      },
+      {
+        "scenario_id": "SCENARIO_04_VF8_BATTERY",
+        "title": "VF 8 — Xử lý băn khoăn Pin Thuê vs Mua Đứt & Khấu hao kinh tế",
+        "turns": "8 phút",
+        "score": 88,
+        "revealed_count": 1
+      },
+      {
+        "scenario_id": "SCENARIO_05_VF9_VIP",
+        "title": "VF 9 — Thuyết phục Doanh nhân lựa chọn Ghế Cơ trưởng VIP",
+        "turns": "8 phút",
+        "score": 88,
+        "revealed_count": 1
+      },
+      {
+        "scenario_id": "SCENARIO_06_VF3_FIRST_CAR",
+        "title": "VF 3 — Khách hàng trẻ nâng cấp từ xe máy lên ô tô, lo lội nước & chi phí",
+        "turns": "8 phút",
+        "score": 88,
+        "revealed_count": 1
+      },
+      {
+        "scenario_id": "SCENARIO_07_EXPAT_DAVID",
+        "title": "VF 8 — Khách nước ngoài (Mr. David Miller: Đàm phán tiếng Anh & Thủ tục đứng tên xe)",
+        "turns": "8 phút",
+        "score": 88,
+        "revealed_count": 1
+      },
+      {
+        "scenario_id": "SCENARIO_08_BAC_BA_NGHE_AN",
+        "title": "VF 5 Plus — Bác tài Miền Trung (Bác Ba Nghệ An: Khẩu ngữ địa phương & Nỗi lo sạc pin)",
+        "turns": "8 phút",
+        "score": 88,
+        "revealed_count": 1
+      }
+    ]
+  },
+  "judge": {
+    "total_cases_evaluated": 10,
+    "overall_judge_mae": 0.24,
+    "criterion_agreement_pct": 94.0,
+    "criteria_mae_breakdown": {
+      "need_discovery": 0.0,
+      "product_knowledge": 0.4,
+      "objection_handling": 0.0,
+      "policy_accuracy": 0.2,
+      "closing_next_step": 0.6
+    },
+    "status": "PASS"
+  },
+  "overall_status": "PASS"
+}

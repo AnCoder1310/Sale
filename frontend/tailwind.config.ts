@@ -1,5 +1,20 @@
 import type { Config } from "tailwindcss";
 
+const neutralScale = {
+  50: "#F5F5F5",   // Secondary BG / Hover
+  100: "#E5E5E5",  // Border / Divider / Active
+  200: "#E5E5E5",  // Border
+  300: "#D4D4D4",  // Secondary Border / Inactive / Focus
+  400: "#737373",  // Muted Text
+  500: "#737373",  // Muted Text
+  600: "#404040",  // Secondary Text
+  700: "#404040",  // Secondary Text
+  800: "#262626",  // Dark Neutral / Border
+  900: "#111111",  // Primary Text / Primary Button
+  950: "#0A0A0A",  // Deep Black
+  DEFAULT: "#111111",
+};
+
 export default {
   darkMode: "class",
   content: [
@@ -10,37 +25,59 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#0F172A",
-        systemNavy: "#0B1220",
-        advisor: {
-          DEFAULT: "#2563EB",
-          50: "#EFF6FF",
-          100: "#DBEAFE",
-          500: "#3B82F6",
-          600: "#2563EB",
-          700: "#1D4ED8"
+        white: "#FFFFFF",
+        black: "#000000",
+        transparent: "transparent",
+        current: "currentColor",
+
+        primary: {
+          DEFAULT: "#111111",
+          text: "#111111",
         },
-        manager: {
-          DEFAULT: "#10B981",
-          50: "#ECFDF5",
-          100: "#D1FAE5",
-          500: "#10B981",
-          600: "#059669",
-          700: "#047857"
+        secondary: {
+          DEFAULT: "#404040",
+          text: "#404040",
+          border: "#D4D4D4",
         },
-        admin: {
-          DEFAULT: "#7C3AED",
-          50: "#F5F3FF",
-          100: "#EDE9FE",
-          500: "#8B5CF6",
-          600: "#7C3AED",
-          700: "#6D28D9"
+        muted: {
+          DEFAULT: "#737373",
+          text: "#737373",
         },
+        systemNavy: "#111111",
+
+        // Map every color palette to pure monochrome White / Black / Gray
+        slate: neutralScale,
+        gray: neutralScale,
+        zinc: neutralScale,
+        neutral: neutralScale,
+        stone: neutralScale,
+
+        blue: neutralScale,
+        emerald: neutralScale,
+        green: neutralScale,
+        purple: neutralScale,
+        indigo: neutralScale,
+        amber: neutralScale,
+        orange: neutralScale,
+        red: neutralScale,
+        cyan: neutralScale,
+        teal: neutralScale,
+        sky: neutralScale,
+        violet: neutralScale,
+        yellow: neutralScale,
+        rose: neutralScale,
+        fuchsia: neutralScale,
+        pink: neutralScale,
+
+        advisor: neutralScale,
+        manager: neutralScale,
+        admin: neutralScale,
+
         surface: {
           DEFAULT: "#FFFFFF",
-          subtle: "#F8FAFC",
+          subtle: "#F5F5F5",
           card: "#FFFFFF",
-          border: "#E2E8F0"
+          border: "#E5E5E5",
         }
       },
       borderRadius: {
@@ -49,9 +86,9 @@ export default {
         "2xl": "16px"
       },
       boxShadow: {
-        subtle: "0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)",
-        card: "0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.06)",
-        float: "0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08)"
+        subtle: "0 1px 2px 0 rgba(0, 0, 0, 0.04)",
+        card: "0 1px 3px 0 rgba(0, 0, 0, 0.05)",
+        float: "0 4px 6px -1px rgba(0, 0, 0, 0.05)"
       }
     }
   },

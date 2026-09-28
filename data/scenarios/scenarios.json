@@ -3,7 +3,11 @@
     "scenario_id": "SCENARIO_01_VF5_TAXI",
     "title": "Bác tài chạy dịch vụ cân nhắc đổi từ xe xăng sang VF 5 Plus",
     "difficulty": "Medium",
-    "target_skills": ["Need Discovery", "Objection Handling", "Closing"],
+    "target_skills": [
+      "Need Discovery",
+      "Objection Handling",
+      "Closing"
+    ],
     "persona": {
       "name": "Anh Nam",
       "age": 35,
@@ -22,13 +26,24 @@
       {
         "fact_key": "daily_distance",
         "trigger_intent": "ask_daily_travel_distance",
-        "trigger_keywords": ["chạy bao nhiêu km", "quãng đường", "mỗi ngày đi", "đi nhiều không"],
+        "trigger_keywords": [
+          "chạy bao nhiêu km",
+          "quãng đường",
+          "mỗi ngày đi",
+          "đi nhiều không"
+        ],
         "revealed_statement": "Mỗi ngày anh chạy túc tắc cũng tầm 180 đến 200 cây số em ạ, tháng cũng ngót nghét 5.000 cây."
       },
       {
         "fact_key": "budget",
         "trigger_intent": "ask_budget_or_financing",
-        "trigger_keywords": ["tài chính", "ngân sách", "trả trước", "vay vốn", "góp"],
+        "trigger_keywords": [
+          "tài chính",
+          "ngân sách",
+          "trả trước",
+          "vay vốn",
+          "góp"
+        ],
         "revealed_statement": "Anh dồn hết vốn liếng trong tay chỉ có tầm 150 triệu thôi, còn lại phải vay ngân hàng thì mới kham nổi."
       }
     ],
@@ -59,7 +74,11 @@
     "scenario_id": "SCENARIO_02_VF7_VS_CX5",
     "title": "Khách hàng gia đình so sánh VF 7 Plus với Mazda CX-5",
     "difficulty": "Hard",
-    "target_skills": ["Product Knowledge", "Objection Handling", "Closing"],
+    "target_skills": [
+      "Product Knowledge",
+      "Objection Handling",
+      "Closing"
+    ],
     "persona": {
       "name": "Chị Thanh",
       "age": 32,
@@ -78,13 +97,24 @@
       {
         "fact_key": "family_status",
         "trigger_intent": "ask_family_and_usage",
-        "trigger_keywords": ["gia đình", "mấy người", "chở ai", "mục đích sử dụng", "về quê"],
+        "trigger_keywords": [
+          "gia đình",
+          "mấy người",
+          "chở ai",
+          "mục đích sử dụng",
+          "về quê"
+        ],
         "revealed_statement": "Nhà chị có 2 vợ chồng với 2 nhóc tì, mua xe chủ yếu đi lại hàng ngày với cuối tuần hay chở cả nhà về ngoại tầm 120 cây số."
       },
       {
         "fact_key": "decision_maker",
         "trigger_intent": "ask_decision_maker_opinion",
-        "trigger_keywords": ["anh nhà", "ông xã", "chồng", "ai quyết định"],
+        "trigger_keywords": [
+          "anh nhà",
+          "ông xã",
+          "chồng",
+          "ai quyết định"
+        ],
         "revealed_statement": "Chị thì mê kiểu dáng công nghệ của VF 7 rồi, nhưng ông xã chị cứ cản, bảo mua CX-5 cho lành, sợ xe điện sau này bán mất giá."
       }
     ],
@@ -115,7 +145,10 @@
     "scenario_id": "SCENARIO_03_VF6_APARTMENT",
     "title": "Gia đình ở chung cư lo lắng hạ tầng sạc pin cho VF 6",
     "difficulty": "Easy",
-    "target_skills": ["Need Discovery", "Objection Handling"],
+    "target_skills": [
+      "Need Discovery",
+      "Objection Handling"
+    ],
     "persona": {
       "name": "Anh Tuấn",
       "age": 29,
@@ -134,13 +167,23 @@
       {
         "fact_key": "daily_distance",
         "trigger_intent": "ask_weekly_travel_distance",
-        "trigger_keywords": ["mỗi ngày đi", "quãng đường", "bao nhiêu km", "đi lại"],
+        "trigger_keywords": [
+          "mỗi ngày đi",
+          "quãng đường",
+          "bao nhiêu km",
+          "đi lại"
+        ],
         "revealed_statement": "Anh chỉ đi làm từ nhà tới cơ quan quanh quanh trong phố tầm 15 cây cả đi lẫn về thôi em."
       },
       {
         "fact_key": "charging_access",
         "trigger_intent": "ask_living_location",
-        "trigger_keywords": ["ở khu nào", "chung cư nào", "địa chỉ", "quận mấy"],
+        "trigger_keywords": [
+          "ở khu nào",
+          "chung cư nào",
+          "địa chỉ",
+          "quận mấy"
+        ],
         "revealed_statement": "Anh ở chung cư bên mạn Cầu Giấy, gần ngay cái Vincom Trần Duy Hưng ấy."
       }
     ],

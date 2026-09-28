@@ -35,9 +35,9 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
   const [activeCriterion, setActiveCriterion] = useState<string | null>(null);
 
   const getScoreBadge = (score: number) => {
-    if (score >= 85) return "text-emerald-700 bg-emerald-50 border-emerald-200";
-    if (score >= 70) return "text-blue-700 bg-blue-50 border-blue-200";
-    return "text-amber-700 bg-amber-50 border-amber-200";
+    if (score >= 85) return "text-slate-800 bg-slate-50 border-slate-200";
+    if (score >= 70) return "text-slate-800 bg-slate-50 border-slate-200";
+    return "text-slate-800 bg-slate-50 border-slate-200";
   };
 
   return (
@@ -54,8 +54,21 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
 
         <div className="flex items-center gap-3 no-print">
           <button
+            onClick={() => {
+              const host = typeof window !== "undefined" ? window.location.hostname : "localhost";
+              const port = typeof window !== "undefined" && window.location.port === "3001" ? "8001" : "8000";
+              const url = `http://${host}:${port}/api/v1/practice/${result.sessionId}/certificate`;
+              window.open(url, "_blank");
+            }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#111111] hover:bg-[#262626] text-white text-xs font-bold shadow-sm transition border border-[#111111]"
+            title="Xem & In Chứng Nhận Đào Tạo VinFast chính thức"
+          >
+            <Award className="h-4 w-4 text-slate-300" />
+            <span>Chứng Nhận Đào Tạo</span>
+          </button>
+          <button
             onClick={() => window.print()}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold shadow-md transition"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-900 text-white text-xs font-bold shadow-md transition"
             title="In hoặc lưu phiếu đánh giá thành tệp PDF"
           >
             <Printer className="h-4 w-4" />
@@ -70,7 +83,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
           </button>
           <button
             onClick={onBackToHome}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-sm transition"
           >
             <span>Hoàn tất phiên</span>
           </button>
@@ -81,8 +94,8 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
       <div className="rounded-3xl bg-white border border-slate-200 shadow-sm p-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="space-y-2 text-center lg:text-left">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200">
-              <Award className="h-3.5 w-3.5 text-blue-600" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 text-slate-800 text-xs font-semibold border border-slate-200">
+              <Award className="h-3.5 w-3.5 text-slate-900" />
               <span>Đánh giá Phiên Luyện tập</span>
             </span>
             <h1 className="text-2xl font-black text-slate-900 tracking-tight sm:text-3xl">
@@ -102,23 +115,23 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
                 {result.overallScore}
                 <span className="text-sm font-semibold text-slate-400">/100</span>
               </div>
-              <span className="inline-block mt-1 text-[11px] font-bold text-blue-600">
+              <span className="inline-block mt-1 text-[11px] font-bold text-slate-900">
                 Xuất sắc
               </span>
             </div>
 
             {/* Manager Review Score */}
             {result.managerReviewed && (
-              <div className="text-center p-4 px-6 rounded-2xl bg-emerald-50 border border-emerald-200">
-                <p className="text-xs font-semibold text-emerald-800 uppercase tracking-wider flex items-center gap-1 justify-center">
-                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+              <div className="text-center p-4 px-6 rounded-2xl bg-slate-50 border border-slate-200">
+                <p className="text-xs font-semibold text-slate-900 uppercase tracking-wider flex items-center gap-1 justify-center">
+                  <ShieldCheck className="h-3.5 w-3.5 text-slate-900" />
                   Manager Duyệt
                 </p>
-                <div className="text-4xl font-black text-emerald-700 mt-1">
+                <div className="text-4xl font-black text-slate-800 mt-1">
                   {result.managerScore ?? result.overallScore}
-                  <span className="text-sm font-semibold text-emerald-400">/100</span>
+                  <span className="text-sm font-semibold text-slate-400">/100</span>
                 </div>
-                <span className="inline-block mt-1 text-[11px] font-bold text-emerald-700">
+                <span className="inline-block mt-1 text-[11px] font-bold text-slate-800">
                   Đã xác nhận (+2 điểm)
                 </span>
               </div>
@@ -128,10 +141,10 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
 
         {/* Manager Note Callout */}
         {result.managerReviewed && result.managerNote && (
-          <div className="mt-6 p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 text-xs text-emerald-950 flex items-start gap-3">
-            <ShieldCheck className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+          <div className="mt-6 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-900 flex items-start gap-3">
+            <ShieldCheck className="h-5 w-5 text-slate-900 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-bold text-emerald-900">
+              <p className="font-bold text-slate-900">
                 Nhận xét từ {result.managerReviewerName} ({result.managerReviewedAt}):
               </p>
               <p className="mt-1 text-slate-700 italic leading-relaxed">
@@ -153,7 +166,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
           {result.rubricBreakdown.map((item) => (
             <div
               key={item.criterion}
-              className="flex flex-col justify-between rounded-3xl bg-white border border-slate-200 shadow-sm p-6 space-y-4 hover:border-blue-300 transition"
+              className="flex flex-col justify-between rounded-3xl bg-white border border-slate-200 shadow-sm p-6 space-y-4 hover:border-slate-200 transition"
             >
               <div>
                 <div className="flex items-center justify-between">
@@ -185,7 +198,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
 
               {/* Improvement tip */}
               <div className="pt-3 border-t border-slate-100 text-xs">
-                <p className="text-amber-800 font-semibold flex items-center gap-1">
+                <p className="text-slate-900 font-semibold flex items-center gap-1">
                   <span>💡 Gợi ý cải thiện:</span>
                 </p>
                 <p className="text-slate-600 mt-0.5 leading-relaxed">
@@ -204,7 +217,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
           className="w-full px-6 py-4 flex items-center justify-between bg-slate-50 border-b border-slate-200 text-left"
         >
           <div className="flex items-center gap-2">
-            <MessageSquare className="h-4 w-4 text-blue-600" />
+            <MessageSquare className="h-4 w-4 text-slate-900" />
             <span className="font-bold text-slate-900 text-sm">Toàn bộ Hội thoại Phiên Luyện tập (Transcript)</span>
             <span className="text-xs text-slate-500">({result.transcript.length} lượt nói)</span>
           </div>
@@ -225,7 +238,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
                 <div
                   className={`max-w-2xl p-4 rounded-2xl text-xs leading-relaxed ${
                     turn.sender === "advisor"
-                      ? "bg-blue-600 text-white rounded-br-none"
+                      ? "bg-slate-900 text-white rounded-br-none"
                       : "bg-white text-slate-800 border border-slate-200 rounded-bl-none shadow-sm"
                   }`}
                 >
@@ -258,7 +271,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
           </div>
           <div className="text-right text-xs">
             <span className="font-mono font-bold text-slate-500">MÃ HỒ SƠ: {result.sessionId}</span>
-            <p className="text-emerald-700 font-bold mt-0.5">● CHỨNG NHẬN ĐẠT CHUẨN ĐÀO TẠO</p>
+            <p className="text-slate-900 font-bold mt-0.5">● CHỨNG NHẬN ĐẠT CHUẨN ĐÀO TẠO</p>
           </div>
         </div>
 
@@ -284,7 +297,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
           </div>
           <div>
             <span className="text-slate-400 font-medium">Dòng xe thực chiến:</span>
-            <p className="font-bold text-blue-700 text-sm mt-0.5">{result.vehicleModel}</p>
+            <p className="font-bold text-slate-800 text-sm mt-0.5">{result.vehicleModel}</p>
           </div>
           <div>
             <span className="text-slate-400 font-medium">Thời gian hoàn thành:</span>
@@ -293,7 +306,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
         </div>
 
         {/* Overall Score Summary */}
-        <div className="flex flex-col sm:flex-row items-center justify-between p-5 rounded-2xl bg-gradient-to-r from-blue-50 to-emerald-50 border border-slate-200 gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-between p-5 rounded-2xl bg-[#F5F5F5] border border-[#E5E5E5] gap-4">
           <div>
             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Xếp loại chung:</span>
             <h3 className="font-black text-xl text-slate-900 mt-0.5">
@@ -306,8 +319,8 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
               <span className="text-[10px] font-bold text-slate-400 uppercase">AI Score</span>
               <p className="text-2xl font-black text-slate-900">{result.overallScore}/100</p>
             </div>
-            <div className="p-3 px-5 rounded-xl bg-emerald-600 text-white shadow-md">
-              <span className="text-[10px] font-bold text-emerald-200 uppercase">Điểm Duyệt (HITL)</span>
+            <div className="p-3 px-5 rounded-xl bg-slate-900 text-white shadow-md">
+              <span className="text-[10px] font-bold text-slate-300 uppercase">Điểm Duyệt (HITL)</span>
               <p className="text-2xl font-black text-white">{result.managerScore ?? result.overallScore}/100</p>
             </div>
           </div>
@@ -331,7 +344,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
                     <p>{r.criterionNameVi}</p>
                     <span className="text-[10px] font-normal text-slate-400 capitalize">{r.criterion}</span>
                   </td>
-                  <td className="p-3.5 font-black text-blue-700 whitespace-nowrap">
+                  <td className="p-3.5 font-black text-slate-800 whitespace-nowrap">
                     {r.score} / {r.maxScore}
                   </td>
                   <td className="p-3.5 italic text-[11px] text-slate-600 max-w-[260px]">
@@ -374,7 +387,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
               <p className="text-[10px] text-slate-400 italic">(Ký duyệt và đóng dấu)</p>
             </div>
             <div>
-              <span className="inline-block px-3 py-1 rounded border border-emerald-600 text-emerald-700 font-extrabold text-[10px] uppercase mb-1">
+              <span className="inline-block px-3 py-1 rounded border border-slate-900 text-slate-800 font-extrabold text-[10px] uppercase mb-1">
                 ✓ ĐÃ PHÊ DUYỆT ĐIỆN TỬ
               </span>
               <p className="font-bold text-slate-800 text-sm">{result.managerReviewerName || "Lê Văn Hoàng"}</p>
@@ -385,9 +398,9 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
 
 
       {/* Recommended Next Practice Callout */}
-      <div className="p-6 rounded-3xl bg-gradient-to-r from-blue-900 to-indigo-950 text-white shadow-md flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div className="p-6 rounded-3xl bg-[#111111] text-white border border-[#262626] flex flex-col sm:flex-row items-center justify-between gap-6">
         <div>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500 text-white uppercase">
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-white uppercase">
             Khuyến nghị tiếp theo
           </span>
           <h3 className="font-bold text-white text-base mt-2">
@@ -396,7 +409,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
         </div>
         <button
           onClick={onRetry}
-          className="flex-shrink-0 px-5 py-2.5 rounded-xl bg-white text-blue-900 font-bold text-xs hover:bg-slate-100 transition shadow"
+          className="flex-shrink-0 px-5 py-2.5 rounded-xl bg-white text-slate-900 font-bold text-xs hover:bg-slate-100 transition shadow"
         >
           Luyện tập bài tiếp theo
         </button>

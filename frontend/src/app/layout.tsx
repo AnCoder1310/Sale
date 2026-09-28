@@ -27,7 +27,7 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/icon.svg" />
       </head>
       <body 
-        className="antialiased min-h-screen bg-[#F8FAFC] text-[#0F172A]"
+        className="antialiased min-h-screen bg-[#FFFFFF] text-[#111111]"
         suppressHydrationWarning
       >
         <ClientProviders>

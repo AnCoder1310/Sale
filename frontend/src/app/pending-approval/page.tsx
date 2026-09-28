@@ -8,7 +8,7 @@ import { VinFastLogo } from "@/components/ui/VinFastLogo";
 import { authApi } from "@/api/auth";
 
 export default function PendingApprovalPage() {
-  const { currentUser, logout, loginAsDemo } = useAuth();
+  const { currentUser, logout } = useAuth();
   const [checking, setChecking] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const router = useRouter();
@@ -47,17 +47,17 @@ export default function PendingApprovalPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center p-6 bg-[#0B1220] text-slate-100 select-none">
-      <div className="absolute w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div className="min-h-screen w-full flex flex-col items-center justify-center p-6 bg-[#111111] text-slate-100 select-none">
+      <div className="absolute w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="relative z-10 w-full max-w-md text-center space-y-6">
         {/* Animated Clock / Review Icon */}
-        <div className="inline-flex h-20 w-20 rounded-3xl bg-amber-500/15 border border-amber-500/30 items-center justify-center text-amber-400 shadow-2xl shadow-amber-500/20">
+        <div className="inline-flex h-20 w-20 rounded-3xl bg-white/10 border border-white/20 items-center justify-center text-white shadow-sm">
           <Clock className="h-10 w-10 animate-pulse" />
         </div>
 
         <div className="space-y-2">
-          <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold text-xs border border-amber-500/30">
+          <span className="px-3 py-1 rounded-full bg-white/10 text-white font-bold text-xs border border-white/20">
             TRẠNG THÁI: CHỜ ADMIN PHÂN QUYỀN
           </span>
           <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
@@ -87,7 +87,7 @@ export default function PendingApprovalPage() {
             </div>
             <div>
               <span className="text-slate-500 block">Phân quyền:</span>
-              <strong className="text-amber-400">Chờ Admin chỉ định</strong>
+              <strong className="text-white">Chờ Admin chỉ định</strong>
             </div>
           </div>
         </div>
@@ -104,7 +104,7 @@ export default function PendingApprovalPage() {
           <button
             onClick={handleCheckStatus}
             disabled={checking}
-            className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 transition disabled:opacity-60"
+            className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-lg shadow-sm flex items-center justify-center gap-2 transition disabled:opacity-60"
           >
             <RotateCcw className={`h-4 w-4 ${checking ? "animate-spin" : ""}`} />
             <span>{checking ? "Đang kiểm tra..." : "Kiểm tra lại trạng thái duyệt"}</span>

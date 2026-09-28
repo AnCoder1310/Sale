@@ -25,13 +25,14 @@ import {
   Activity,
   FileLock,
   Zap,
-  Sparkles
+  Sparkles,
+  Crown
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { VinFastLogo } from "@/components/ui/VinFastLogo";
 import { NotificationDropdown } from "./NotificationDropdown";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 interface AppTopNavProps {
   activeTab: string;
@@ -39,13 +40,21 @@ interface AppTopNavProps {
 }
 
 export const AppTopNav: React.FC<AppTopNavProps> = ({ activeTab, onTabChange }) => {
-  const { currentUser, role, openSignoutModal, loginAsDemo } = useAuth();
+  const { currentUser, role, openSignoutModal } = useAuth();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname() || "";
 
-  // Role-specific navigation items per requirement #5
+  // Determine active workspace dynamically based on current page URL pathname
+  const activeWorkspace: UserRole = pathname.startsWith("/manager")
+    ? "manager"
+    : pathname.startsWith("/admin")
+    ? "admin"
+    : "advisor";
+
+  // Navigation items matching the active workspace page
   const getNavItems = () => {
-    switch (role) {
+    switch (activeWorkspace) {
       case "manager":
         return [
           { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -81,44 +90,26 @@ export const AppTopNav: React.FC<AppTopNavProps> = ({ activeTab, onTabChange }) 
   const navItems = getNavItems();
 
   const getRoleBadgeStyle = (userRole?: UserRole | null) => {
-    switch (userRole) {
-      case "manager":
-        return {
-          bg: "bg-emerald-500/20 text-emerald-300 border-emerald-400/40",
-          dot: "bg-emerald-500",
-          activeTab: "bg-emerald-600 text-white shadow-emerald-600/30",
-          label: "Manager"
-        };
-      case "admin":
-        return {
-          bg: "bg-purple-500/20 text-purple-300 border-purple-400/40",
-          dot: "bg-purple-500",
-          activeTab: "bg-purple-600 text-white shadow-purple-600/30",
-          label: "Admin"
-        };
-      case "advisor":
-      default:
-        return {
-          bg: "bg-blue-500/20 text-blue-300 border-blue-400/40",
-          dot: "bg-blue-500",
-          activeTab: "bg-blue-600 text-white shadow-blue-600/30",
-          label: "Advisor"
-        };
-    }
+    return {
+      bg: "bg-white/10 text-white border-white/20",
+      dot: "bg-white",
+      activeTab: "bg-white text-slate-900 shadow-sm font-bold",
+      label: userRole === "manager" ? "Manager" : userRole === "admin" ? "Admin" : "Advisor"
+    };
   };
 
-  const badgeConfig = getRoleBadgeStyle(role);
+  const badgeConfig = getRoleBadgeStyle(activeWorkspace);
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#0B1220] border-b border-slate-800 text-slate-200 shadow-xl select-none">
+    <header className="sticky top-0 z-40 w-full bg-[#111111] border-b border-slate-800 text-slate-200 shadow-xl select-none">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-4">
           {/* Left: Brand Logo & Role Badge */}
           <div 
-            onClick={() => onTabChange(role === "advisor" ? "home" : "dashboard")}
+            onClick={() => onTabChange(activeWorkspace === "advisor" ? "home" : "dashboard")}
             className="flex items-center gap-3 cursor-pointer flex-shrink-0"
           >
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-slate-900 border border-blue-400/30 flex items-center justify-center text-white shadow-lg shadow-blue-600/30 flex-shrink-0">
+            <div className="h-10 w-10 rounded-xl bg-[#111111] border border-[#262626] flex items-center justify-center text-white shadow-lg shadow-sm flex-shrink-0">
               <VinFastLogo size={24} variant="silver" />
             </div>
             <div className="flex flex-col">
@@ -127,7 +118,9 @@ export const AppTopNav: React.FC<AppTopNavProps> = ({ activeTab, onTabChange }) 
                   AI Sales Coach
                 </span>
                 <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border whitespace-nowrap ${badgeConfig.bg}`}>
-                  {badgeConfig.label}
+                  {role === "admin" && activeWorkspace !== "admin" 
+                    ? `${badgeConfig.label} (Admin View)` 
+                    : badgeConfig.label}
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 whitespace-nowrap">
@@ -162,6 +155,52 @@ export const AppTopNav: React.FC<AppTopNavProps> = ({ activeTab, onTabChange }) 
 
           {/* Right: Notifications & User Profile */}
           <div className="flex items-center gap-3 flex-shrink-0">
+            {/* Dedicated Workspace Switcher (EXCLUSIVELY FOR ADMIN SUPERUSER) */}
+            {role === "admin" && (
+              <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-900 border border-slate-400 shadow-inner">
+                <span className="text-[10px] font-extrabold text-slate-300 uppercase px-2 hidden sm:inline flex items-center gap-1">
+                  <Crown className="h-3 w-3 text-slate-400" />
+                  <span>Workspace:</span>
+                </span>
+                <button
+                  onClick={() => router.push("/admin")}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${
+                    pathname.startsWith("/admin")
+                      ? "bg-white text-slate-900 shadow-sm ring-1 ring-white"
+                      : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  }`}
+                  title="Chuyển đến trang Quản trị Admin"
+                >
+                  <span>⚙️</span>
+                  <span className="hidden sm:inline">Admin</span>
+                </button>
+                <button
+                  onClick={() => router.push("/manager")}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${
+                    pathname.startsWith("/manager")
+                      ? "bg-white text-slate-900 shadow-sm ring-1 ring-white"
+                      : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  }`}
+                  title="Chuyển đến trang Quản lý đào tạo (Manager)"
+                >
+                  <span>🛠️</span>
+                  <span className="hidden sm:inline">Manager</span>
+                </button>
+                <button
+                  onClick={() => router.push("/advisor")}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${
+                    pathname.startsWith("/advisor")
+                      ? "bg-white text-slate-900 shadow-sm ring-1 ring-white"
+                      : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  }`}
+                  title="Chuyển đến trang Tư vấn viên (Advisor)"
+                >
+                  <span>👨‍💼</span>
+                  <span className="hidden sm:inline">Advisor</span>
+                </button>
+              </div>
+            )}
+
             {/* Realtime Notification Bell */}
             <NotificationDropdown onNavigateTab={(tab) => onTabChange(tab)} />
 
@@ -175,14 +214,14 @@ export const AppTopNav: React.FC<AppTopNavProps> = ({ activeTab, onTabChange }) 
                   <img
                     src={currentUser?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"}
                     alt={currentUser?.name || "Avatar"}
-                    className="h-9 w-9 rounded-xl object-cover ring-2 ring-blue-500/40"
+                    className="h-9 w-9 rounded-xl object-cover ring-2 ring-slate-400"
                   />
-                  <span className={`absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full ring-2 ring-[#0B1220] ${badgeConfig.dot}`}></span>
+                  <span className={`absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full ring-2 ring-[#111111] ${badgeConfig.dot}`}></span>
                 </div>
                 <div className="hidden sm:block text-left text-xs leading-tight whitespace-nowrap">
                   <p className="font-bold text-white whitespace-nowrap">{currentUser?.name || "User"}</p>
                   <span className={`inline-block px-1.5 py-0.2 text-[10px] font-semibold rounded ${
-                    role === "manager" ? "text-emerald-400 bg-emerald-950/60" : role === "admin" ? "text-purple-400 bg-purple-950/60" : "text-blue-400 bg-blue-950/60"
+                    "text-slate-300 bg-white/10"
                   }`}>
                     {badgeConfig.label}
                   </span>
@@ -201,7 +240,7 @@ export const AppTopNav: React.FC<AppTopNavProps> = ({ activeTab, onTabChange }) 
                       <p className="text-[11px] text-slate-500 truncate">{currentUser?.email}</p>
                       <div className="flex items-center gap-1.5 mt-1">
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                          role === "manager" ? "bg-emerald-100 text-emerald-800" : role === "admin" ? "bg-purple-100 text-purple-800" : "bg-blue-100 text-blue-800"
+                          "bg-slate-100 text-slate-900 font-semibold"
                         }`}>
                           {badgeConfig.label}
                         </span>
@@ -245,45 +284,62 @@ export const AppTopNav: React.FC<AppTopNavProps> = ({ activeTab, onTabChange }) 
                       </button>
                     </div>
 
-                    {/* Switch role shortcut for quick testing */}
-                    <div className="py-1 border-t border-slate-100 bg-slate-50/70">
-                      <p className="px-4 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                        Quick Workspace Switch:
-                      </p>
-                      <button
-                        onClick={() => {
-                          setProfileDropdownOpen(false);
-                          loginAsDemo("advisor");
-                          router.push("/advisor");
-                        }}
-                        className="w-full text-left px-4 py-1.5 hover:bg-blue-50 text-blue-700 font-semibold flex items-center gap-2 text-xs"
-                      >
-                        <span>👨‍💼</span>
-                        <span>Advisor Workspace</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setProfileDropdownOpen(false);
-                          loginAsDemo("manager");
-                          router.push("/manager");
-                        }}
-                        className="w-full text-left px-4 py-1.5 hover:bg-emerald-50 text-emerald-700 font-semibold flex items-center gap-2 text-xs"
-                      >
-                        <span>🛠️</span>
-                        <span>Manager Workspace</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setProfileDropdownOpen(false);
-                          loginAsDemo("admin");
-                          router.push("/admin");
-                        }}
-                        className="w-full text-left px-4 py-1.5 hover:bg-purple-50 text-purple-700 font-semibold flex items-center gap-2 text-xs"
-                      >
-                        <span>⚙️</span>
-                        <span>Admin Workspace</span>
-                      </button>
-                    </div>
+
+
+                    {/* Admin Superuser Workspace Navigation (ONLY VISIBLE FOR ADMIN) */}
+                    {role === "admin" && (
+                      <div className="py-1.5 border-t border-slate-100 bg-slate-50">
+                        <p className="px-4 py-1 text-[10px] font-black text-slate-700 uppercase tracking-wider flex items-center gap-1">
+                          <Crown className="h-3 w-3 text-slate-700" />
+                          <span>Admin Workspace Access:</span>
+                        </p>
+                        <button
+                          onClick={() => {
+                            setProfileDropdownOpen(false);
+                            router.push("/admin");
+                          }}
+                          className={`w-full text-left px-4 py-1.5 font-bold flex items-center justify-between text-xs transition ${
+                            pathname.startsWith("/admin") ? "text-slate-700 bg-slate-100/80 font-black" : "text-slate-700 hover:bg-slate-100/50"
+                          }`}
+                        >
+                          <span className="flex items-center gap-2">
+                            <span>⚙️</span>
+                            <span>Admin Console (/admin)</span>
+                          </span>
+                          {pathname.startsWith("/admin") && <span className="text-[10px] text-slate-900 font-bold">Active</span>}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setProfileDropdownOpen(false);
+                            router.push("/manager");
+                          }}
+                          className={`w-full text-left px-4 py-1.5 font-bold flex items-center justify-between text-xs transition ${
+                            pathname.startsWith("/manager") ? "text-slate-900 bg-slate-100 font-bold" : "text-slate-600 hover:bg-slate-50"
+                          }`}
+                        >
+                          <span className="flex items-center gap-2">
+                            <span>🛠️</span>
+                            <span>Manager Portal (/manager)</span>
+                          </span>
+                          {pathname.startsWith("/manager") && <span className="text-[10px] text-slate-900 font-bold">Active</span>}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setProfileDropdownOpen(false);
+                            router.push("/advisor");
+                          }}
+                          className={`w-full text-left px-4 py-1.5 font-bold flex items-center justify-between text-xs transition ${
+                            pathname.startsWith("/advisor") ? "text-slate-900 bg-slate-100 font-bold" : "text-slate-600 hover:bg-slate-50"
+                          }`}
+                        >
+                          <span className="flex items-center gap-2">
+                            <span>👨‍💼</span>
+                            <span>Advisor Workspace (/advisor)</span>
+                          </span>
+                          {pathname.startsWith("/advisor") && <span className="text-[10px] text-slate-900 font-bold">Active</span>}
+                        </button>
+                      </div>
+                    )}
 
                     {/* Divider & Sign Out Button per spec #3 & #5 */}
                     <div className="pt-1 border-t border-slate-100">
@@ -292,9 +348,9 @@ export const AppTopNav: React.FC<AppTopNavProps> = ({ activeTab, onTabChange }) 
                           setProfileDropdownOpen(false);
                           openSignoutModal();
                         }}
-                        className="w-full text-left px-4 py-2.5 hover:bg-red-50 text-red-600 font-bold flex items-center gap-2.5"
+                        className="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-bold flex items-center gap-2.5"
                       >
-                        <LogOut className="h-4 w-4 text-red-500" />
+                        <LogOut className="h-4 w-4 text-slate-700" />
                         <span>🚪 Sign Out</span>
                       </button>
                     </div>

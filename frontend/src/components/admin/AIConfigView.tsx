@@ -36,7 +36,7 @@ export const AIConfigView: React.FC = () => {
         {/* Box 1: LLM Engine */}
         <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
           <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-            <Cpu className="h-4 w-4 text-purple-600" />
+            <Cpu className="h-4 w-4 text-slate-900" />
             <span>LLM Gateway & Provider Selection</span>
           </h3>
 
@@ -70,7 +70,7 @@ export const AIConfigView: React.FC = () => {
             <div>
               <div className="flex justify-between font-semibold text-slate-700 mb-1">
                 <span>Temperature (Độ sáng tạo / Độ chính xác):</span>
-                <span className="text-purple-600 font-bold">{temperature}</span>
+                <span className="text-slate-900 font-bold">{temperature}</span>
               </div>
               <input
                 type="range"
@@ -79,7 +79,7 @@ export const AIConfigView: React.FC = () => {
                 step="0.05"
                 value={temperature}
                 onChange={(e) => setTemperature(Number(e.target.value))}
-                className="w-full accent-purple-600"
+                className="w-full accent-slate-900"
               />
               <span className="text-[10px] text-slate-400">Khuyên dùng 0.1 - 0.2 để đảm bảo độ chính xác của tài liệu</span>
             </div>
@@ -99,7 +99,7 @@ export const AIConfigView: React.FC = () => {
         {/* Box 2: RAG Settings */}
         <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
           <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-            <Sliders className="h-4 w-4 text-purple-600" />
+            <Sliders className="h-4 w-4 text-slate-900" />
             <span>RAG & Vector Retrieval Settings</span>
           </h3>
 
@@ -149,7 +149,7 @@ export const AIConfigView: React.FC = () => {
         <div className="lg:col-span-2 flex items-center justify-between p-4 rounded-2xl bg-white border border-slate-200">
           <span className="text-xs text-slate-500">
             {saved ? (
-              <span className="text-emerald-600 font-bold flex items-center gap-1">
+              <span className="text-slate-900 font-bold flex items-center gap-1">
                 <CheckCircle2 className="h-4 w-4" /> Đã lưu cấu hình thành công vào PostgreSQL & Qdrant!
               </span>
             ) : (
@@ -159,7 +159,7 @@ export const AIConfigView: React.FC = () => {
 
           <button
             type="submit"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold shadow transition"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow transition"
           >
             <Save className="h-4 w-4" />
             <span>Lưu cấu hình</span>

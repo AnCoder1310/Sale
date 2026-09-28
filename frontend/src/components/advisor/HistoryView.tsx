@@ -54,11 +54,11 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelectResult }) => {
           <div
             key={item.sessionId}
             onClick={() => onSelectResult(item)}
-            className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-blue-300 transition cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-slate-200 transition cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4"
           >
             <div className="space-y-2">
               <div className="flex items-center gap-2 flex-wrap text-xs">
-                <span className="font-bold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                <span className="font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-900">
                   {item.vehicleModel}
                 </span>
                 <span className="text-slate-400 flex items-center gap-1">
@@ -66,7 +66,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelectResult }) => {
                   {item.date} ({item.duration})
                 </span>
                 {item.managerReviewed && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200 text-[10px]">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-50 text-slate-800 font-semibold border border-slate-200 text-[10px]">
                     <ShieldCheck className="h-3 w-3" />
                     Đã được Manager duyệt
                   </span>
@@ -84,13 +84,13 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelectResult }) => {
             <div className="flex items-center gap-6 flex-shrink-0">
               <div className="text-right">
                 <p className="text-[11px] text-slate-400">Điểm số</p>
-                <p className="text-xl font-black text-blue-600">
+                <p className="text-xl font-black text-slate-900">
                   {item.managerScore ?? item.overallScore}
                   <span className="text-xs font-normal text-slate-400">/100</span>
                 </p>
               </div>
 
-              <div className="p-2 rounded-xl bg-slate-100 hover:bg-blue-600 hover:text-white transition">
+              <div className="p-2 rounded-xl bg-slate-100 hover:bg-slate-900 hover:text-white transition">
                 <ArrowRight className="h-4 w-4" />
               </div>
             </div>

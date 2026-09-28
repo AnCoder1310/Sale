@@ -66,8 +66,47 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
   const [trustLevel, setTrustLevel] = useState(scenario.customerPersona.trustInitial);
   const [interestLevel, setInterestLevel] = useState(scenario.customerPersona.interestInitial);
   const [isCustomerTyping, setIsCustomerTyping] = useState(false);
-  const [activeTabPanel, setActiveTabPanel] = useState<"objectives" | "knowledge">("objectives");
+  const [activeTabPanel, setActiveTabPanel] = useState<"whisper" | "objectives" | "knowledge">("whisper");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [whisperData, setWhisperData] = useState<any>(null);
+  const [isWhisperLoading, setIsWhisperLoading] = useState(false);
+  const [showDealSheet, setShowDealSheet] = useState(false);
+  const [dealSheetData, setDealSheetData] = useState<any>(null);
+  const [selectedProvince, setSelectedProvince] = useState("TP. Hồ Chí Minh");
+  const [copiedZalo, setCopiedZalo] = useState(false);
+
+  const fetchLiveWhisper = async (customerText: string) => {
+    setIsWhisperLoading(true);
+    try {
+      const res = await practiceApi.getLiveWhisper(customerText, "discovery", scenario.vehicleModel);
+      setWhisperData(res);
+    } catch (err) {
+      console.log("Live whisper error:", err);
+    } finally {
+      setIsWhisperLoading(false);
+    }
+  };
+
+  const handleOpenDealSheet = async () => {
+    try {
+      const res = await practiceApi.generateDealSheet({
+        sessionId,
+        vehicleModel: scenario.vehicleModel,
+        province: selectedProvince,
+        batteryOption: "rental",
+        customerName: scenario.customerPersona.name
+      });
+      setDealSheetData(res);
+      setShowDealSheet(true);
+    } catch (err) {
+      console.log("Deal sheet generation error:", err);
+    }
+  };
+
+  useEffect(() => {
+    // Initial whisper on session load
+    fetchLiveWhisper(messages[0]?.text || "Chào em");
+  }, []);
 
   const { isListening, error: micError, toggleListening, currentLang, switchLanguage } = useVoiceInput({
     defaultLang: scenario.id === "scen-07" ? "en-US" : "vi-VN",
@@ -77,6 +116,16 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
   });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const speakCustomerText = (text: string) => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = scenario.id === 'scen-07' ? 'en-US' : 'vi-VN';
+      utterance.rate = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -343,14 +392,14 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
               <img
                 src={scenario.customerPersona.avatar}
                 alt={scenario.customerPersona.name}
-                className="h-11 w-11 rounded-full object-cover ring-2 ring-indigo-400"
+                className="h-11 w-11 rounded-full object-cover ring-2 ring-slate-300"
               />
-              <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+              <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-[#111111] ring-2 ring-white"></span>
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="font-bold text-slate-900 text-sm">{scenario.customerPersona.name}</h2>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-semibold">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-900 font-semibold">
                   {scenario.vehicleModel}
                 </span>
               </div>
@@ -365,7 +414,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
         <div className="flex items-center gap-6 text-xs">
           <div className="w-36">
             <div className="flex justify-between font-semibold text-slate-700 mb-1">
-              <span className="flex items-center gap-1 text-indigo-600">
+              <span className="flex items-center gap-1 text-slate-800">
                 <HeartHandshake className="h-3.5 w-3.5" />
                 Độ tin cậy (Trust):
               </span>
@@ -373,7 +422,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
             </div>
             <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
               <div
-                className="h-full bg-indigo-600 rounded-full transition-all duration-500"
+                className="h-full bg-[#111111] rounded-full transition-all duration-500"
                 style={{ width: `${trustLevel}%` }}
               ></div>
             </div>
@@ -381,7 +430,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
 
           <div className="w-36">
             <div className="flex justify-between font-semibold text-slate-700 mb-1">
-              <span className="flex items-center gap-1 text-amber-600">
+              <span className="flex items-center gap-1 text-slate-800">
                 <TrendingUp className="h-3.5 w-3.5" />
                 Mức hứng thú (Interest):
               </span>
@@ -389,15 +438,24 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
             </div>
             <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
               <div
-                className="h-full bg-amber-500 rounded-full transition-all duration-500"
+                className="h-full bg-[#404040] rounded-full transition-all duration-500"
                 style={{ width: `${interestLevel}%` }}
               ></div>
             </div>
           </div>
 
           <button
+            type="button"
+            onClick={handleOpenDealSheet}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 border border-slate-300 font-bold text-xs shadow-sm transition active:scale-95"
+            title="Tự động tính chi phí lăn bánh & tạo tin nhắn Zalo gửi khách hàng"
+          >
+            <span>📄</span>
+            <span>Báo Giá Zalo</span>
+          </button>
+          <button
             onClick={handleFinish}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md transition active:scale-95"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs shadow-md transition active:scale-95"
           >
             <CheckCircle2 className="h-4 w-4" />
             <span>Kết thúc & Nhận điểm</span>
@@ -420,7 +478,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
                   <img
                     src={scenario.customerPersona.avatar}
                     alt="Customer"
-                    className="h-8 w-8 rounded-full object-cover ring-2 ring-indigo-200 flex-shrink-0 mt-1"
+                    className="h-8 w-8 rounded-full object-cover ring-2 ring-slate-200 flex-shrink-0 mt-1"
                   />
                 )}
 
@@ -428,23 +486,35 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
                   <div
                     className={`p-4 rounded-2xl text-sm leading-relaxed ${
                       m.sender === "advisor"
-                        ? "bg-blue-600 text-white rounded-br-none shadow-sm"
+                        ? "bg-slate-900 text-white rounded-br-none shadow-sm"
                         : "bg-white text-slate-800 border border-slate-200 rounded-bl-none shadow-sm"
                     }`}
                   >
                     <p className="whitespace-pre-wrap">{m.text}</p>
-                    <span className={`block text-[10px] mt-2 ${m.sender === "advisor" ? "text-blue-200 text-right" : "text-slate-400"}`}>
-                      {m.timestamp}
-                    </span>
+                    <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-100/50">
+                      <span className={`block text-[10px] ${m.sender === "advisor" ? "text-slate-300 text-right" : "text-slate-400"}`}>
+                        {m.timestamp}
+                      </span>
+                      {m.sender === "customer" && (
+                        <button
+                          type="button"
+                          onClick={() => speakCustomerText(m.text)}
+                          className="p-1 rounded-md text-slate-400 hover:text-slate-800 hover:bg-slate-50 transition"
+                          title="Phát giọng nói khách hàng"
+                        >
+                          <Volume2 className="h-3.5 w-3.5" />
+                        </button>
+                      )}
+                    </div>
                   </div>
 
                   {m.intentDetected && (
-                    <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
+                    <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-900">
                       🎯 {m.intentDetected}
                     </span>
                   )}
                   {m.factRevealed && (
-                    <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                    <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-900">
                       💡 Thông tin khám phá: {m.factRevealed}
                     </span>
                   )}
@@ -457,13 +527,13 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
                 <img
                   src={scenario.customerPersona.avatar}
                   alt="Customer"
-                  className="h-8 w-8 rounded-full object-cover ring-2 ring-indigo-200"
+                  className="h-8 w-8 rounded-full object-cover ring-2 ring-slate-200"
                 />
                 <div className="p-3 rounded-2xl bg-white border border-slate-200 text-xs text-slate-500 flex items-center gap-2 shadow-sm">
                   <span className="flex gap-1">
-                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-bounce"></span>
-                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-bounce [animation-delay:0.2s]"></span>
-                    <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-bounce [animation-delay:0.4s]"></span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-bounce"></span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-bounce [animation-delay:0.2s]"></span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-bounce [animation-delay:0.4s]"></span>
                   </span>
                   <span>{scenario.customerPersona.name} đang suy nghĩ phản hồi...</span>
                 </div>
@@ -475,18 +545,18 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
           {/* Real-time Advisor Input */}
           <div className="p-4 bg-white border-t border-slate-200 space-y-2">
             <div className="flex items-center gap-1.5 overflow-x-auto text-xs text-slate-500 pb-1">
-              <span className="font-semibold text-blue-600 flex-shrink-0">Gợi ý trả lời:</span>
+              <span className="font-semibold text-slate-900 flex-shrink-0">Gợi ý trả lời:</span>
               {scenario.id === "scen-07" ? (
                 <>
                   <button
                     onClick={() => setInputValue("Yes, Mr. David! Foreigners with a valid passport and a Temporary Residence Card (TRC) of 1+ year can 100% legally register and own a VinFast car in Vietnam under their own name.")}
-                    className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 whitespace-nowrap transition font-medium"
+                    className="px-2.5 py-1 rounded-lg bg-slate-50 text-slate-800 hover:bg-slate-100 whitespace-nowrap transition font-medium"
                   >
                     Explain Foreigner TRC registration
                   </button>
                   <button
                     onClick={() => setInputValue("The 15.6-inch infotainment system and VinFast Virtual Assistant Vivi support 100% fluent English voice commands for navigation, climate control, and entertainment.")}
-                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 whitespace-nowrap transition"
+                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-50 text-slate-700 whitespace-nowrap transition"
                   >
                     Confirm English Voice Control
                   </button>
@@ -495,13 +565,13 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
                 <>
                   <button
                     onClick={() => setInputValue("Dạ bác Ba hoàn toàn yên tâm nợ! Pin VinFast cam kết bằng hợp đồng: Bất cứ khi mô dung lượng pin khả dụng xuống dưới 70%, VinFast sẽ thay bộ pin mới hoàn toàn miễn phí cho bác.")}
-                    className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 whitespace-nowrap transition font-medium"
+                    className="px-2.5 py-1 rounded-lg bg-slate-50 text-slate-900 hover:bg-slate-100 whitespace-nowrap transition font-medium"
                   >
                     Giải thích cam kết đổi pin bằng khẩu ngữ
                   </button>
                   <button
                     onClick={() => setInputValue("Pin xe đạt chuẩn chống nước IP67 cao nhất, lội nước ngập 300mm mùa mưa lũ ở Nghệ An mình vô tư không lo chết máy như xe xăng mô bác!")}
-                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 text-slate-700 whitespace-nowrap transition"
+                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-50 text-slate-700 whitespace-nowrap transition"
                   >
                     Nhấn mạnh chuẩn chống nước IP67
                   </button>
@@ -510,19 +580,19 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
                 <>
                   <button
                     onClick={() => setInputValue("Dạ anh/chị cho em hỏi trung bình mỗi ngày mình di chuyển khoảng bao nhiêu km ạ?")}
-                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 whitespace-nowrap transition"
+                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-50 hover:text-slate-900 whitespace-nowrap transition"
                   >
                     Hỏi số km di chuyển/tháng
                   </button>
                   <button
                     onClick={() => setInputValue("Gói thuê pin hoạt động như một hợp đồng 'bảo hiểm rủi ro trọn đời'. Khi SOH < 70%, VinFast đổi mới hoàn toàn miễn phí cho anh/chị.")}
-                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 whitespace-nowrap transition"
+                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-50 hover:text-slate-900 whitespace-nowrap transition"
                   >
                     Nhấn mạnh cam kết đổi pin SOH &lt; 70%
                   </button>
                   <button
                     onClick={() => setInputValue("Hiện tại xe điện được nhà nước miễn 100% lệ phí trước bạ, giúp anh/chị tiết kiệm ngay từ 80 đến hàng trăm triệu đồng.")}
-                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 whitespace-nowrap transition"
+                    className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-50 hover:text-slate-900 whitespace-nowrap transition"
                   >
                     Nhắc ưu đãi trước bạ 0%
                   </button>
@@ -531,7 +601,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
             </div>
 
             {errorMessage && (
-              <div className="p-2 rounded-xl bg-red-50 text-red-700 text-xs flex items-center justify-between">
+              <div className="p-2 rounded-xl bg-slate-50 text-slate-800 text-xs flex items-center justify-between">
                 <span>{errorMessage}</span>
                 <button
                   onClick={handleSend}
@@ -544,7 +614,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
 
             {/* Live Voice Recording Status Banner */}
             {isListening && (
-              <div className="p-3 rounded-2xl bg-red-500 text-white text-xs font-bold flex items-center justify-between shadow-lg animate-pulse">
+              <div className="p-3 rounded-2xl bg-slate-800 text-white text-xs font-bold flex items-center justify-between shadow-lg animate-pulse">
                 <div className="flex items-center gap-2">
                   <span className="flex h-3 w-3 relative">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
@@ -563,7 +633,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
             )}
 
             {micError && (
-              <div className="p-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-[11px]">
+              <div className="p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-[11px]">
                 ⚠️ {micError}
               </div>
             )}
@@ -582,8 +652,8 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
                 placeholder={isListening ? "Đang ghi âm giọng nói của bạn..." : "Nhập câu trả lời hoặc bấm nút Micro để nói trực tiếp..."}
                 className={`flex-1 rounded-xl border px-4 py-3 text-sm focus:outline-none transition ${
                   isListening
-                    ? "border-red-400 bg-red-50/30 text-red-900 placeholder-red-400 ring-2 ring-red-400/20"
-                    : "border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 text-slate-800 bg-slate-50/50"
+                    ? "border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 ring-2 ring-slate-300"
+                    : "border-slate-200 focus:border-slate-400 focus:ring-2 focus:ring-slate-400 text-slate-800 bg-slate-50/50"
                 }`}
               />
 
@@ -603,8 +673,8 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
                 onClick={toggleListening}
                 className={`p-3 rounded-xl transition shadow-sm active:scale-95 flex items-center justify-center flex-shrink-0 ${
                   isListening
-                    ? "bg-red-600 text-white ring-4 ring-red-400/30 animate-bounce"
-                    : "bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 border border-slate-200"
+                    ? "bg-slate-900 text-white ring-4 ring-slate-300 animate-bounce"
+                    : "bg-slate-100 hover:bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-200"
                 }`}
                 title={isListening ? "Dừng ghi âm" : `Nói bằng ${currentLang === 'vi-VN' ? 'tiếng Việt (Bắc/Trung/Nam)' : 'tiếng Anh'}`}
               >
@@ -615,7 +685,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
               <button
                 type="submit"
                 disabled={!inputValue.trim() || isCustomerTyping}
-                className="rounded-xl bg-blue-600 p-3 text-white hover:bg-blue-500 disabled:opacity-50 transition shadow-sm active:scale-95 flex-shrink-0"
+                className="rounded-xl bg-slate-900 p-3 text-white hover:bg-slate-800 disabled:opacity-50 transition shadow-sm active:scale-95 flex-shrink-0"
                 title="Gửi câu trả lời"
               >
                 <Send className="h-4 w-4" />
@@ -626,12 +696,22 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
 
         {/* Right Sidebar: Objectives & Knowledge */}
         <div className="w-full lg:w-80 flex flex-col rounded-3xl bg-white border border-slate-200 shadow-sm overflow-hidden">
-          <div className="flex border-b border-slate-100 text-xs font-semibold bg-slate-50">
+          <div className="flex border-b border-slate-100 text-[11px] font-bold bg-slate-50">
+            <button
+              onClick={() => setActiveTabPanel("whisper")}
+              className={`flex-1 py-3 text-center border-b-2 transition ${
+                activeTabPanel === "whisper"
+                  ? "border-slate-400 text-slate-800 bg-slate-50"
+                  : "border-transparent text-slate-500 hover:text-slate-800"
+              }`}
+            >
+              ⚡ HUD Nhắc bài
+            </button>
             <button
               onClick={() => setActiveTabPanel("objectives")}
               className={`flex-1 py-3 text-center border-b-2 transition ${
                 activeTabPanel === "objectives"
-                  ? "border-blue-600 text-blue-600 bg-white"
+                  ? "border-slate-900 text-slate-900 bg-white"
                   : "border-transparent text-slate-500 hover:text-slate-800"
               }`}
             >
@@ -641,7 +721,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
               onClick={() => setActiveTabPanel("knowledge")}
               className={`flex-1 py-3 text-center border-b-2 transition ${
                 activeTabPanel === "knowledge"
-                  ? "border-blue-600 text-blue-600 bg-white"
+                  ? "border-slate-900 text-slate-900 bg-white"
                   : "border-transparent text-slate-500 hover:text-slate-800"
               }`}
             >
@@ -650,11 +730,80 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
           </div>
 
           <div className="flex-1 overflow-y-auto p-5 space-y-5 text-xs">
-            {activeTabPanel === "objectives" ? (
+            {activeTabPanel === "whisper" ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-slate-100 text-slate-900 border border-slate-200">
+                    Live Sales Whisper HUD
+                  </span>
+                  {isWhisperLoading && <span className="text-[10px] text-slate-800 font-semibold animate-pulse">Đang phân tích...</span>}
+                </div>
+
+                {whisperData && (
+                  <div className="space-y-3.5">
+                    {/* Hidden Psyche */}
+                    <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                      <div className="text-[11px] font-extrabold text-slate-900 flex items-center gap-1.5">
+                        <span>🧠</span>
+                        <span>Tâm Lý Ngầm Của Khách:</span>
+                      </div>
+                      <p className="text-[11px] text-slate-900 leading-relaxed font-medium">
+                        {whisperData.hidden_intent}
+                      </p>
+                    </div>
+
+                    {/* 3 Golden Bullets */}
+                    <div className="p-3.5 rounded-2xl bg-slate-900 text-white space-y-2 border border-slate-800 shadow-md">
+                      <div className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+                        <span>⚡</span>
+                        <span>Luận Điểm Phản Xạ 1 Giây:</span>
+                      </div>
+                      <ul className="space-y-1.5 text-[11px] text-slate-300 leading-relaxed">
+                        {whisperData.golden_bullets?.map((b: string, i: number) => (
+                          <li key={i} className="flex items-start gap-1.5">
+                            <span className="text-slate-400 font-bold">•</span>
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Suggested Speech with Apply Button */}
+                    <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                      <div className="text-[11px] font-extrabold text-slate-900 flex items-center justify-between">
+                        <span className="flex items-center gap-1">
+                          <span>💬</span>
+                          <span>Câu Nói Mẫu Gợi Ý:</span>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setInputValue(whisperData.suggested_speech);
+                            setActiveTabPanel("whisper");
+                          }}
+                          className="px-2 py-0.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px] shadow transition"
+                        >
+                          Áp dụng vào ô chat ↵
+                        </button>
+                      </div>
+                      <p className="text-[11px] text-slate-900 italic leading-relaxed border-l-2 border-slate-300 pl-2">
+                        "{whisperData.suggested_speech}"
+                      </p>
+                    </div>
+
+                    {/* Source */}
+                    <div className="text-[10px] text-slate-500 flex items-start gap-1">
+                      <span className="font-bold text-slate-600">📜 Căn cứ:</span>
+                      <span>{whisperData.verified_source}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : activeTabPanel === "objectives" ? (
               <>
                 <div>
                   <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[11px] mb-2 flex items-center gap-1.5">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-blue-600" />
+                    <CheckCircle2 className="h-3.5 w-3.5 text-slate-900" />
                     <span>Checklist thành công:</span>
                   </h4>
                   <div className="space-y-2">
@@ -664,7 +813,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
                         className="flex items-start gap-2 p-2 rounded-xl bg-slate-50 border border-slate-100 text-slate-700"
                       >
                         <CheckCircle2 className={`h-4 w-4 mt-0.5 flex-shrink-0 ${
-                          idx < 2 ? "text-emerald-500" : "text-slate-300"
+                          idx < 2 ? "text-slate-700" : "text-slate-300"
                         }`} />
                         <span className={idx < 2 ? "line-through text-slate-400" : ""}>
                           {cond}
@@ -676,14 +825,14 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
 
                 <div>
                   <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[11px] mb-2 flex items-center gap-1.5">
-                    <AlertCircle className="h-3.5 w-3.5 text-amber-600" />
+                    <AlertCircle className="h-3.5 w-3.5 text-slate-800" />
                     <span>Khách hàng đang thắc mắc:</span>
                   </h4>
                   <div className="space-y-2">
                     {scenario.customerPersona.primaryObjections.map((obj, idx) => (
                       <div
                         key={idx}
-                        className="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/70 text-amber-900 leading-relaxed"
+                        className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 leading-relaxed"
                       >
                         "{obj}"
                       </div>
@@ -707,6 +856,101 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Quotation & Deal Sheet Modal */}
+      {showDealSheet && dealSheetData && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 space-y-5 animate-in fade-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="h-9 w-9 rounded-xl bg-slate-800 text-white flex items-center justify-center font-bold text-lg shadow">
+                  📄
+                </div>
+                <div>
+                  <h3 className="font-black text-base text-slate-900">Bảng Báo Giá Lăn Bánh & Tin Nhắn Zalo</h3>
+                  <p className="text-[11px] text-slate-500">Tự động tính chi phí lăn bánh chính xác và soạn sẵn tin nhắn gửi khách</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowDealSheet(false)}
+                className="h-8 w-8 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 flex items-center justify-center font-bold text-sm"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Quick Pricing Breakdown */}
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-2.5">
+              <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+                <span className="font-bold text-slate-800 text-sm">{dealSheetData.vehicleName}</span>
+                <span className="text-slate-800 font-black text-base">{dealSheetData.basePrice?.toLocaleString()} VNĐ</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-slate-600 text-[11px]">
+                <div>• Thuế trước bạ (0%): <b className="text-slate-800">0 VNĐ (Tiết kiệm {dealSheetData.taxSaved?.toLocaleString()}đ)</b></div>
+                <div>• Biển số ({dealSheetData.province}): <b>{dealSheetData.plateFee?.toLocaleString()} VNĐ</b></div>
+                <div>• Phí đường bộ (1 năm): <b>{dealSheetData.roadMaintenanceFee?.toLocaleString()} VNĐ</b></div>
+                <div>• Đăng kiểm + Bảo hiểm TNDS: <b>570,700 VNĐ</b></div>
+              </div>
+              <div className="pt-2 border-t border-slate-200 flex justify-between items-center">
+                <span className="font-bold text-slate-900">TỔNG LĂN BÁNH TRỌN GÓI:</span>
+                <span className="text-slate-800 font-black text-lg">{dealSheetData.totalOnTheRoad?.toLocaleString()} VNĐ</span>
+              </div>
+              <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-[11px] text-slate-900 flex justify-between items-center">
+                <span>🏦 Trả trước 20%: <b>{dealSheetData.downPayment?.toLocaleString()} VNĐ</b></span>
+                <span>Gốc + Lãi tháng đầu (5%/năm): <b className="text-slate-800">{dealSheetData.firstMonthPayment?.toLocaleString()} VNĐ</b></span>
+              </div>
+            </div>
+
+            {/* Zalo Message Preview */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold text-slate-700 flex items-center gap-1.5">
+                  <span className="text-slate-700 font-black">💬</span>
+                  <span>Tin Nhắn Đã Soạn Sẵn (Gửi Khách Qua Zalo / SMS):</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(dealSheetData.zaloMessage);
+                    setCopiedZalo(true);
+                    setTimeout(() => setCopiedZalo(false), 2000);
+                  }}
+                  className={`px-3 py-1 rounded-lg font-bold text-xs transition shadow-sm ${
+                    copiedZalo
+                      ? "bg-slate-900 text-white"
+                      : "bg-slate-900 hover:bg-slate-800 text-white"
+                  }`}
+                >
+                  {copiedZalo ? "✓ Đã sao chép!" : "📋 Sao Chép Tin Nhắn Zalo"}
+                </button>
+              </div>
+
+              <textarea
+                readOnly
+                value={dealSheetData.zaloMessage}
+                rows={9}
+                className="w-full p-3.5 rounded-2xl border border-slate-200 bg-slate-50 text-slate-800 text-[11px] leading-relaxed font-mono resize-none focus:outline-none"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2.5 pt-2 border-t border-slate-100">
+              <button
+                onClick={() => window.print()}
+                className="px-4 py-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold transition"
+              >
+                🖨️ In Phiếu Báo Giá
+              </button>
+              <button
+                onClick={() => setShowDealSheet(false)}
+                className="px-5 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition"
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

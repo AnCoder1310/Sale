@@ -2,8 +2,8 @@
   <defs>
     <!-- Background Circle for crisp contrast in both dark and light browser tabs -->
     <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#0B1220" />
-      <stop offset="100%" stopColor="#020617" />
+      <stop offset="0%" stopColor="#111111" />
+      <stop offset="100%" stopColor="#0A0A0A" />
     </linearGradient>
 
     <!-- Chrome Light Specular -->
@@ -33,7 +33,7 @@
 
   <!-- Circular background badge with sleek border -->
   <rect width="64" height="64" rx="16" fill="url(#bg-grad)" />
-  <rect x="0.5" y="0.5" width="63" height="63" rx="15.5" stroke="#1E293B" stroke-width="1" />
+  <rect x="0.5" y="0.5" width="63" height="63" rx="15.5" stroke="#262626" stroke-width="1" />
 
   <!-- VinFast Outer Left Wing - Light Face -->
   <path

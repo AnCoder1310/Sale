@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { 
   TrendingUp, 
   Award, 
@@ -30,15 +30,33 @@ import {
   Radar
 } from "recharts";
 import { mockSkillDistribution, mockWeeklyTrainingTrend } from "@/data/mockManager";
+import { practiceApi } from "@/api/practice";
 
 export const ProgressView: React.FC = () => {
-  const radarData = [
+  const [radarData, setRadarData] = useState([
     { subject: "Need Discovery", A: 87, fullMark: 100 },
     { subject: "Product Knowledge", A: 94, fullMark: 100 },
     { subject: "Objection Handling", A: 89, fullMark: 100 },
     { subject: "Policy Accuracy", A: 95, fullMark: 100 },
     { subject: "Closing / Next Step", A: 72, fullMark: 100 },
-  ];
+  ]);
+  const [radarSummary, setRadarSummary] = useState<any>(null);
+
+  useEffect(() => {
+    practiceApi.getCompetencyRadar("adv-001")
+      .then((res: any) => {
+        if (res && res.radar) {
+          setRadarSummary(res);
+          const mapped = res.radar.map((item: any) => ({
+            subject: item.subject,
+            A: item.score,
+            fullMark: 100
+          }));
+          setRadarData(mapped);
+        }
+      })
+      .catch((err) => console.log("Using default radar data:", err));
+  }, []);
 
   const badges = [
     { id: "b1", title: "Chuyên Gia VF 8", desc: "Hoàn thành xuất sắc 10 phiên kịch bản VF 8", icon: "🏆", date: "15/09/2026" },
@@ -52,8 +70,8 @@ export const ProgressView: React.FC = () => {
       {/* Top Header */}
       <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-2">
-            <TrendingUp className="h-3.5 w-3.5 text-blue-600" />
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-50 text-slate-800 text-xs font-semibold mb-2">
+            <TrendingUp className="h-3.5 w-3.5 text-slate-900" />
             <span>Hồ Sơ Năng Lực & Tiến Trình Đào Tạo</span>
           </span>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">
@@ -65,13 +83,13 @@ export const ProgressView: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="p-3 px-5 rounded-2xl bg-blue-50 border border-blue-200 text-center">
-            <span className="text-[11px] text-blue-700 font-semibold uppercase">Điểm Trung Bình</span>
-            <div className="text-2xl font-black text-blue-900">88.5</div>
+          <div className="p-3 px-5 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+            <span className="text-[11px] text-slate-800 font-semibold uppercase">Điểm Trung Bình</span>
+            <div className="text-2xl font-black text-slate-900">88.5</div>
           </div>
-          <div className="p-3 px-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-center">
-            <span className="text-[11px] text-emerald-700 font-semibold uppercase">Số Phiên Đã Luyện</span>
-            <div className="text-2xl font-black text-emerald-900">28</div>
+          <div className="p-3 px-5 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+            <span className="text-[11px] text-slate-800 font-semibold uppercase">Số Phiên Đã Luyện</span>
+            <div className="text-2xl font-black text-slate-900">28</div>
           </div>
         </div>
       </div>
@@ -89,10 +107,10 @@ export const ProgressView: React.FC = () => {
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={radarData}>
-                <PolarGrid stroke="#e2e8f0" />
-                <PolarAngleAxis dataKey="subject" tick={{ fill: "#475569", fontSize: 11 }} />
+                <PolarGrid stroke="#E5E5E5" />
+                <PolarAngleAxis dataKey="subject" tick={{ fill: "#404040", fontSize: 11 }} />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                <Radar name="Trường An" dataKey="A" stroke="#2563EB" fill="#2563EB" fillOpacity={0.4} />
+                <Radar name="Trường An" dataKey="A" stroke="#111111" fill="#737373" fillOpacity={0.25} />
               </RadarChart>
             </ResponsiveContainer>
           </div>
@@ -109,11 +127,11 @@ export const ProgressView: React.FC = () => {
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={mockWeeklyTrainingTrend}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="week" tick={{ fill: "#64748b", fontSize: 12 }} />
-                <YAxis domain={[50, 100]} tick={{ fill: "#64748b", fontSize: 12 }} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E5E5" />
+                <XAxis dataKey="week" tick={{ fill: "#737373", fontSize: 12 }} />
+                <YAxis domain={[50, 100]} tick={{ fill: "#737373", fontSize: 12 }} />
                 <Tooltip />
-                <Bar dataKey="avgScore" name="Điểm trung bình" fill="#2563EB" radius={[8, 8, 0, 0]} />
+                <Bar dataKey="avgScore" name="Điểm trung bình" fill="#111111" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -121,11 +139,11 @@ export const ProgressView: React.FC = () => {
       </div>
 
             {/* ACADEMIC BENCHMARK & AI EVALUATION METRICS (BẢNG THỰC NGHIỆM ĐỒ ÁN TỐT NGHIỆP) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-[#0B1220] to-blue-950 text-white shadow-xl border border-slate-800 space-y-4">
+      <div className="p-6 sm:p-8 rounded-3xl bg-[#111111] text-white shadow-sm border border-[#262626] space-y-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-cyan-300 text-xs font-bold border border-blue-400/30">
-              <Cpu className="h-3.5 w-3.5 text-cyan-400" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-bold border border-white/20">
+              <Cpu className="h-3.5 w-3.5 text-slate-400" />
               <span>Chỉ Số Thực Nghiệm Mô Hình AI (Academic Benchmark Metrics)</span>
             </div>
             <h3 className="text-lg font-black text-white mt-2">
@@ -135,7 +153,7 @@ export const ProgressView: React.FC = () => {
               Được đo lường trên tập dữ liệu chuẩn hóa 120 phiên thực chiến đối chiếu song song giữa AI và Giám đốc Đào tạo
             </p>
           </div>
-          <span className="px-3 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold">
+          <span className="px-3 py-1 rounded-xl bg-white/10 text-white border border-white/20 text-xs font-bold">
             ✓ Pearson Correlation r = 0.94
           </span>
         </div>
@@ -143,26 +161,26 @@ export const ProgressView: React.FC = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
             <span className="text-[11px] text-slate-400 font-medium">Độ tương đồng AI vs Human</span>
-            <div className="text-2xl font-black text-emerald-400 mt-1">94.8%</div>
+            <div className="text-2xl font-black text-white mt-1">94.8%</div>
             <p className="text-[10px] text-slate-400 mt-1">Fleiss' Kappa = 0.89 (Very High)</p>
           </div>
 
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
             <span className="text-[11px] text-slate-400 font-medium">Sai số điểm tuyệt đối (MAE)</span>
-            <div className="text-2xl font-black text-cyan-400 mt-1">± 2.1 <span className="text-xs font-normal text-slate-400">/ 100</span></div>
+            <div className="text-2xl font-black text-slate-400 mt-1">± 2.1 <span className="text-xs font-normal text-slate-400">/ 100</span></div>
             <p className="text-[10px] text-slate-400 mt-1">Trung bình chênh lệch &lt; 2.5 điểm</p>
           </div>
 
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
             <span className="text-[11px] text-slate-400 font-medium">Độ chuẩn xác trích dẫn RAG</span>
-            <div className="text-2xl font-black text-emerald-400 mt-1">98.5%</div>
+            <div className="text-2xl font-black text-white mt-1">98.5%</div>
             <p className="text-[10px] text-slate-400 mt-1">Faithfulness / Zero Hallucination</p>
           </div>
 
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
             <span className="text-[11px] text-slate-400 font-medium">Độ trễ trung bình (Latency)</span>
             <div className="text-2xl font-black text-white mt-1">320 ms</div>
-            <p className="text-[10px] text-cyan-400 mt-1">Tối ưu phản hồi đa lượt theo pha</p>
+            <p className="text-[10px] text-slate-400 mt-1">Tối ưu phản hồi đa lượt theo pha</p>
           </div>
         </div>
       </div>
@@ -170,7 +188,7 @@ export const ProgressView: React.FC = () => {
       {/* Badges & Achievements */}
       <div>
         <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-          <Award className="h-5 w-5 text-amber-500" />
+          <Award className="h-5 w-5 text-slate-700" />
           <span>Huy Hiệu & Thành Tích Đạt Được</span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -49,7 +49,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
       >
         <Bell className="h-4 w-4" />
         {unreadCount > 0 && (
-          <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-black text-white ring-2 ring-[#0B1220] animate-pulse">
+          <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[10px] font-black text-slate-900 ring-2 ring-[#111111] animate-pulse">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -68,7 +68,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-sm text-white">Thông báo</span>
                 {unreadCount > 0 && (
-                  <span className="px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 font-bold text-[10px] border border-red-500/30">
+                  <span className="px-2 py-0.5 rounded-full bg-white/10 text-white font-bold text-[10px] border border-white/20">
                     {unreadCount} mới
                   </span>
                 )}
@@ -77,7 +77,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
               {unreadCount > 0 && (
                 <button
                   onClick={markAllAsRead}
-                  className="text-[11px] text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1"
+                  className="text-[11px] text-slate-300 hover:text-white font-semibold flex items-center gap-1"
                 >
                   <CheckCheck className="h-3.5 w-3.5" />
                   <span>Đã đọc tất cả</span>
@@ -106,7 +106,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
 
               <button
                 onClick={() => triggerMockNotification("review")}
-                className="ml-auto text-[10px] px-2 py-1 rounded bg-blue-500/10 text-cyan-300 hover:bg-blue-500/20 transition flex items-center gap-1 border border-blue-400/20"
+                className="ml-auto text-[10px] px-2 py-1 rounded bg-white/10 text-white hover:bg-white/20 transition flex items-center gap-1 border border-white/20"
                 title="Tạo giả lập thông báo mới để kiểm tra âm thanh & toast"
               >
                 <Sparkles className="h-3 w-3" />
@@ -127,16 +127,16 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                     onClick={() => handleItemClick(n)}
                     className={`p-3 rounded-2xl cursor-pointer transition flex items-start gap-3 ${
                       !n.read
-                        ? "bg-blue-950/40 hover:bg-blue-950/60 border border-blue-500/30"
+                        ? "bg-white/5 hover:bg-white/10 border border-white/20"
                         : "hover:bg-slate-800/50 text-slate-300"
                     }`}
                   >
                     <div className={`h-8 w-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 ${
                       n.type === "review_approved"
-                        ? "bg-emerald-500/20 text-emerald-400"
+                        ? "bg-slate-800 text-slate-400"
                         : n.type === "practice_completed"
-                        ? "bg-blue-500/20 text-blue-400"
-                        : "bg-purple-500/20 text-purple-400"
+                        ? "bg-slate-800 text-slate-400"
+                        : "bg-slate-800 text-slate-400"
                     }`}>
                       {n.type === "review_approved" ? (
                         <ShieldCheck className="h-4 w-4" />
@@ -160,7 +160,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                     </div>
 
                     {!n.read && (
-                      <span className="h-2 w-2 rounded-full bg-blue-500 flex-shrink-0 mt-2"></span>
+                      <span className="h-2 w-2 rounded-full bg-slate-800 flex-shrink-0 mt-2"></span>
                     )}
                   </div>
                 ))

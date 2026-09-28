@@ -18,18 +18,18 @@ export default function ForbiddenPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center p-6 bg-[#0B1220] text-slate-100 select-none">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center p-6 bg-[#111111] text-slate-100 select-none">
       {/* Background glow */}
-      <div className="absolute w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="relative z-10 w-full max-w-md text-center space-y-6">
         {/* Shield Icon */}
-        <div className="inline-flex h-20 w-20 rounded-3xl bg-red-500/15 border border-red-500/30 items-center justify-center text-red-500 shadow-2xl shadow-red-500/20">
+        <div className="inline-flex h-20 w-20 rounded-3xl bg-white/10 border border-white/20 items-center justify-center text-white shadow-sm">
           <ShieldAlert className="h-10 w-10" />
         </div>
 
         <div className="space-y-2">
-          <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-300 font-mono font-bold text-xs border border-red-500/30">
+          <span className="px-3 py-1 rounded-full bg-white/10 text-white font-mono font-bold text-xs border border-white/20">
             HTTP 403 • ACCESS FORBIDDEN
           </span>
           <h1 className="text-3xl font-black text-white tracking-tight">
@@ -44,13 +44,13 @@ export default function ForbiddenPage() {
         {/* Info card */}
         <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-left space-y-2">
           <div className="flex items-center gap-2 text-slate-300 font-bold">
-            <Lock className="h-4 w-4 text-amber-400" />
+            <Lock className="h-4 w-4 text-white" />
             <span>Role-Based Access Control Policy:</span>
           </div>
           <ul className="space-y-1 text-slate-400 pl-6 list-disc text-[11px]">
-            <li>Advisors can only access the Advisor Workspace (<code className="text-blue-400">/advisor</code>).</li>
-            <li>Managers can access Training Management (<code className="text-emerald-400">/manager</code>).</li>
-            <li>Admins have full access to system architecture (<code className="text-purple-400">/admin</code>).</li>
+            <li>Advisors can only access the Advisor Workspace (<code className="text-slate-300">/advisor</code>).</li>
+            <li>Managers can access Training Management (<code className="text-slate-300">/manager</code>).</li>
+            <li>Admins have full access to system architecture (<code className="text-slate-300">/admin</code>).</li>
           </ul>
         </div>
 
@@ -66,7 +66,7 @@ export default function ForbiddenPage() {
 
           <Link
             href={getWorkspaceUrl()}
-            className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30 transition flex items-center gap-1.5"
+            className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-lg shadow-sm transition flex items-center gap-1.5"
           >
             <Home className="h-4 w-4" />
             <span>Return to My Workspace</span>

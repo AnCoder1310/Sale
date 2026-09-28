@@ -285,16 +285,22 @@ class ChargingService:
     def get_stations(
         self,
         province: Optional[str] = None,
+        city: Optional[str] = None,
         min_power: Optional[int] = None,
+        max_distance: Optional[float] = None,
         only_available: bool = False
     ) -> List[Dict[str, Any]]:
         results = self.stations
         if province and province != "all":
-            results = [s for s in results if s["province"] == province]
+            results = [s for s in results if s.get("province", "").lower() == province.lower()]
+        if city and city != "all":
+            results = [s for s in results if city.lower() in s.get("city", "").lower() or city.lower() in s.get("address", "").lower()]
         if min_power and min_power > 0:
-            results = [s for s in results if s["max_power_kw"] >= min_power]
+            results = [s for s in results if s.get("max_power_kw", 0) >= min_power]
+        if max_distance and max_distance > 0:
+            results = [s for s in results if s.get("distance_km", 999) <= max_distance]
         if only_available:
-            results = [s for s in results if s["available_ports"] > 0]
+            results = [s for s in results if s.get("available_ports", 0) > 0]
         return results
 
     def get_station_by_id(self, station_id: str) -> Optional[Dict[str, Any]]:

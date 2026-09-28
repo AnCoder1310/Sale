@@ -76,12 +76,12 @@ export const HITLReviewModal: React.FC<HITLReviewModalProps> = ({
         {/* Header */}
         <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-emerald-600 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-xl bg-slate-900 flex items-center justify-center">
               <ShieldCheck className="h-5 w-5 text-white" />
             </div>
             <div>
               <h2 className="font-bold text-sm">Human-in-the-Loop (HITL) Review</h2>
-              <p className="text-[11px] text-emerald-400">
+              <p className="text-[11px] text-slate-400">
                 Thẩm định & Hiệu chỉnh kết quả đánh giá AI • {session.advisorName}
               </p>
             </div>
@@ -113,7 +113,7 @@ export const HITLReviewModal: React.FC<HITLReviewModalProps> = ({
             <div className="space-y-2">
               <h3 className="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center justify-between">
                 <span>Điểm AI chấm từng tiêu chí</span>
-                <span className="text-blue-600 font-extrabold">Tổng: {session.overallScore}/100</span>
+                <span className="text-slate-900 font-extrabold">Tổng: {session.overallScore}/100</span>
               </h3>
               <div className="space-y-1.5">
                 {session.rubricBreakdown.map((r) => (
@@ -138,7 +138,7 @@ export const HITLReviewModal: React.FC<HITLReviewModalProps> = ({
               <div className="space-y-2 max-h-48 overflow-y-auto p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
                 {session.transcript.slice(0, 4).map((t) => (
                   <div key={t.id} className="leading-relaxed">
-                    <strong className={t.sender === "advisor" ? "text-blue-600" : "text-slate-800"}>
+                    <strong className={t.sender === "advisor" ? "text-slate-900" : "text-slate-800"}>
                       {t.sender === "advisor" ? "Tư vấn viên:" : "Khách hàng:"}
                     </strong>{" "}
                     <span className="text-slate-600">{t.text}</span>
@@ -151,12 +151,12 @@ export const HITLReviewModal: React.FC<HITLReviewModalProps> = ({
           {/* Right: Manager Adjustment & Approval Form */}
           <form onSubmit={handleSubmit} className="space-y-5 flex flex-col justify-between">
             <div className="space-y-4">
-              <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
-                <p className="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
-                  <ShieldCheck className="h-4 w-4 text-emerald-600" />
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <p className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                  <ShieldCheck className="h-4 w-4 text-slate-900" />
                   <span>Quyền hạn Quản lý Đào tạo (HITL)</span>
                 </p>
-                <p className="text-xs text-emerald-800 mt-1">
+                <p className="text-xs text-slate-900 mt-1">
                   Manager có toàn quyền ghi đè điểm số của AI và bổ sung nhận xét thực tế để đưa vào báo cáo KPI chính thức của nhân viên.
                 </p>
               </div>
@@ -173,9 +173,9 @@ export const HITLReviewModal: React.FC<HITLReviewModalProps> = ({
                     max="100"
                     value={managerScore}
                     onChange={(e) => handleScoreChange(Number(e.target.value))}
-                    className="flex-1 accent-emerald-600"
+                    className="flex-1 accent-slate-900"
                   />
-                  <span className="w-16 text-center text-xl font-black text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-xl py-1">
+                  <span className="w-16 text-center text-xl font-black text-slate-900 bg-slate-50 border border-slate-200 rounded-xl py-1">
                     {managerScore}
                   </span>
                 </div>
@@ -195,7 +195,7 @@ export const HITLReviewModal: React.FC<HITLReviewModalProps> = ({
                   value={managerNote}
                   onChange={(e) => setManagerNote(e.target.value)}
                   placeholder="Nhập nhận xét chi tiết cho nhân viên..."
-                  className="w-full rounded-2xl border border-slate-200 p-3 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10"
+                  className="w-full rounded-2xl border border-slate-200 p-3 text-xs text-slate-800 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-400"
                 ></textarea>
               </div>
             </div>
@@ -212,7 +212,7 @@ export const HITLReviewModal: React.FC<HITLReviewModalProps> = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-md hover:bg-emerald-500 transition"
+                className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-xs font-bold text-white shadow-md hover:bg-slate-800 transition"
               >
                 <CheckCircle2 className="h-4 w-4" />
                 <span>{isSubmitting ? "Đang lưu..." : "Phê duyệt & Lưu đánh giá"}</span>

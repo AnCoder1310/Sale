@@ -43,7 +43,7 @@ export const AssignmentsView: React.FC = () => {
 
         <button
           onClick={() => setShowCreateModal(true)}
-          className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-emerald-500 shadow-sm transition"
+          className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-bold text-white hover:bg-slate-800 shadow-sm transition"
         >
           <Plus className="h-4 w-4" />
           <span>Tạo Assignment mới</span>
@@ -58,13 +58,13 @@ export const AssignmentsView: React.FC = () => {
           >
             <div>
               <div className="flex items-center justify-between text-xs mb-2">
-                <span className="font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-800">
+                <span className="font-bold px-2.5 py-0.5 rounded-full bg-slate-50 text-slate-900">
                   {asg.targetVehicle}
                 </span>
                 <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${
                   asg.status === "completed"
-                    ? "bg-emerald-50 text-emerald-800"
-                    : "bg-amber-50 text-amber-800"
+                    ? "bg-slate-50 text-slate-900"
+                    : "bg-slate-50 text-slate-900"
                 }`}>
                   {asg.status === "completed" ? "Đã nộp bài" : "Đang thực hiện"}
                 </span>
@@ -78,7 +78,7 @@ export const AssignmentsView: React.FC = () => {
                 <p>Nhân viên: <strong className="text-slate-900">{asg.assignedToAdvisor}</strong></p>
                 <p>Hạn chót: <strong className="text-slate-900">{asg.dueDate}</strong></p>
                 {asg.score && (
-                  <p>Điểm đạt: <strong className="text-emerald-700">{asg.score}/100</strong></p>
+                  <p>Điểm đạt: <strong className="text-slate-800">{asg.score}/100</strong></p>
                 )}
               </div>
             </div>
@@ -142,7 +142,7 @@ export const AssignmentsView: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow"
+                  className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold shadow"
                 >
                   Giao bài ngay
                 </button>
