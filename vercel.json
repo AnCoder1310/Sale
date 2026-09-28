@@ -1,4 +1,0 @@
-{
-  "buildCommand": "node -e \"const fs = require('fs'); const { execSync } = require('child_process'); if (fs.existsSync('frontend')) { execSync('pnpm --prefix frontend build', { stdio: 'inherit' }); } else { execSync('pnpm build', { stdio: 'inherit' }); }\"",
-  "outputDirectory": "out"
-}
