@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "pnpm --prefix frontend install && pnpm --prefix frontend run build"
+    "build": "node -e \"const fs = require('fs'); const { execSync } = require('child_process'); if (fs.existsSync('frontend')) { execSync('pnpm --prefix frontend build', { stdio: 'inherit' }); } else { execSync('pnpm build', { stdio: 'inherit' }); }\""
   }
 }
