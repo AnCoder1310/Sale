@@ -24,15 +24,20 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Default advisor profile for immediate demo readiness
+const defaultAccount = INITIAL_USER_ACCOUNTS["an.vt@vinfast.vn"];
+const { passwordHash: _hash, ...defaultAdvisorProfile } = defaultAccount;
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(defaultAdvisorProfile);
+  const [accessToken, setAccessToken] = useState<string | null>("vfo20_demo_token_advisor");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [sessionExpired, setSessionExpired] = useState<boolean>(false);
   const [signoutModalOpen, setSignoutModalOpen] = useState<boolean>(false);
 
-  // Initialize and restore authentication session
+  // Restore stored authentication session from browser storage if available
   useEffect(() => {
+    if (typeof window === "undefined") return;
     try {
       const storedToken = localStorage.getItem("vfo20_access_token") || sessionStorage.getItem("vfo20_access_token");
       const storedUser = localStorage.getItem("vfo20_user") || sessionStorage.getItem("vfo20_user");
@@ -42,18 +47,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setCurrentUser(parsedUser);
         setAccessToken(storedToken);
       } else {
-        // Default to advisor for instant demo readiness if nothing stored
-        const defaultAdvisor = INITIAL_USER_ACCOUNTS["an.vt@vinfast.vn"];
-        const { passwordHash, ...profile } = defaultAdvisor;
-        setCurrentUser(profile);
-        setAccessToken("vfo20_demo_token_advisor");
-        localStorage.setItem("vfo20_user", JSON.stringify(profile));
+        localStorage.setItem("vfo20_user", JSON.stringify(defaultAdvisorProfile));
         localStorage.setItem("vfo20_access_token", "vfo20_demo_token_advisor");
       }
     } catch (e) {
       console.error("Failed to restore auth session:", e);
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 
@@ -70,7 +68,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       storage.setItem("vfo20_refresh_token", res.tokens.refreshToken);
       storage.setItem("vfo20_user", JSON.stringify(res.user));
 
-      // Also persist to localStorage for easy role switching across tabs
       localStorage.setItem("vfo20_user", JSON.stringify(res.user));
       localStorage.setItem("vfo20_access_token", res.tokens.accessToken);
 
@@ -138,7 +135,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const record = INITIAL_USER_ACCOUNTS[email];
     if (record) {
-      const { passwordHash, ...profile } = record;
+      const { passwordHash: _pHash, ...profile } = record;
       setCurrentUser(profile);
       const token = `vfo20_demo_token_${targetRole}`;
       setAccessToken(token);

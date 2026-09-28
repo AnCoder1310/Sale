@@ -23,11 +23,11 @@ export default function RootPage() {
     }
 
     if (role === "admin") {
-      router.replace("/admin");
+      router.replace("/admin/");
     } else if (role === "manager") {
-      router.replace("/manager");
+      router.replace("/manager/");
     } else {
-      router.replace("/advisor");
+      router.replace("/advisor/");
     }
   }, [isLoading, isAuthenticated, currentUser, role, router]);
 

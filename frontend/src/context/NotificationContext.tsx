@@ -98,6 +98,11 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   useEffect(() => {
     if (!isAuthenticated || !currentUser || typeof window === "undefined") return;
 
+    // Do not attempt local insecure WebSocket on deployed HTTPS origins
+    if (window.location.protocol === "https:" && !process.env.NEXT_PUBLIC_WS_URL) {
+      return;
+    }
+
     const wsUrl = process.env.NEXT_PUBLIC_WS_URL || `ws://${window.location.hostname}:8000/api/v1/ws/notifications/${userId}`;
 
     let ws: WebSocket;
