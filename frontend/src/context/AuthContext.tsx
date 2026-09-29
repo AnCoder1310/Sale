@@ -24,14 +24,10 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Default advisor profile for immediate demo readiness
-const defaultAccount = INITIAL_USER_ACCOUNTS["an.vt@vinfast.vn"];
-const { passwordHash: _hash, ...defaultAdvisorProfile } = defaultAccount;
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<UserProfile | null>(defaultAdvisorProfile);
-  const [accessToken, setAccessToken] = useState<string | null>("vfo20_demo_token_advisor");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [sessionExpired, setSessionExpired] = useState<boolean>(false);
   const [signoutModalOpen, setSignoutModalOpen] = useState<boolean>(false);
 
@@ -42,16 +38,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const storedToken = localStorage.getItem("vfo20_access_token") || sessionStorage.getItem("vfo20_access_token");
       const storedUser = localStorage.getItem("vfo20_user") || sessionStorage.getItem("vfo20_user");
 
-      if (storedToken && storedUser) {
+      if (storedToken && storedUser && storedToken !== "vfo20_demo_token_advisor") {
         const parsedUser = JSON.parse(storedUser) as UserProfile;
         setCurrentUser(parsedUser);
         setAccessToken(storedToken);
       } else {
-        localStorage.setItem("vfo20_user", JSON.stringify(defaultAdvisorProfile));
-        localStorage.setItem("vfo20_access_token", "vfo20_demo_token_advisor");
+        setCurrentUser(null);
+        setAccessToken(null);
       }
     } catch (e) {
       console.error("Failed to restore auth session:", e);
+      setCurrentUser(null);
+      setAccessToken(null);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 

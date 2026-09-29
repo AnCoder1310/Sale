@@ -68,22 +68,22 @@ function LoginForm() {
         try {
           const user = JSON.parse(stored);
           if (user.accountStatus === "pending" || user.role === "pending") {
-            router.push("/pending-approval");
+            router.push("/pending-approval/");
             return;
           }
           if (user.role === "admin") {
-            router.push("/admin");
+            router.push("/admin/");
             return;
           }
           if (user.role === "manager") {
-            router.push("/manager");
+            router.push("/manager/");
             return;
           }
-          router.push("/advisor");
+          router.push("/advisor/");
           return;
         } catch {}
       }
-      router.push("/advisor");
+      router.push("/advisor/");
     } else if (result.message) {
       setErrorMessage(result.message);
     }
@@ -246,6 +246,48 @@ function LoginForm() {
           <span>Continue with Google</span>
         </button>
       </form>
+
+              {/* Quick Demo Accounts for Easy Login */}
+        <div className="pt-2 border-t border-slate-100 space-y-2">
+          <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider text-center">
+            Tài khoản dùng thử (Bấm để điền nhanh):
+          </p>
+          <div className="grid grid-cols-3 gap-1.5 text-[11px]">
+            <button
+              type="button"
+              onClick={() => {
+                setEmail("an.vt@vinfast.vn");
+                setPassword("123456");
+              }}
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold transition flex flex-col items-center gap-0.5"
+            >
+              <span>👨‍💼</span>
+              <span className="truncate w-full text-center">Advisor</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail("hoang.lv@vinfast.vn");
+                setPassword("123456");
+              }}
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold transition flex flex-col items-center gap-0.5"
+            >
+              <span>🛠️</span>
+              <span className="truncate w-full text-center">Manager</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail("admin@vinfast.vn");
+                setPassword("123456");
+              }}
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold transition flex flex-col items-center gap-0.5"
+            >
+              <span>⚙️</span>
+              <span className="truncate w-full text-center">Admin</span>
+            </button>
+          </div>
+        </div>
 
       {/* Link to Register */}
       <p className="text-center text-xs text-slate-500 pt-2">

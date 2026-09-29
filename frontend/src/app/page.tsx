@@ -13,12 +13,12 @@ export default function RootPage() {
     if (isLoading) return;
 
     if (!isAuthenticated || !currentUser) {
-      router.replace("/login");
+      router.replace("/login/");
       return;
     }
 
     if (currentUser.accountStatus === "pending" || currentUser.role === "pending") {
-      router.replace("/pending-approval");
+      router.replace("/pending-approval/");
       return;
     }
 
