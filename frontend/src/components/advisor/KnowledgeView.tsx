@@ -23,13 +23,18 @@ export const KnowledgeView: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(mockVehicles[0]);
+  const [expandedDocs, setExpandedDocs] = useState<Record<string, boolean>>({});
+
+  const toggleExpand = (id: string) => {
+    setExpandedDocs((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const categories = [
-    { id: "all", label: "Tất cả tài liệu (27)" },
-    { id: "scenario", label: "🎯 Kịch bản thực chiến (8 Kịch bản)" },
-    { id: "competitor_battlecard", label: "⚔️ So sánh đối thủ" },
-    { id: "warranty_charging", label: "🔋 Pin & Trạm sạc" },
-    { id: "policy", label: "💰 Chính sách & Bảng giá" },
+    { id: "all", label: "Tất cả" },
+    { id: "scenario", label: "🎯 Kịch bản (8)" },
+    { id: "competitor_battlecard", label: "⚔️ So sánh xe" },
+    { id: "warranty_charging", label: "🔋 Pin & Sạc" },
+    { id: "policy", label: "💰 Chính sách & Giá" },
   ];
 
   const filteredDocs = mockKnowledgeDocs.filter((doc) => {
@@ -54,25 +59,25 @@ export const KnowledgeView: React.FC = () => {
   return (
     <div className="space-y-8 max-w-7xl mx-auto pb-12">
       {/* Header Search */}
-      <div className="p-8 rounded-3xl bg-[#111111] text-white shadow-sm border border-[#262626]">
-        <div className="max-w-2xl space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-semibold">
+      <div className="p-6 sm:p-7 rounded-3xl bg-[#111111] text-white shadow-sm border border-[#262626]">
+        <div className="max-w-xl space-y-2.5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-semibold">
             <VinFastLogo size={14} variant="silver" />
-            <span>Kho Tri Thức Bán Hàng & Thông Số Kỹ Thuật VinFast</span>
-          </span>
-          <h1 className="text-3xl font-black tracking-tight">Tra Cứu Dải Xe Điện & Chính Sách 2026</h1>
+            <span>Kho Tri Thức & Kỹ Thuật VinFast 2026</span>
+          </div>
+          <h1 className="text-2xl font-black tracking-tight">Tra Cứu Thông Số & Chính Sách</h1>
           <p className="text-xs text-slate-300">
-            Tất cả tài liệu được số hóa, gắn nhãn phiên bản và thẩm định bởi Khối Bán hàng & Dịch vụ Hậu mãi VinFast.
+            Dữ liệu kỹ thuật, biểu phí lăn bánh và kịch bản bán hàng thực chiến chuẩn hóa.
           </p>
 
-          <div className="relative pt-2">
-            <Search className="absolute left-3.5 top-5 h-4 w-4 text-slate-400" />
+          <div className="relative pt-1">
+            <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Tìm kiếm: chính sách pin, bảo hành 10 năm, trạm sạc V-GREEN, ADAS..."
-              className="w-full rounded-xl bg-white/10 border border-white/20 pl-10 pr-4 py-3 text-xs text-white placeholder-slate-400 focus:outline-none focus:bg-white/15 focus:ring-2 focus:ring-white/20"
+              placeholder="Tìm tên xe, chính sách pin, trạm sạc V-GREEN, ưu đãi trước bạ..."
+              className="w-full rounded-xl bg-white/10 border border-white/20 pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:bg-white/15 focus:ring-1 focus:ring-white/30"
             />
           </div>
         </div>
@@ -250,40 +255,54 @@ export const KnowledgeView: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {filteredDocs.map((doc) => (
-            <div
-              key={doc.id}
-              className="flex flex-col justify-between rounded-3xl bg-white border border-slate-200 p-6 shadow-sm hover:border-slate-200 transition"
-            >
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="font-bold text-slate-900 bg-slate-50 px-2 py-0.5 rounded">
-                    {doc.version} • {doc.effectiveDate}
-                  </span>
-                  {doc.title.includes("Kịch bản") ? (
-                    <span className="px-2 py-0.5 rounded-full bg-slate-900 text-white font-extrabold text-[10px]">
-                      🎯 ĐỒNG BỘ PHÒNG LUYỆN TẬP
+          {filteredDocs.map((doc) => {
+            const isExpanded = !!expandedDocs[doc.id];
+            return (
+              <div
+                key={doc.id}
+                className="flex flex-col justify-between rounded-3xl bg-white border border-slate-200 p-5 shadow-sm hover:border-slate-300 transition"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="font-bold text-slate-900 bg-slate-50 px-2 py-0.5 rounded">
+                      {doc.version} • {doc.effectiveDate.split(" ")[0]}
                     </span>
-                  ) : (
-                    <span className="text-slate-400">Độ tin cậy: {(doc.confidenceScore * 100).toFixed(0)}%</span>
+                    {doc.title.includes("Kịch bản") ? (
+                      <span className="px-2 py-0.5 rounded-full bg-slate-900 text-white font-extrabold text-[10px]">
+                        🎯 KỊCH BẢN THỰC CHIẾN
+                      </span>
+                    ) : (
+                      <span className="text-slate-400">Độ tin cậy: {(doc.confidenceScore * 100).toFixed(0)}%</span>
+                    )}
+                  </div>
+                  <h3 className="font-bold text-slate-900 text-sm leading-snug">{doc.title}</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">{doc.summary}</p>
+
+                  {/* Collapsible Content with "Xem thêm / Thu gọn" */}
+                  {isExpanded && (
+                    <div className="mt-3 p-3.5 rounded-2xl bg-slate-50 text-xs text-slate-700 whitespace-pre-line font-mono text-[11px] leading-relaxed max-h-56 overflow-y-auto border border-slate-200 animate-in fade-in duration-150">
+                      {doc.content}
+                    </div>
                   )}
-                </div>
-                <h3 className="font-bold text-slate-900 text-sm">{doc.title}</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">{doc.summary}</p>
 
-                <div className="mt-3 p-3 rounded-xl bg-slate-50 text-xs text-slate-700 whitespace-pre-line font-mono text-[11px] leading-relaxed max-h-48 overflow-y-auto">
-                  {doc.content}
+                  <button
+                    type="button"
+                    onClick={() => toggleExpand(doc.id)}
+                    className="pt-1 text-xs font-bold text-slate-900 hover:text-slate-600 inline-flex items-center gap-1 transition select-none"
+                  >
+                    <span>{isExpanded ? "Thu gọn ▴" : "Xem thêm ▾"}</span>
+                  </button>
+                </div>
+
+                <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                  <span className="line-clamp-1 italic text-[11px]">Nguồn: {doc.source}</span>
+                  <span className="px-2 py-0.5 rounded bg-slate-50 text-slate-800 font-semibold text-[10px]">
+                    Hiệu lực
+                  </span>
                 </div>
               </div>
-
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                <span className="line-clamp-1 italic text-[11px]">Nguồn: {doc.source}</span>
-                <span className="px-2 py-0.5 rounded bg-slate-50 text-slate-800 font-semibold text-[10px]">
-                  Hiệu lực
-                </span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

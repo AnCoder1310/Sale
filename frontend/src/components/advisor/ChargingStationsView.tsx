@@ -99,7 +99,7 @@ export const ChargingStationsView: React.FC = () => {
               Mạng Lưới Trạm Sạc & Lộ Trình Sạc Thông Minh
             </h1>
             <p className="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
-              Tra cứu nhanh điểm sạc theo thời gian thực, lập lộ trình liên tỉnh và sử dụng bài tư vấn chuẩn giúp khách hàng xóa bỏ hoàn toàn nỗi lo hết pin khi đi xa.
+              Tra cứu điểm sạc thời gian thực và lập kế hoạch sạc đường dài cho khách hàng.
             </p>
           </div>
 
@@ -235,9 +235,9 @@ export const ChargingStationsView: React.FC = () => {
                     ))}
                   </div>
 
-                  {/* Amenities */}
+                  {/* Compact Amenities */}
                   <div className="flex flex-wrap gap-1.5 pt-1">
-                    {st.amenities.map((am, idx) => (
+                    {st.amenities.slice(0, 3).map((am, idx) => (
                       <span
                         key={idx}
                         className="text-[10px] px-2 py-0.5 rounded-lg bg-slate-100 text-slate-700 font-medium"
@@ -245,6 +245,11 @@ export const ChargingStationsView: React.FC = () => {
                         {am}
                       </span>
                     ))}
+                    {st.amenities.length > 3 && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-50 text-slate-500 font-medium">
+                        +{st.amenities.length - 3} tiện ích
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -281,7 +286,7 @@ export const ChargingStationsView: React.FC = () => {
                 <span>Thiết Lập Lộ Trình Di Chuyển & Kế Hoạch Sạc Đường Dài</span>
               </h2>
               <p className="text-xs text-slate-500 mt-1">
-                AI tự động gợi ý điểm dừng tối ưu trên cao tốc, tính toán thời gian sạc và soạn sẵn luận điểm tư vấn xóa tan nỗi lo hết pin.
+                Gợi ý điểm dừng sạc tối ưu và mẫu câu tư vấn khách hàng.
               </p>
             </div>
 

@@ -70,6 +70,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [whisperData, setWhisperData] = useState<any>(null);
   const [isWhisperLoading, setIsWhisperLoading] = useState(false);
+  const [mobileViewMode, setMobileViewMode] = useState<"chat" | "sidebar">("chat");
   const [showDealSheet, setShowDealSheet] = useState(false);
   const [dealSheetData, setDealSheetData] = useState<any>(null);
   const [selectedProvince, setSelectedProvince] = useState("TP. Hồ Chí Minh");
@@ -375,7 +376,7 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
   };
 
   return (
-    <div className="h-[calc(100vh-6rem)] flex flex-col max-w-7xl mx-auto pb-3 space-y-3 select-none">
+    <div className="h-[calc(100dvh-5.5rem)] sm:h-[calc(100vh-6rem)] flex flex-col max-w-7xl w-full mx-auto pb-2 sm:pb-3 space-y-2 sm:space-y-3 select-none">
       {/* Top Customer Persona Status Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-4 px-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
         <div className="flex items-center gap-4">
@@ -695,7 +696,9 @@ export const PracticeRoomView: React.FC<PracticeRoomViewProps> = ({
         </div>
 
         {/* Right Sidebar: Objectives & Knowledge */}
-        <div className="w-full lg:w-80 flex flex-col rounded-3xl bg-white border border-slate-200 shadow-sm overflow-hidden">
+        <div className={`w-full lg:w-80 flex flex-col rounded-3xl bg-white border border-slate-200 shadow-sm overflow-hidden flex-shrink-0 ${
+          mobileViewMode === "sidebar" ? "flex flex-1" : "hidden lg:flex"
+        }`}>
           <div className="flex border-b border-slate-100 text-[11px] font-bold bg-slate-50">
             <button
               onClick={() => setActiveTabPanel("whisper")}

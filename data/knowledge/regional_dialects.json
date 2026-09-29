@@ -1,0 +1,404 @@
+[
+  {
+    "id": "dia-nt-01",
+    "dialect_term": "cấy chi rứa",
+    "normalized_vietnamese": "cái gì thế / chuyện gì vậy",
+    "region": "Nghệ Tĩnh (Nghệ An - Hà Tĩnh)",
+    "intent": "clarify_question",
+    "category": "hỏi_lại",
+    "example_context": "Bác tài hỏi: Cấy chi rứa chú? Ý tui là cục pin xe ni chạy mần răng?",
+    "sales_coaching_tip": "Khách chưa hiểu rõ hoặc muốn hỏi lại. Tư vấn viên cần nói chậm lại, dùng lời văn mộc mạc, không dùng thuật ngữ kỹ thuật khó hiểu."
+  },
+  {
+    "id": "dia-nt-02",
+    "dialect_term": "cấy chi rueấ",
+    "normalized_vietnamese": "cái gì thế / chuyện gì vậy",
+    "region": "Nghệ Tĩnh (Nghệ An - Hà Tĩnh)",
+    "intent": "clarify_question",
+    "category": "hỏi_lại",
+    "example_context": "Khách nhắn tin gõ vội: cấy chi rueấ em?",
+    "sales_coaching_tip": "Tự động chuẩn hóa lỗi gõ telex của cụm 'cấy chi rứa', phản hồi lịch thiệp và giải thích rõ vấn đề."
+  },
+  {
+    "id": "dia-nt-03",
+    "dialect_term": "mần răng",
+    "normalized_vietnamese": "làm thế nào / làm sao giải quyết",
+    "region": "Nghệ Tĩnh (Nghệ An - Hà Tĩnh)",
+    "intent": "ask_solution",
+    "category": "giải_pháp",
+    "example_context": "Lỡ đang chạy giữa đàng mà hết điện thì mần răng hả chú?",
+    "sales_coaching_tip": "Khách lo lắng về sự cố giữa đường. Hãy nhấn mạnh dịch vụ cứu hộ pin 24/7 của VinFast và mạng lưới trạm sạc V-GREEN dày đặc."
+  },
+  {
+    "id": "dia-nt-04",
+    "dialect_term": "làm răng",
+    "normalized_vietnamese": "làm thế nào / bằng cách nào",
+    "region": "Nghệ Tĩnh / Miền Trung",
+    "intent": "ask_solution",
+    "category": "giải_pháp",
+    "example_context": "Răng mà sạc pin tại nhà được em?",
+    "sales_coaching_tip": "Tư vấn bộ sạc di động 220V cắm ổ điện dân dụng tại nhà tiện lợi qua đêm."
+  },
+  {
+    "id": "dia-nt-05",
+    "dialect_term": "ở mô",
+    "normalized_vietnamese": "ở đâu / vị trí nào",
+    "region": "Nghệ Tĩnh (Nghệ An - Hà Tĩnh)",
+    "intent": "ask_location",
+    "category": "địa_điểm",
+    "example_context": "Trạm sạc V-GREEN ở mô quanh thành phố Vinh chú nợ?",
+    "sales_coaching_tip": "Nêu tên các địa danh quen thuộc tại địa phương: Vincom Quang Trung, ngã tư Quán Bàu, Đại lộ 72m Cửa Lò."
+  },
+  {
+    "id": "dia-nt-06",
+    "dialect_term": "chỗ mô",
+    "normalized_vietnamese": "chỗ nào / điểm nào",
+    "region": "Nghệ Tĩnh / Miền Trung",
+    "intent": "ask_location",
+    "category": "địa_điểm",
+    "example_context": "Chỗ mô sửa chữa xe ni rứa em?",
+    "sales_coaching_tip": "Chỉ rõ xưởng dịch vụ chính hãng tại Showroom VinFast Vinh trên Đại lộ Lê Nin."
+  },
+  {
+    "id": "dia-nt-07",
+    "dialect_term": "răng rứa",
+    "normalized_vietnamese": "sao thế / sao lại như vậy",
+    "region": "Nghệ Tĩnh / Miền Trung",
+    "intent": "clarify_question",
+    "category": "thắc_mắc",
+    "example_context": "Răng rứa? Xe điện mà cũng phải đi đăng kiểm à chú?",
+    "sales_coaching_tip": "Giải thích quy định đăng kiểm an toàn giao thông nhưng xe điện không phải đo khí thải CO2 như xe xăng."
+  },
+  {
+    "id": "dia-nt-08",
+    "dialect_term": "nỏ",
+    "normalized_vietnamese": "không",
+    "region": "Nghệ Tĩnh (Nghệ An - Hà Tĩnh)",
+    "intent": "negative",
+    "category": "phủ_định",
+    "example_context": "Tui nỏ có đủ tiền mua đứt pin mô.",
+    "sales_coaching_tip": "Khách nói 'nỏ có' = không có. Ngay lập tức chuyển sang tư vấn gói thuê pin tiết kiệm vốn ban đầu."
+  },
+  {
+    "id": "dia-nt-09",
+    "dialect_term": "nỏ biết",
+    "normalized_vietnamese": "không biết",
+    "region": "Nghệ Tĩnh (Nghệ An - Hà Tĩnh)",
+    "intent": "negative",
+    "category": "phủ_định",
+    "example_context": "Tui nỏ biết xài mấy cái nút bấm thông minh ni.",
+    "sales_coaching_tip": "Trấn an khách: Trợ lý ảo Vivi điều khiển bằng giọng nói tiếng Việt, chỉ cần nói 'Hey VinFast' là xe tự bật điều hòa, mở nhạc."
+  },
+  {
+    "id": "dia-nt-10",
+    "dialect_term": "nỏ được",
+    "normalized_vietnamese": "không được",
+    "region": "Nghệ Tĩnh (Nghệ An - Hà Tĩnh)",
+    "intent": "negative",
+    "category": "phủ_định",
+    "example_context": "Rứa nỏ được rồi, cọc xe mà chờ lâu quá nỏ được.",
+    "sales_coaching_tip": "Cam kết thời gian giao xe cụ thể và chuẩn bị sẵn xe lái thử trải nghiệm ngay."
+  },
+  {
+    "id": "dia-nt-11",
+    "dialect_term": "chộ",
+    "normalized_vietnamese": "thấy / nhìn thấy",
+    "region": "Nghệ Tĩnh (Nghệ An - Hà Tĩnh)",
+    "intent": "general",
+    "category": "quan_sát",
+    "example_context": "Bữa qua tui chộ chiếc VF 7 màu đỏ chạy ngoài đàng đẹp quá.",
+    "sales_coaching_tip": "Tận dụng cảm xúc khen ngợi của khách để mời khách lên ngồi thử khoang lái ngay."
+  },
+  {
+    "id": "dia-nt-12",
+    "dialect_term": "đàng",
+    "normalized_vietnamese": "đường đi / tuyến đường",
+    "region": "Nghệ Tĩnh / Miền Trung",
+    "intent": "general",
+    "category": "giao_thông",
+    "example_context": "Lỡ hết pin giữa đàng thì răng?",
+    "sales_coaching_tip": "'Giữa đàng' = giữa đường. Nhấn mạnh tính năng cảnh báo pin yếu từ 20% và tự dẫn đường tới trạm sạc gần nhất."
+  },
+  {
+    "id": "dia-nt-13",
+    "dialect_term": "chú nợ",
+    "normalized_vietnamese": "chú nhé / chú nhỉ",
+    "region": "Nghệ Tĩnh (Nghệ An - Hà Tĩnh)",
+    "intent": "general",
+    "category": "cảm_thán",
+    "example_context": "Tư vấn cho đàng hoàng chú nợ, tui mua xe mần ăn đó.",
+    "sales_coaching_tip": "Tạo sự gắn kết chân thành, cam kết đồng hành hỗ trợ bác tài suốt thời gian sử dụng xe."
+  },
+  {
+    "id": "dia-nt-14",
+    "dialect_term": "rứa nợ",
+    "normalized_vietnamese": "thế nhé / vậy nhé",
+    "region": "Nghệ Tĩnh (Nghệ An - Hà Tĩnh)",
+    "intent": "general",
+    "category": "cảm_thán",
+    "example_context": "Rứa nợ, chiều tui dắt bà xã qua ngó xe.",
+    "sales_coaching_tip": "Chốt lịch hẹn cụ thể: 'Dạ vâng rứa chiều nay 3h em đợi bác và bác gái qua showroom ta lái thử nhé ạ!'"
+  },
+  {
+    "id": "dia-nt-15",
+    "dialect_term": "cấy ni",
+    "normalized_vietnamese": "cái này",
+    "region": "Nghệ Tĩnh / Miền Trung",
+    "intent": "general",
+    "category": "chỉ_định",
+    "example_context": "Cấy ni là phiên bản Plus hay Eco rứa chú?",
+    "sales_coaching_tip": "Giải thích rõ điểm khác biệt và chênh lệch trang bị giữa 2 bản."
+  },
+  {
+    "id": "dia-nt-16",
+    "dialect_term": "cấy nớ",
+    "normalized_vietnamese": "cái đó / cái kia",
+    "region": "Nghệ Tĩnh / Miền Trung",
+    "intent": "general",
+    "category": "chỉ_định",
+    "example_context": "Cấy nớ giá lăn bánh hết mấy tiền?",
+    "sales_coaching_tip": "Đưa ra bảng tính lăn bánh trọn gói, nhấn mạnh khoản tiết kiệm được nhờ trước bạ 0%."
+  },
+  {
+    "id": "dia-nt-17",
+    "dialect_term": "mùa lụt",
+    "normalized_vietnamese": "mùa mưa lũ / ngập nước",
+    "region": "Nghệ Tĩnh / Miền Trung",
+    "intent": "ask_flood",
+    "category": "lo_ngại_pin",
+    "example_context": "Mùa lụt ở Nghệ An mình xe ni lội nước có ổn hông?",
+    "sales_coaching_tip": "Khách sợ xe điện bị chập cháy mùa lụt. Nhấn mạnh tiêu chuẩn chống nước IP67 của pin và khả năng lội nước 300mm không lo thủy kích như xe xăng."
+  },
+  {
+    "id": "dia-nt-18",
+    "dialect_term": "vô nước",
+    "normalized_vietnamese": "vào nước / ngập nước",
+    "region": "Nghệ Tĩnh / Miền Trung",
+    "intent": "ask_flood",
+    "category": "lo_ngại_pin",
+    "example_context": "Sợ pin vô nước là hư luôn cả trăm triệu.",
+    "sales_coaching_tip": "Pin được bọc kín nguyên khối và được bảo hành chính hãng 7-10 năm."
+  },
+  {
+    "id": "dia-nt-19",
+    "dialect_term": "chai bình",
+    "normalized_vietnamese": "chai pin / giảm dung lượng pin",
+    "region": "Nghệ Tĩnh / Miền Nam",
+    "intent": "ask_battery",
+    "category": "lo_ngại_pin",
+    "example_context": "Chạy dịch vụ ngày 200 cây sợ nhanh chai bình.",
+    "sales_coaching_tip": "Khẳng định cam kết bằng văn bản: Dung lượng pin dưới 70% được VinFast thay pin mới hoàn toàn miễn phí."
+  },
+  {
+    "id": "dia-nt-20",
+    "dialect_term": "sụt bình",
+    "normalized_vietnamese": "tụt pin / hao pin nhanh",
+    "region": "Nghệ Tĩnh / Miền Trung",
+    "intent": "ask_battery",
+    "category": "lo_ngại_pin",
+    "example_context": "Bật máy lạnh với chở nặng có bị sụt bình mau hông em?",
+    "sales_coaching_tip": "Hệ thống quản lý nhiệt thông minh BMS giúp pin tối ưu hiệu suất, tiêu hao chỉ ~12-14 kWh/100km."
+  },
+  {
+    "id": "dia-nt-21",
+    "dialect_term": "mắc quá",
+    "normalized_vietnamese": "đắt quá / giá cao quá",
+    "region": "Miền Trung / Miền Nam",
+    "intent": "ask_price",
+    "category": "giá_cả",
+    "example_context": "Giá ni hơi mắc so với con Vios cũ của tui.",
+    "sales_coaching_tip": "So sánh bài toán dài hạn: Mua xe điện tiết kiệm hơn 3 triệu tiền xăng mỗi tháng, 3 năm tiết kiệm hơn 100 triệu."
+  },
+  {
+    "id": "dia-nt-22",
+    "dialect_term": "dòm",
+    "normalized_vietnamese": "xem / ngắm nhìn",
+    "region": "Miền Trung / Miền Nam",
+    "intent": "general",
+    "category": "quan_sát",
+    "example_context": "Tui lại dòm thử cái khoang máy coi răng.",
+    "sales_coaching_tip": "Chủ động mở nắp capo cho khách xem: Xe điện không có bugi, lọc dầu phức tạp nên bảo dưỡng siêu rẻ."
+  },
+  {
+    "id": "dia-nt-23",
+    "dialect_term": "ngó",
+    "normalized_vietnamese": "xem / nhìn",
+    "region": "Miền Trung / Miền Bắc",
+    "intent": "general",
+    "category": "quan_sát",
+    "example_context": "Cho tui ngó cái hàng ghế sau coi có rộng rãi hông.",
+    "sales_coaching_tip": "Mời khách vào ngồi thử hàng ghế sau để cảm nhận sàn phẳng không có gờ trục truyền động như xe xăng."
+  },
+
+  {
+    "id": "dia-mn-01",
+    "dialect_term": "hổng",
+    "normalized_vietnamese": "không",
+    "region": "Nam Bộ / Miền Tây",
+    "intent": "negative",
+    "category": "phủ_định",
+    "example_context": "Hổng biết xe này chạy Grab có lời hông em?",
+    "sales_coaching_tip": "'Hổng' = không. Đưa ngay bảng tính chi phí nhiên liệu chỉ ~450đ/km để chứng minh chạy dịch vụ lãi gấp rưỡi xe xăng."
+  },
+  {
+    "id": "dia-mn-02",
+    "dialect_term": "hông",
+    "normalized_vietnamese": "không",
+    "region": "Nam Bộ / Miền Tây",
+    "intent": "negative",
+    "category": "phủ_định",
+    "example_context": "Pin này có bị chai hông em?",
+    "sales_coaching_tip": "Trả lời dứt khoát: 'Dạ không lo chai pin đâu anh, dưới 70% là hãng đổi mới liền ạ!'"
+  },
+  {
+    "id": "dia-mn-03",
+    "dialect_term": "dzậy",
+    "normalized_vietnamese": "vậy / thế",
+    "region": "Nam Bộ / Miền Tây",
+    "intent": "general",
+    "category": "cảm_thán",
+    "example_context": "Ngon dzậy hả em? Để anh tính coi sao.",
+    "sales_coaching_tip": "Khách bắt đầu xuôi lòng. Kêu gọi hành động: 'Dạ anh lên lái thử một vòng cảm nhận độ êm luôn nghen anh!'"
+  },
+  {
+    "id": "dia-mn-04",
+    "dialect_term": "xài",
+    "normalized_vietnamese": "dùng / sử dụng",
+    "region": "Nam Bộ / Miền Tây",
+    "intent": "general",
+    "category": "sử_dụng",
+    "example_context": "Xe này xài sạc tại nhà được hôn em?",
+    "sales_coaching_tip": "Xác nhận xe kèm sạc di động cắm điện nhà 220V rất tiện."
+  },
+  {
+    "id": "dia-mn-05",
+    "dialect_term": "hao bình",
+    "normalized_vietnamese": "hao pin / tốn điện",
+    "region": "Nam Bộ / Miền Tây",
+    "intent": "ask_battery",
+    "category": "lo_ngại_pin",
+    "example_context": "Bật máy lạnh hết cỡ kẹt xe ở Sài Gòn có hao bình dữ hông?",
+    "sales_coaching_tip": "Giải thích: Xe điện đứng chờ kẹt xe chỉ tốn ~1% pin mỗi tiếng, không nổ máy đốt xăng vô ích như xe xăng."
+  },
+  {
+    "id": "dia-mn-06",
+    "dialect_term": "ngon lành",
+    "normalized_vietnamese": "rất tốt / êm ái chất lượng",
+    "region": "Nam Bộ / Miền Tây",
+    "intent": "affirmative",
+    "category": "hài_lòng",
+    "example_context": "Nghe nói dàn gầm xe này ngon lành lắm.",
+    "sales_coaching_tip": "Nhấn mạnh hệ thống treo sau đa liên kết độc lập êm ái hơn hẳn các xe xăng phân khúc B."
+  },
+  {
+    "id": "dia-mn-07",
+    "dialect_term": "rớt giá",
+    "normalized_vietnamese": "mất giá khi bán lại",
+    "region": "Nam Bộ / Toàn quốc",
+    "intent": "ask_price",
+    "category": "thanh_khoản",
+    "example_context": "Sợ xe điện sau 3 năm rớt giá thê thảm.",
+    "sales_coaching_tip": "Cam kết giá trị thu mua lại của VinFast lên tới 73% sau 3 năm, bảo đảm an tâm tài sản."
+  },
+  {
+    "id": "dia-mn-08",
+    "dialect_term": "trớt quớt",
+    "normalized_vietnamese": "lạc lõng / không ra gì / hỏng việc",
+    "region": "Nam Bộ / Miền Tây",
+    "intent": "negative",
+    "category": "chê_bai",
+    "example_context": "Sợ mua về sạc không được rồi trớt quớt luôn công việc.",
+    "sales_coaching_tip": "Mở ứng dụng chỉ cho khách thấy hàng chục trạm sạc V-GREEN xung quanh tuyến đường khách hay đi."
+  },
+  {
+    "id": "dia-mn-09",
+    "dialect_term": "rẻ rề",
+    "normalized_vietnamese": "rất rẻ",
+    "region": "Nam Bộ / Miền Tây",
+    "intent": "affirmative",
+    "category": "giá_cả",
+    "example_context": "Tiền sạc tính ra rẻ rề hen em.",
+    "sales_coaching_tip": "Đồng tình: 'Dạ đúng rồi anh, 1km chỉ tầm 350-450 đồng rẻ hơn 1/3 tiền xăng ạ!'"
+  },
+  {
+    "id": "dia-mn-10",
+    "dialect_term": "êm ru",
+    "normalized_vietnamese": "rất êm ái / không có tiếng ồn",
+    "region": "Nam Bộ / Miền Tây",
+    "intent": "affirmative",
+    "category": "vận_hành",
+    "example_context": "Đạp ga nó êm ru bà rù không nghe tiếng máy gì hết.",
+    "sales_coaching_tip": "Nhấn mạnh lợi thế không mùi xăng, không tiếng ồn động cơ giúp cả nhà không bị say xe."
+  },
+  {
+    "id": "dia-mn-11",
+    "dialect_term": "kẹt tiền",
+    "normalized_vietnamese": "thiếu vốn / eo hẹp tài chính",
+    "region": "Nam Bộ / Toàn quốc",
+    "intent": "ask_price",
+    "category": "tài_chính",
+    "example_context": "Dạo này đang kẹt tiền chỉ có chừng trăm mấy chục triệu thôi.",
+    "sales_coaching_tip": "Tư vấn gói vay trả góp 80% giá trị xe, lãi suất ưu đãi cố định 5% trong 2 năm đầu."
+  },
+  {
+    "id": "dia-mn-12",
+    "dialect_term": "ngán tiền",
+    "normalized_vietnamese": "sợ tốn tiền / ngại chi phí cao",
+    "region": "Nam Bộ / Miền Tây",
+    "intent": "ask_price",
+    "category": "tài_chính",
+    "example_context": "Ngán tiền thay pin sau này quá em ơi.",
+    "sales_coaching_tip": "Giải thích gói thuê pin giúp loại bỏ 100% nỗi sợ thay pin tốn kém."
+  },
+
+  {
+    "id": "dia-mb-01",
+    "dialect_term": "ngon bổ rẻ",
+    "normalized_vietnamese": "chất lượng tốt mà giá lại phải chăng",
+    "region": "Miền Bắc",
+    "intent": "affirmative",
+    "category": "giá_trị",
+    "example_context": "Tầm 500 triệu thì con VF 5 này đúng là ngon bổ rẻ nhất rồi.",
+    "sales_coaching_tip": "Củng cố quyết định của khách: Động cơ 134 mã lực mạnh nhất phân khúc A, bảo hành 7 năm."
+  },
+  {
+    "id": "dia-mb-02",
+    "dialect_term": "ăn chắc mặc bền",
+    "normalized_vietnamese": "chuộng ăn chắc mặc bền / muốn sự bền bỉ lâu dài",
+    "region": "Miền Bắc",
+    "intent": "general",
+    "category": "tâm_lý",
+    "example_context": "Nhà tôi ăn chắc mặc bền, chỉ sợ xe điện hay lỗi vặt phần mềm.",
+    "sales_coaching_tip": "Nêu rõ chính sách cập nhật phần mềm từ xa FOTA và mạng lưới xưởng dịch vụ phủ rộng khắp."
+  },
+  {
+    "id": "dia-mb-03",
+    "dialect_term": "lăn bánh",
+    "normalized_vietnamese": "tổng chi phí hoàn tất ra biển số",
+    "region": "Miền Bắc / Toàn quốc",
+    "intent": "ask_price",
+    "category": "giá_cả",
+    "example_context": "Cho anh giá lăn bánh tại Hà Nội bản Plus.",
+    "sales_coaching_tip": "Báo giá minh bạch: Trước bạ 0%, tiền biển số 20 triệu, phí đăng kiểm, bảo hiểm TNDS."
+  },
+  {
+    "id": "dia-mb-04",
+    "dialect_term": "tã xe",
+    "normalized_vietnamese": "xe xuống cấp / hao mòn theo thời gian",
+    "region": "Miền Bắc",
+    "intent": "ask_battery",
+    "category": "chất_lượng",
+    "example_context": "Chạy tầm 5 năm máy móc có bị tã không em?",
+    "sales_coaching_tip": "Động cơ điện chỉ có 1 chi tiết chuyển động quay (rotor), không ma sát piston xéc-măng nên độ bền gấp nhiều lần xe xăng."
+  },
+  {
+    "id": "dia-mb-05",
+    "dialect_term": "chết máy",
+    "normalized_vietnamese": "chết máy / chết máy do ngập nước (thủy kích)",
+    "region": "Miền Bắc / Toàn quốc",
+    "intent": "ask_flood",
+    "category": "lo_ngại_pin",
+    "example_context": "Hà Nội mưa ngập đường có sợ bị chết máy như xe xăng không?",
+    "sales_coaching_tip": "Xe điện không có cổ hút gió nên hoàn toàn không sợ thủy kích, tự tin lội qua đoạn ngập an toàn."
+  }
+]

@@ -42,7 +42,7 @@ export default function RootPage() {
         </div>
 
         <div className="text-center space-y-1">
-          <h2 className="text-base font-black text-white tracking-wide">AI Sales Coach</h2>
+          <h2 className="text-base font-black text-white tracking-wide"></h2>
           <p className="text-xs text-slate-400">Directing to your assigned workspace...</p>
         </div>
 

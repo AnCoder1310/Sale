@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useAuth } from "@/context/AuthContext";
 import { 
   Home, 
   Bot, 
@@ -23,6 +24,7 @@ export const AdvisorSidebar: React.FC<AdvisorSidebarProps> = ({
   activeTab,
   onTabChange
 }) => {
+  const { currentUser } = useAuth();
   const menuItems = [
     { id: "home", label: "Home", icon: Home, badge: null },
     { id: "copilot", label: "AI Copilot", icon: Bot, badge: "RAG" },
@@ -43,7 +45,7 @@ export const AdvisorSidebar: React.FC<AdvisorSidebarProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-bold text-white tracking-tight text-base">AI Sales Coach</span>
+              <span className="font-bold text-white tracking-tight text-base">VinFast Sales Coach</span>
             </div>
             <p className="text-[11px] text-slate-400 font-medium">VinFast Automotive P-043</p>
           </div>
@@ -125,8 +127,8 @@ export const AdvisorSidebar: React.FC<AdvisorSidebarProps> = ({
             <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-white ring-2 ring-[#0A0A0A]"></span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-white truncate">Võ Trường An</p>
-            <p className="text-[11px] text-slate-400 truncate">Senior Sales Consultant</p>
+            <p className="text-xs font-semibold text-white truncate">{currentUser?.name || "Tư vấn viên"}</p>
+            <p className="text-[11px] text-slate-400 truncate">{currentUser?.title || "Sales Consultant"}</p>
           </div>
         </div>
       </div>

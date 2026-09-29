@@ -68,7 +68,7 @@ export default function ManagerWorkspacePage() {
           activeTab={activeTab}
           onTabChange={setActiveTab}
         />
-        <main className="flex-1 p-5 md:p-8 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-3 sm:p-5 md:p-8 max-w-7xl w-full mx-auto overflow-x-hidden">
           {renderContent()}
         </main>
       </div>

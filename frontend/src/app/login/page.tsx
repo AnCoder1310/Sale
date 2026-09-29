@@ -63,7 +63,7 @@ function LoginForm() {
 
     if (result.success) {
       // Check stored user status to route appropriately
-      const stored = localStorage.getItem("vfo20_user");
+      const stored = sessionStorage.getItem("vfo20_user") || localStorage.getItem("vfo20_user");
       if (stored) {
         try {
           const user = JSON.parse(stored);
@@ -97,7 +97,7 @@ function LoginForm() {
           <VinFastLogo size={22} variant="silver" />
         </div>
         <div>
-          <h1 className="font-black text-slate-900 text-base">AI Sales Coach</h1>
+          <h1 className="font-black text-slate-900 text-base">Trường An yêu Quế Anh</h1>
           <p className="text-[11px] text-slate-500">Automotive Advisors Platform</p>
         </div>
       </div>
@@ -316,7 +316,7 @@ export default function LoginPage() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-black text-white text-lg tracking-tight">AI Sales Coach</span>
+              <span className="font-black text-white text-lg tracking-tight">Trường An yêu Quế Anh</span>
               <span className="px-2 py-0.5 rounded-full bg-white/10 text-white text-[10px] font-extrabold border border-white/20">
                 Automotive SaaS
               </span>

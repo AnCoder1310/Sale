@@ -35,14 +35,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
-      const storedToken = localStorage.getItem("vfo20_access_token") || sessionStorage.getItem("vfo20_access_token");
-      const storedUser = localStorage.getItem("vfo20_user") || sessionStorage.getItem("vfo20_user");
+      const storedToken = sessionStorage.getItem("vfo20_access_token") || localStorage.getItem("vfo20_access_token");
+      const storedUser = sessionStorage.getItem("vfo20_user") || localStorage.getItem("vfo20_user");
 
-      if (storedToken && storedUser && storedToken !== "vfo20_demo_token_advisor") {
+      // Only restore genuine authenticated tokens, never stale mock demo tokens
+      if (storedToken && storedUser && !storedToken.startsWith("vfo20_demo_token")) {
         const parsedUser = JSON.parse(storedUser) as UserProfile;
         setCurrentUser(parsedUser);
         setAccessToken(storedToken);
       } else {
+        // Clear any old mock tokens
+        localStorage.removeItem("vfo20_access_token");
+        localStorage.removeItem("vfo20_user");
+        sessionStorage.removeItem("vfo20_access_token");
+        sessionStorage.removeItem("vfo20_user");
         setCurrentUser(null);
         setAccessToken(null);
       }

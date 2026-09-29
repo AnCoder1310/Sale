@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useAuth } from "@/context/AuthContext";
 import { 
   Bot, 
   Theater, 
@@ -23,42 +24,40 @@ interface AdvisorHomeViewProps {
 }
 
 export const AdvisorHomeView: React.FC<AdvisorHomeViewProps> = ({ onNavigate }) => {
+  const { currentUser } = useAuth();
+  const userName = currentUser?.name ? currentUser.name.split(" ").slice(-1)[0] : "Bạn";
+
   return (
     <div className="space-y-8 max-w-7xl mx-auto pb-12">
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-[#111111] p-8 text-white shadow-sm border border-[#262626]">
+      <div className="relative overflow-hidden rounded-3xl bg-[#111111] p-7 sm:p-8 text-white shadow-sm border border-[#262626]">
         <div className="relative z-10 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white text-xs font-semibold mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white text-xs font-semibold mb-3">
             <Sparkles className="h-3.5 w-3.5 text-white" />
             <span>AI Sales Enablement Coach • Sẵn sàng hỗ trợ</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-            Chào buổi sáng, Trường An! 👋
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+            Chào buổi sáng, {userName}! 👋
           </h1>
-          <p className="mt-3 text-base text-slate-300 leading-relaxed">
-            Hôm nay bạn muốn tra cứu chính sách ưu đãi xe mới, hay sẵn sàng bước vào phòng giả lập để nâng cao kỹ năng xử lý từ chối cùng AI Customer?
+          <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed max-w-lg">
+            Tra cứu thông số, chính sách bán hàng hoặc bước vào phòng thực chiến đàm phán cùng AI Customer.
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-3">
+          <div className="mt-5 flex flex-wrap items-center gap-3">
             <button
               onClick={() => onNavigate("roleplay")}
-              className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-slate-800 transition active:scale-[0.98]"
+              className="inline-flex items-center gap-2 rounded-xl bg-white text-slate-900 px-4 py-2 text-xs font-bold shadow hover:bg-slate-100 transition active:scale-[0.98]"
             >
               <Theater className="h-4 w-4" />
-              <span>Vào phòng Thực chiến ngay</span>
-              <ArrowRight className="h-4 w-4" />
+              <span>Phòng Thực chiến</span>
+              <ArrowRight className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => onNavigate("copilot")}
-              className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur hover:bg-white/20 transition"
+              className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-xs font-bold text-white border border-white/20 hover:bg-white/20 transition"
             >
               <Bot className="h-4 w-4 text-slate-300" />
-              <span>Tra cứu cùng Copilot</span>
-            </button>
-            <button
-              className="inline-flex items-center gap-2 rounded-xl bg-slate-800 border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-200 backdrop-blur hover:bg-slate-800 transition"
-            >
-              <Zap className="h-4 w-4 text-slate-300" />
+              <span>Tra cứu Copilot</span>
             </button>
           </div>
         </div>
@@ -88,7 +87,7 @@ export const AdvisorHomeView: React.FC<AdvisorHomeViewProps> = ({ onNavigate }) 
               <ChevronRight className="h-4 w-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
             </h3>
             <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-              Tra cứu thông số kỹ thuật xe, chính sách pin thuê vs pin mua, ưu đãi trước bạ 0% và trích xuất căn cứ tài liệu chính thức.
+              Tra cứu thông số xe, biểu phí pin và ưu đãi trước bạ 0%.
             </p>
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-slate-900">
               <span>Mở phòng hội thoại AI</span>
@@ -109,7 +108,7 @@ export const AdvisorHomeView: React.FC<AdvisorHomeViewProps> = ({ onNavigate }) 
               <ChevronRight className="h-4 w-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
             </h3>
             <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-              Hội thoại đa lượt với AI Customer mô phỏng khách hàng thực tế, nhận phản hồi tức thì và chấm điểm theo 5 tiêu chí Rubric chuẩn.
+              Mô phỏng tư vấn khách hàng thực tế và chấm điểm 5 tiêu chí Rubric.
             </p>
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-slate-900">
               <span>Chọn kịch bản & Bắt đầu</span>
@@ -130,7 +129,7 @@ export const AdvisorHomeView: React.FC<AdvisorHomeViewProps> = ({ onNavigate }) 
               <ChevronRight className="h-4 w-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
             </h3>
             <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-              Truy cập bảng thông số chi tiết VF 6, VF 7, VF 8, VF 9, mạng lưới sạc V-GREEN và so sánh trực diện với các dòng xe xăng cùng phân khúc.
+              Thông số kỹ thuật dải xe VF 3 - VF 9 và bài so sánh xe xăng đối thủ.
             </p>
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-slate-900">
               <span>Xem danh mục tài liệu</span>

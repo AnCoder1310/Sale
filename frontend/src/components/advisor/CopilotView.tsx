@@ -177,25 +177,25 @@ export const CopilotView: React.FC<CopilotViewProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="h-[calc(100vh-6rem)] flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto pb-4 select-none">
+    <div className="h-[calc(100dvh-5.5rem)] sm:h-[calc(100vh-6rem)] flex flex-col lg:flex-row gap-4 lg:gap-6 max-w-7xl mx-auto pb-2 sm:pb-4 select-none">
       {/* Left Chat Area (Main) */}
       <div className="flex-1 flex flex-col rounded-3xl bg-white border border-slate-200 shadow-sm overflow-hidden">
         {/* Chat Header */}
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-sm">
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="font-bold text-slate-900 text-base">VinFast AI Copilot</h2>
+                <h2 className="font-bold text-slate-900 text-sm sm:text-base">VinFast AI Copilot</h2>
                 <span className="inline-flex items-center gap-1 rounded-md bg-slate-50 px-2 py-0.5 text-[11px] font-semibold text-slate-800 border border-slate-200">
                   <BadgeCheck className="h-3 w-3" />
                   RAG Grounded
                 </span>
               </div>
-              <p className="text-xs text-slate-500">
-                Truy vấn tài liệu chính thức, thông số kỹ thuật xe và chính sách bán hàng 2026
+              <p className="text-xs text-slate-500 hidden sm:block">
+                Truy vấn tài liệu chính thức, thông số kỹ thuật và chính sách 2026
               </p>
             </div>
           </div>
@@ -211,7 +211,7 @@ export const CopilotView: React.FC<CopilotViewProps> = ({ onNavigate }) => {
         </div>
 
         {/* Category Tabs & Calculator Trigger */}
-        <div className="flex items-center justify-between gap-2 px-6 py-2.5 border-b border-slate-100 bg-white overflow-x-auto text-xs">
+        <div className="flex items-center justify-between gap-2 px-3 sm:px-6 py-2 border-b border-slate-100 bg-white overflow-x-auto text-xs no-scrollbar">
           <div className="flex items-center gap-2">
             {categories.map((cat) => (
             <button
@@ -375,6 +375,20 @@ export const CopilotView: React.FC<CopilotViewProps> = ({ onNavigate }) => {
 
         {/* Input Bar */}
         <div className="p-4 bg-white border-t border-slate-200">
+          {/* Quick horizontal suggested chips for mobile */}
+          <div className="flex lg:hidden items-center gap-1.5 overflow-x-auto pb-2 text-[11px] no-scrollbar">
+            {mockCopilotSuggestedQuestions.slice(0, 3).map((q, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handleSend(q)}
+                className="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 whitespace-nowrap flex-shrink-0 transition font-medium"
+              >
+                + {q}
+              </button>
+            ))}
+          </div>
+
           {/* Voice recording wave */}
           {isListening && (
             <div className="mb-2 p-2.5 rounded-xl bg-slate-800 text-white text-xs font-bold flex items-center justify-between animate-pulse">
@@ -434,8 +448,8 @@ export const CopilotView: React.FC<CopilotViewProps> = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* Right Sidebar */}
-      <div className="w-full lg:w-80 space-y-4">
+      {/* Right Sidebar: Hidden on mobile (<lg) to preserve full height for chat, visible on desktop */}
+      <div className="hidden lg:block lg:w-80 space-y-4 flex-shrink-0">
         <div className="rounded-2xl bg-white p-5 border border-slate-200 shadow-sm">
           <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
             <HelpCircle className="h-4 w-4 text-slate-900" />

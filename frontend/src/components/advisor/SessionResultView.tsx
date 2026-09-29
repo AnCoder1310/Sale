@@ -33,6 +33,11 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
 }) => {
   const [showTranscript, setShowTranscript] = useState(true);
   const [activeCriterion, setActiveCriterion] = useState<string | null>(null);
+  const [expandedCriteria, setExpandedCriteria] = useState<Record<string, boolean>>({});
+
+  const toggleCriteria = (crit: string) => {
+    setExpandedCriteria((prev) => ({ ...prev, [crit]: !prev[crit] }));
+  };
 
   const getScoreBadge = (score: number) => {
     if (score >= 85) return "text-slate-800 bg-slate-50 border-slate-200";
@@ -52,7 +57,7 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
           <span>Quay lại Trang chủ</span>
         </button>
 
-        <div className="flex items-center gap-3 no-print">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto no-print">
           <button
             onClick={() => {
               const host = typeof window !== "undefined" ? window.location.hostname : "localhost";
@@ -178,22 +183,32 @@ export const SessionResultView: React.FC<SessionResultViewProps> = ({
                   </span>
                 </div>
 
-                <h3 className="font-bold text-slate-900 text-sm mt-3">
+                <h3 className="font-bold text-slate-900 text-sm mt-3 leading-snug">
                   {item.criterionNameVi}
                 </h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed line-clamp-2">
                   {item.definition}
                 </p>
 
-                {/* Evidence Quote */}
-                <div className="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-700">
-                  <p className="font-semibold text-slate-800 text-[11px] mb-1">Căn cứ transcript:</p>
-                  <ul className="space-y-1 italic text-slate-600">
-                    {item.evidence.map((ev, i) => (
-                      <li key={i}>"{ev}"</li>
-                    ))}
-                  </ul>
-                </div>
+                {/* Collapsible Evidence Quote with "Xem thêm" */}
+                {expandedCriteria[item.criterion] && (
+                  <div className="mt-3 p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-700 animate-in fade-in duration-150">
+                    <p className="font-semibold text-slate-800 text-[11px] mb-1">Căn cứ trích xuất:</p>
+                    <ul className="space-y-1 italic text-slate-600 text-[11px]">
+                      {item.evidence.map((ev, i) => (
+                        <li key={i}>"{ev}"</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => toggleCriteria(item.criterion)}
+                  className="mt-2 text-xs font-bold text-slate-900 hover:text-slate-600 inline-flex items-center gap-1 transition select-none"
+                >
+                  <span>{expandedCriteria[item.criterion] ? "Thu gọn ▴" : "Xem căn cứ ▾"}</span>
+                </button>
               </div>
 
               {/* Improvement tip */}

@@ -107,24 +107,22 @@ export const AppTopNav: React.FC<AppTopNavProps> = ({ activeTab, onTabChange }) 
           {/* Left: Brand Logo & Role Badge */}
           <div 
             onClick={() => onTabChange(activeWorkspace === "advisor" ? "home" : "dashboard")}
-            className="flex items-center gap-3 cursor-pointer flex-shrink-0"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer flex-shrink-0"
           >
-            <div className="h-10 w-10 rounded-xl bg-[#111111] border border-[#262626] flex items-center justify-center text-white shadow-lg shadow-sm flex-shrink-0">
-              <VinFastLogo size={24} variant="silver" />
+            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-[#111111] border border-[#262626] flex items-center justify-center text-white shadow-sm flex-shrink-0">
+              <VinFastLogo size={22} variant="silver" />
             </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-white text-base tracking-tight whitespace-nowrap">
+            <div className="flex flex-col min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="font-extrabold text-white text-sm sm:text-base tracking-tight whitespace-nowrap">
                   AI Sales Coach
                 </span>
-                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border whitespace-nowrap ${badgeConfig.bg}`}>
-                  {role === "admin" && activeWorkspace !== "admin" 
-                    ? `${badgeConfig.label} (Admin View)` 
-                    : badgeConfig.label}
+                <span className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold border whitespace-nowrap hidden xs:inline-block ${badgeConfig.bg}`}>
+                  {badgeConfig.label}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 whitespace-nowrap">
-                {currentUser?.showroom || "VinFast Vinh, Nghệ An"}
+              <p className="text-[10px] sm:text-[11px] text-slate-400 whitespace-nowrap hidden md:block">
+                {currentUser?.showroom || "VinFast Showroom"}
               </p>
             </div>
           </div>
@@ -203,6 +201,17 @@ export const AppTopNav: React.FC<AppTopNavProps> = ({ activeTab, onTabChange }) 
 
             {/* Realtime Notification Bell */}
             <NotificationDropdown onNavigateTab={(tab) => onTabChange(tab)} />
+
+            {/* Direct 1-Tap Logout */}
+            <button
+              type="button"
+              onClick={() => openSignoutModal()}
+              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5 text-xs font-semibold"
+              title="Đăng xuất khỏi hệ thống"
+            >
+              <LogOut className="h-4 w-4" />
+              <span className="hidden md:inline">Đăng xuất</span>
+            </button>
 
             {/* User Profile Dropdown Button */}
             <div className="relative pl-2 border-l border-slate-800 flex-shrink-0">
@@ -362,7 +371,7 @@ export const AppTopNav: React.FC<AppTopNavProps> = ({ activeTab, onTabChange }) 
         </div>
 
         {/* Mobile / Tablet Horizontal Scroll Menu */}
-        <div className="flex xl:hidden items-center gap-1.5 overflow-x-auto py-2.5 border-t border-slate-800/60 text-xs no-scrollbar">
+        <div className="flex xl:hidden items-center gap-1.5 overflow-x-auto py-2 border-t border-slate-800/60 text-xs no-scrollbar overscroll-x-contain touch-pan-x">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
