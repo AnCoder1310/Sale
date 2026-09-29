@@ -18,7 +18,7 @@ import { authApi, getStoredAccounts } from "@/api/auth";
 import { UserProfile, UserRole } from "@/types";
 
 export const UserManagementView: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"pending" | "active">("pending");
+  const [activeTab, setActiveTab] = useState<"pending" | "active">("active");
   const [searchTerm, setSearchTerm] = useState("");
   const [pendingUsers, setPendingUsers] = useState<UserProfile[]>([]);
   const [allUsers, setAllUsers] = useState<UserProfile[]>([]);
@@ -33,7 +33,13 @@ export const UserManagementView: React.FC = () => {
       const pending = await authApi.getPendingUsers();
       const all = await authApi.getAllUsers();
       setPendingUsers(pending);
-      setAllUsers(all.filter((u) => u.accountStatus !== "pending" && u.role !== "pending"));
+      const activeList = all.filter((u) => u.accountStatus !== "pending" && u.role !== "pending");
+      setAllUsers(activeList);
+      if (pending.length > 0) {
+        setActiveTab("pending");
+      } else {
+        setActiveTab("active");
+      }
 
       // Default role assignments for pending users
       const rolesMap: Record<string, "advisor" | "manager"> = {};
