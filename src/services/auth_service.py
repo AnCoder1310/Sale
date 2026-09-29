@@ -171,10 +171,18 @@ class AuthService:
         }
 
     def get_pending_users(self) -> List[Dict[str, Any]]:
+        self._load_users_from_db()
         return [
             {k: v for k, v in u.items() if k != "password_hash"}
             for u in self.users.values()
             if u.get("account_status") == "pending"
+        ]
+
+    def get_all_users(self) -> List[Dict[str, Any]]:
+        self._load_users_from_db()
+        return [
+            {k: v for k, v in u.items() if k != "password_hash"}
+            for u in self.users.values()
         ]
 
     def approve_user(self, user_id: str, assigned_role: str, showroom: str) -> Optional[Dict[str, Any]]:

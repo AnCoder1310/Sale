@@ -180,20 +180,56 @@ export const authApi = {
    * Admin Review & Role Assignment
    */
   getPendingUsers: async (): Promise<UserProfile[]> => {
-    const accounts = getStoredAccounts();
-    const list: UserProfile[] = [];
-    for (const record of Object.values(accounts)) {
-      if (record.accountStatus === "pending" || record.role === "pending") {
-        const { passwordHash, ...profile } = record;
-        list.push(profile);
+    try {
+      const data = await apiClient<any[]>("/admin/pending-users");
+      return data.map((u) => ({
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        phone: u.phone,
+        role: u.role || "pending",
+        avatar: u.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
+        title: u.title || "Khách chờ duyệt",
+        department: u.department || "Chờ Admin phân công",
+        showroom: u.showroom || "Chưa phân bổ",
+        status: u.status || "pending",
+        accountStatus: u.account_status || u.accountStatus || "pending",
+        createdAt: u.created_at || u.createdAt
+      }));
+    } catch {
+      const accounts = getStoredAccounts();
+      const list: UserProfile[] = [];
+      for (const record of Object.values(accounts)) {
+        if (record.accountStatus === "pending" || record.role === "pending") {
+          const { passwordHash, ...profile } = record;
+          list.push(profile);
+        }
       }
+      return list;
     }
-    return list;
   },
 
   getAllUsers: async (): Promise<UserProfile[]> => {
-    const accounts = getStoredAccounts();
-    return Object.values(accounts).map(({ passwordHash, ...profile }) => profile);
+    try {
+      const data = await apiClient<any[]>("/admin/users");
+      return data.map((u) => ({
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        phone: u.phone,
+        role: u.role,
+        avatar: u.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+        title: u.title || "Sales Consultant",
+        department: u.department || "Phòng Kinh Doanh Ô Tô",
+        showroom: u.showroom || "VinFast Vinh, Nghệ An",
+        status: u.status || "online",
+        accountStatus: u.account_status || u.accountStatus || "active",
+        createdAt: u.created_at || u.createdAt
+      }));
+    } catch {
+      const accounts = getStoredAccounts();
+      return Object.values(accounts).map(({ passwordHash, ...profile }) => profile);
+    }
   },
 
   approveUser: async (
@@ -201,63 +237,91 @@ export const authApi = {
     assignedRole: "advisor" | "manager" | "admin",
     showroom: string
   ): Promise<UserProfile> => {
-    const accounts = getStoredAccounts();
-    let foundEmail: string | null = null;
+    try {
+      const res = await apiClient<{ success: boolean; user: any }>("/admin/approve-user", {
+        method: "POST",
+        body: JSON.stringify({ userId, assignedRole, showroom })
+      });
+      return {
+        id: res.user.id,
+        name: res.user.name,
+        email: res.user.email,
+        phone: res.user.phone,
+        role: res.user.role,
+        avatar: res.user.avatar,
+        title: res.user.title,
+        department: res.user.department,
+        showroom: res.user.showroom,
+        status: res.user.status,
+        accountStatus: res.user.account_status || res.user.accountStatus || "active",
+        createdAt: res.user.created_at || res.user.createdAt
+      };
+    } catch {
+      const accounts = getStoredAccounts();
+      let foundEmail: string | null = null;
 
-    for (const [email, record] of Object.entries(accounts)) {
-      if (record.id === userId) {
-        foundEmail = email;
-        break;
-      }
-    }
-
-    if (!foundEmail) {
-      throw new Error("Không tìm thấy người dùng.");
-    }
-
-    const current = accounts[foundEmail];
-    const updated: UserProfile & { passwordHash: string } = {
-      ...current,
-      role: assignedRole,
-      accountStatus: "active",
-      status: "online",
-      showroom: showroom || "VinFast Vinh, Nghệ An",
-      title: assignedRole === "manager" ? "Training Director" : assignedRole === "admin" ? "System Administrator" : "Sales Consultant",
-      department: assignedRole === "manager" ? "Khối Đào Tạo" : assignedRole === "admin" ? "Khối Công Nghệ" : "Phòng Kinh Doanh Ô Tô",
-    };
-
-    accounts[foundEmail] = updated;
-    saveStoredAccounts(accounts);
-
-    // If current logged-in user is this user, update localStorage session as well
-    if (typeof window !== "undefined") {
-      try {
-        const activeUserRaw = localStorage.getItem("vfo20_user");
-        if (activeUserRaw) {
-          const activeUser = JSON.parse(activeUserRaw);
-          if (activeUser.id === userId) {
-            const { passwordHash, ...cleanProfile } = updated;
-            localStorage.setItem("vfo20_user", JSON.stringify(cleanProfile));
-          }
+      for (const [email, record] of Object.entries(accounts)) {
+        if (record.id === userId) {
+          foundEmail = email;
+          break;
         }
-      } catch {}
-    }
+      }
 
-    const { passwordHash, ...userProfile } = updated;
-    return userProfile;
+      if (!foundEmail) {
+        throw new Error("Không tìm thấy người dùng.");
+      }
+
+      const current = accounts[foundEmail];
+      const updated: UserProfile & { passwordHash: string } = {
+        ...current,
+        role: assignedRole,
+        accountStatus: "active",
+        status: "online",
+        showroom: showroom || "VinFast Vinh, Nghệ An",
+        title: assignedRole === "manager" ? "Training Director" : assignedRole === "admin" ? "System Administrator" : "Sales Consultant",
+        department: assignedRole === "manager" ? "Khối Đào Tạo" : assignedRole === "admin" ? "Khối Công Nghệ" : "Phòng Kinh Doanh Ô Tô",
+      };
+
+      accounts[foundEmail] = updated;
+      saveStoredAccounts(accounts);
+
+      if (typeof window !== "undefined") {
+        try {
+          const activeUserRaw = localStorage.getItem("vfo20_user");
+          if (activeUserRaw) {
+            const activeUser = JSON.parse(activeUserRaw);
+            if (activeUser.id === userId) {
+              const { passwordHash, ...cleanProfile } = updated;
+              localStorage.setItem("vfo20_user", JSON.stringify(cleanProfile));
+            }
+          }
+        } catch {}
+      }
+
+      const { passwordHash, ...userProfile } = updated;
+      return userProfile;
+    }
   },
 
   rejectUser: async (userId: string): Promise<boolean> => {
-    const accounts = getStoredAccounts();
-    for (const [email, record] of Object.entries(accounts)) {
-      if (record.id === userId) {
-        record.accountStatus = "rejected";
-        record.status = "offline";
-        saveStoredAccounts(accounts);
-        return true;
+    try {
+      const res = await apiClient<{ success: boolean }>("/admin/reject-user", {
+        method: "POST",
+        body: JSON.stringify({ userId })
+      });
+      return res.success;
+    } catch {
+      const accounts = getStoredAccounts();
+      for (const [email, record] of Object.entries(accounts)) {
+        if (record.id === userId) {
+          record.accountStatus = "rejected";
+          record.status = "offline";
+          saveStoredAccounts(accounts);
+          return true;
+        }
       }
+      return false;
     }
-    return false;
   },
 
   logout: async (): Promise<{ success: boolean }> => {

@@ -330,6 +330,11 @@ async def api_update_current_user(patch: Dict[str, Any]):
 # ----------------- Admin User Approval Endpoints -----------------
 from src.models.schemas import ApproveUserRequest, RejectUserRequest
 
+@router.get("/admin/users")
+async def api_admin_get_all_users():
+    """Lấy toàn bộ danh sách tài khoản người dùng từ hệ thống/database."""
+    return auth_service.get_all_users()
+
 @router.get("/admin/pending-users")
 async def api_admin_get_pending_users():
     """Lấy danh sách các tài khoản khách vừa đăng ký đang chờ Admin duyệt."""

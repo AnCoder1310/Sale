@@ -11,6 +11,7 @@ import {
   ShieldCheck, 
   Zap, 
   ChevronRight,
+  ChevronLeft,
   SlidersHorizontal
 } from "lucide-react";
 import { mockVehicles } from "@/data/mockVehicles";
@@ -24,6 +25,8 @@ export const KnowledgeView: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(mockVehicles[0]);
   const [expandedDocs, setExpandedDocs] = useState<Record<string, boolean>>({});
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 3;
 
   const toggleExpand = (id: string) => {
     setExpandedDocs((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -56,6 +59,26 @@ export const KnowledgeView: React.FC = () => {
     return true;
   });
 
+  const totalPages = Math.max(1, Math.ceil(filteredDocs.length / itemsPerPage));
+  const validCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+  const currentDocs = filteredDocs.slice(
+    (validCurrentPage - 1) * itemsPerPage,
+    validCurrentPage * itemsPerPage
+  );
+
+  const getPaginationRange = (current: number, total: number) => {
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    if (current <= 4) {
+      return [1, 2, 3, 4, 5, "...", total];
+    }
+    if (current >= total - 3) {
+      return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+    }
+    return [1, "...", current - 1, current, current + 1, "...", total];
+  };
+
   return (
     <div className="space-y-8 max-w-7xl mx-auto pb-12">
       {/* Header Search */}
@@ -75,7 +98,7 @@ export const KnowledgeView: React.FC = () => {
             <input
               type="text"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
               placeholder="Tìm tên xe, chính sách pin, trạm sạc V-GREEN, ưu đãi trước bạ..."
               className="w-full rounded-xl bg-white/10 border border-white/20 pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:bg-white/15 focus:ring-1 focus:ring-white/30"
             />
@@ -241,7 +264,7 @@ export const KnowledgeView: React.FC = () => {
             {categories.map((c) => (
               <button
                 key={c.id}
-                onClick={() => setActiveCategory(c.id)}
+                onClick={() => { setActiveCategory(c.id); setCurrentPage(1); }}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
                   activeCategory === c.id
                     ? "bg-slate-900 text-white shadow-sm"
@@ -254,14 +277,22 @@ export const KnowledgeView: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {filteredDocs.map((doc) => {
-            const isExpanded = !!expandedDocs[doc.id];
-            return (
-              <div
-                key={doc.id}
-                className="flex flex-col justify-between rounded-3xl bg-white border border-slate-200 p-5 shadow-sm hover:border-slate-300 transition"
-              >
+        {filteredDocs.length === 0 ? (
+          <div className="text-center py-12 rounded-3xl bg-white border border-slate-200 text-slate-500 text-xs">
+            Không tìm thấy tài liệu phù hợp với bộ lọc hoặc từ khóa tìm kiếm.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {currentDocs.map((doc, idx) => {
+              const isExpanded = !!expandedDocs[doc.id];
+              const isWide = idx === 2;
+              return (
+                <div
+                  key={doc.id}
+                  className={`flex flex-col justify-between rounded-3xl bg-white border border-slate-200 p-5 shadow-sm hover:border-slate-300 transition ${
+                    isWide ? "md:col-span-2" : ""
+                  }`}
+                >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-[11px]">
                     <span className="font-bold text-slate-900 bg-slate-50 px-2 py-0.5 rounded">
@@ -276,7 +307,7 @@ export const KnowledgeView: React.FC = () => {
                     )}
                   </div>
                   <h3 className="font-bold text-slate-900 text-sm leading-snug">{doc.title}</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">{doc.summary}</p>
+                  <p className={`text-xs text-slate-600 leading-relaxed ${isWide ? "line-clamp-3 md:line-clamp-2" : "line-clamp-2"}`}>{doc.summary}</p>
 
                   {/* Collapsible Content with "Xem thêm / Thu gọn" */}
                   {isExpanded && (
@@ -304,6 +335,69 @@ export const KnowledgeView: React.FC = () => {
             );
           })}
         </div>
+        )}
+
+        {/* Phân trang: mỗi trang 3 tài liệu (2 trên, 1 ngang dài dưới) */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between flex-wrap gap-4 pt-3">
+            <p className="text-xs text-slate-500">
+              Hiển thị{" "}
+              <span className="font-bold text-slate-800">
+                {(validCurrentPage - 1) * itemsPerPage + 1}
+              </span>{" "}
+              -{" "}
+              <span className="font-bold text-slate-800">
+                {Math.min(validCurrentPage * itemsPerPage, filteredDocs.length)}
+              </span>{" "}
+              trong tổng số <span className="font-bold text-slate-800">{filteredDocs.length}</span> tài liệu
+            </p>
+
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={validCurrentPage === 1}
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition shadow-sm"
+              >
+                <ChevronLeft className="h-3.5 w-3.5" />
+                <span>Trước</span>
+              </button>
+
+              <div className="flex items-center gap-1">
+                {getPaginationRange(validCurrentPage, totalPages).map((item, i) =>
+                  typeof item === "number" ? (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setCurrentPage(item)}
+                      className={`min-w-8 h-8 px-2 rounded-xl text-xs font-bold transition flex items-center justify-center ${
+                        validCurrentPage === item
+                          ? "bg-slate-900 text-white shadow-sm"
+                          : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ) : (
+                    <span key={i} className="px-1 text-xs text-slate-400 font-bold select-none">
+                      …
+                    </span>
+                  )
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={validCurrentPage === totalPages}
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition shadow-sm"
+              >
+                <span>Sau</span>
+                <ChevronRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
