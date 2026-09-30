@@ -82,6 +82,18 @@ export const UserManagementView: React.FC = () => {
     }
   };
 
+  const handleCreateMockApplicant = async () => {
+    try {
+      await authApi.resetMockPendingApplicant();
+      setActionNotice("✓ Đã đưa hồ sơ khách mẫu [Nguyễn Văn Khách Mới] vào hàng đợi chờ duyệt!");
+      setTimeout(() => setActionNotice(""), 5000);
+      await loadData();
+      setActiveTab("pending");
+    } catch (e: any) {
+      console.error(e);
+    }
+  };
+
   const filteredActive = allUsers.filter(
     (u) =>
       u.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -155,14 +167,34 @@ export const UserManagementView: React.FC = () => {
           </div>
 
           {pendingUsers.length === 0 ? (
-            <div className="p-12 rounded-3xl bg-white border border-slate-200 text-center space-y-3 shadow-sm">
+            <div className="p-12 rounded-3xl bg-white border border-slate-200 text-center space-y-4 shadow-sm">
               <div className="h-12 w-12 rounded-2xl bg-slate-50 text-slate-900 mx-auto flex items-center justify-center">
                 <CheckCircle2 className="h-6 w-6" />
               </div>
-              <h3 className="font-bold text-slate-900 text-sm">Hàng đợi trống</h3>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                Hiện không có tài khoản khách nào đang chờ duyệt. Khi có nhân sự đăng ký mới, hồ sơ sẽ xuất hiện tại đây.
-              </p>
+              <div>
+                <h3 className="font-bold text-slate-900 text-sm">Hàng đợi trống</h3>
+                <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
+                  Hiện không có tài khoản khách nào đang chờ duyệt. Mọi tài khoản mới đăng ký sẽ xuất hiện tại đây để Admin xét duyệt.
+                </p>
+              </div>
+
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleCreateMockApplicant}
+                  className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-md transition flex items-center gap-2 active:scale-95 cursor-pointer"
+                >
+                  <UserCheck className="h-4 w-4" />
+                  <span>+ Tạo hồ sơ khách mẫu để thử nghiệm duyệt</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("active")}
+                  className="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs transition cursor-pointer"
+                >
+                  Xem danh sách nhân sự đã kích hoạt ({allUsers.length})
+                </button>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-4">

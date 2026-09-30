@@ -10,7 +10,9 @@ import {
   BookOpen, 
   Clock, 
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Users,
+  FileLock
 } from "lucide-react";
 import { useNotification } from "@/context/NotificationContext";
 import { AppNotification } from "@/types";
@@ -132,13 +134,21 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                     }`}
                   >
                     <div className={`h-8 w-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                      n.type === "review_approved"
+                      n.type === "user_approval_needed"
+                        ? "bg-white text-slate-900 shadow-sm"
+                        : n.type === "system_audit"
+                        ? "bg-slate-800 text-slate-300"
+                        : n.type === "review_approved"
                         ? "bg-slate-800 text-slate-400"
                         : n.type === "practice_completed"
                         ? "bg-slate-800 text-slate-400"
                         : "bg-slate-800 text-slate-400"
                     }`}>
-                      {n.type === "review_approved" ? (
+                      {n.type === "user_approval_needed" ? (
+                        <Users className="h-4 w-4" />
+                      ) : n.type === "system_audit" ? (
+                        <FileLock className="h-4 w-4" />
+                      ) : n.type === "review_approved" ? (
                         <ShieldCheck className="h-4 w-4" />
                       ) : n.type === "practice_completed" ? (
                         <Zap className="h-4 w-4" />

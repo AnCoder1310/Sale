@@ -47,6 +47,21 @@ export const INITIAL_USER_ACCOUNTS: Record<string, UserProfile & { passwordHash:
     accountStatus: "active",
     passwordHash: "123456",
     createdAt: "2025-10-01T08:00:00Z"
+  },
+  "khach.moi@vinfast.vn": {
+    id: "user-822574",
+    name: "Nguyễn Văn Khách Mới",
+    email: "khach.moi@vinfast.vn",
+    phone: "0911 223 344",
+    role: "pending",
+    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
+    title: "Tài khoản chờ duyệt (Khách)",
+    department: "Khách Đăng Ký Chờ Phê Duyệt",
+    showroom: "VinFast Vinh, Nghệ An",
+    status: "online",
+    accountStatus: "pending",
+    passwordHash: "123456",
+    createdAt: "2026-09-29T11:44:14Z"
   }
 };
 
@@ -134,102 +149,127 @@ export const authApi = {
    * All new users are initially Guests pending Admin review and role assignment!
    */
   register: async (data: RegisterData): Promise<{ success: boolean; message: string; user?: UserProfile }> => {
+    let resultUser: UserProfile | undefined;
     try {
-      return await apiClient<{ success: boolean; message: string; user?: UserProfile }>("/auth/register", {
+      const res = await apiClient<{ success: boolean; message: string; user?: UserProfile }>("/auth/register", {
         method: "POST",
         body: JSON.stringify(data)
       });
-    } catch {
-      const accounts = getStoredAccounts();
-      const emailLower = data.email.toLowerCase().trim();
-
-      if (accounts[emailLower]) {
-        throw new Error("Email này đã được đăng ký trong hệ thống. Vui lòng đăng nhập hoặc sử dụng email khác.");
+      if (res && res.success) {
+        resultUser = res.user;
       }
+    } catch {
+      // Backend unavailable or failed
+    }
 
-      const newId = `usr-pending-${Date.now().toString().slice(-4)}`;
+    // Always mirror to localStorage as backup/cache
+    const accounts = getStoredAccounts();
+    const emailLower = data.email.toLowerCase().trim();
+
+    if (!accounts[emailLower]) {
+      const newId = resultUser?.id || `usr-pending-${Date.now().toString().slice(-4)}`;
       const newUserRecord: UserProfile & { passwordHash: string } = {
         id: newId,
         name: data.name.trim(),
         email: emailLower,
         phone: data.phone.trim(),
-        role: "pending", // Newly registered user is a Guest awaiting Admin approval
+        role: "pending",
         avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
         title: "Tài khoản chờ duyệt (Khách)",
-        department: "Chờ Admin phân công",
+        department: "Khách Đăng Ký Chờ Phê Duyệt",
         showroom: "Chưa phân bổ",
         status: "pending",
         accountStatus: "pending",
         passwordHash: data.password,
         createdAt: new Date().toISOString()
       };
-
       accounts[emailLower] = newUserRecord;
       saveStoredAccounts(accounts);
-
-      const { passwordHash, ...userProfile } = newUserRecord;
-      return {
-        success: true,
-        message: "Đăng ký thành công! Tài khoản của bạn đã được gửi đến Quản trị viên (Admin) để xét duyệt và phân quyền vai trò.",
-        user: userProfile
-      };
+      if (!resultUser) {
+        const { passwordHash, ...profile } = newUserRecord;
+        resultUser = profile;
+      }
     }
+
+    return {
+      success: true,
+      message: "Đăng ký thành công! Tài khoản của bạn đã được gửi đến Quản trị viên (Admin) để xét duyệt và phân quyền vai trò.",
+      user: resultUser
+    };
   },
 
   /**
    * Admin Review & Role Assignment
    */
   getPendingUsers: async (): Promise<UserProfile[]> => {
+    let list: UserProfile[] = [];
     try {
       const data = await apiClient<any[]>("/admin/pending-users");
-      return data.map((u) => ({
-        id: u.id,
-        name: u.name,
-        email: u.email,
-        phone: u.phone,
-        role: u.role || "pending",
-        avatar: u.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
-        title: u.title || "Khách chờ duyệt",
-        department: u.department || "Chờ Admin phân công",
-        showroom: u.showroom || "Chưa phân bổ",
-        status: u.status || "pending",
-        accountStatus: u.account_status || u.accountStatus || "pending",
-        createdAt: u.created_at || u.createdAt
-      }));
-    } catch {
-      const accounts = getStoredAccounts();
-      const list: UserProfile[] = [];
-      for (const record of Object.values(accounts)) {
-        if (record.accountStatus === "pending" || record.role === "pending") {
-          const { passwordHash, ...profile } = record;
-          list.push(profile);
-        }
+      if (Array.isArray(data)) {
+        list = data.map((u) => ({
+          id: u.id,
+          name: u.name,
+          email: u.email,
+          phone: u.phone,
+          role: u.role || "pending",
+          avatar: u.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
+          title: u.title || "Khách chờ duyệt",
+          department: u.department || "Chờ Admin phân công",
+          showroom: u.showroom || "Chưa phân bổ",
+          status: u.status || "pending",
+          accountStatus: u.account_status || u.accountStatus || "pending",
+          createdAt: u.created_at || u.createdAt
+        }));
       }
-      return list;
+    } catch {
+      // Backend unavailable
     }
+
+    // Merge with any local pending accounts so nothing is lost
+    const accounts = getStoredAccounts();
+    const existingEmails = new Set(list.map((u) => u.email.toLowerCase()));
+    for (const record of Object.values(accounts)) {
+      if ((record.accountStatus === "pending" || record.role === "pending") && !existingEmails.has(record.email.toLowerCase())) {
+        const { passwordHash, ...profile } = record;
+        list.push(profile);
+      }
+    }
+    return list;
   },
 
   getAllUsers: async (): Promise<UserProfile[]> => {
+    let list: UserProfile[] = [];
     try {
       const data = await apiClient<any[]>("/admin/users");
-      return data.map((u) => ({
-        id: u.id,
-        name: u.name,
-        email: u.email,
-        phone: u.phone,
-        role: u.role,
-        avatar: u.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
-        title: u.title || "Sales Consultant",
-        department: u.department || "Phòng Kinh Doanh Ô Tô",
-        showroom: u.showroom || "VinFast Vinh, Nghệ An",
-        status: u.status || "online",
-        accountStatus: u.account_status || u.accountStatus || "active",
-        createdAt: u.created_at || u.createdAt
-      }));
+      if (Array.isArray(data)) {
+        list = data.map((u) => ({
+          id: u.id,
+          name: u.name,
+          email: u.email,
+          phone: u.phone,
+          role: u.role,
+          avatar: u.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+          title: u.title || "Sales Consultant",
+          department: u.department || "Phòng Kinh Doanh Ô Tô",
+          showroom: u.showroom || "VinFast Vinh, Nghệ An",
+          status: u.status || "online",
+          accountStatus: u.account_status || u.accountStatus || "active",
+          createdAt: u.created_at || u.createdAt
+        }));
+      }
     } catch {
-      const accounts = getStoredAccounts();
-      return Object.values(accounts).map(({ passwordHash, ...profile }) => profile);
+      // Backend unavailable
     }
+
+    const accounts = getStoredAccounts();
+    const existingEmails = new Set(list.map((u) => u.email.toLowerCase()));
+    for (const record of Object.values(accounts)) {
+      if (!existingEmails.has(record.email.toLowerCase())) {
+        const { passwordHash, ...profile } = record;
+        list.push(profile);
+      }
+    }
+    return list;
   },
 
   approveUser: async (
@@ -237,40 +277,42 @@ export const authApi = {
     assignedRole: "advisor" | "manager" | "admin",
     showroom: string
   ): Promise<UserProfile> => {
+    let approvedProfile: UserProfile | null = null;
     try {
       const res = await apiClient<{ success: boolean; user: any }>("/admin/approve-user", {
         method: "POST",
         body: JSON.stringify({ userId, assignedRole, showroom })
       });
-      return {
-        id: res.user.id,
-        name: res.user.name,
-        email: res.user.email,
-        phone: res.user.phone,
-        role: res.user.role,
-        avatar: res.user.avatar,
-        title: res.user.title,
-        department: res.user.department,
-        showroom: res.user.showroom,
-        status: res.user.status,
-        accountStatus: res.user.account_status || res.user.accountStatus || "active",
-        createdAt: res.user.created_at || res.user.createdAt
-      };
+      if (res && res.user) {
+        approvedProfile = {
+          id: res.user.id,
+          name: res.user.name,
+          email: res.user.email,
+          phone: res.user.phone,
+          role: res.user.role,
+          avatar: res.user.avatar,
+          title: res.user.title,
+          department: res.user.department,
+          showroom: res.user.showroom,
+          status: res.user.status,
+          accountStatus: res.user.account_status || res.user.accountStatus || "active",
+          createdAt: res.user.created_at || res.user.createdAt
+        };
+      }
     } catch {
-      const accounts = getStoredAccounts();
-      let foundEmail: string | null = null;
+      // Backend unavailable
+    }
 
-      for (const [email, record] of Object.entries(accounts)) {
-        if (record.id === userId) {
-          foundEmail = email;
-          break;
-        }
+    const accounts = getStoredAccounts();
+    let foundEmail: string | null = null;
+    for (const [email, record] of Object.entries(accounts)) {
+      if (record.id === userId || (approvedProfile && email.toLowerCase() === approvedProfile.email.toLowerCase())) {
+        foundEmail = email;
+        break;
       }
+    }
 
-      if (!foundEmail) {
-        throw new Error("Không tìm thấy người dùng.");
-      }
-
+    if (foundEmail && accounts[foundEmail]) {
       const current = accounts[foundEmail];
       const updated: UserProfile & { passwordHash: string } = {
         ...current,
@@ -298,30 +340,48 @@ export const authApi = {
         } catch {}
       }
 
-      const { passwordHash, ...userProfile } = updated;
-      return userProfile;
+      if (!approvedProfile) {
+        const { passwordHash, ...userProfile } = updated;
+        approvedProfile = userProfile;
+      }
     }
+
+    if (!approvedProfile) {
+      throw new Error("Không tìm thấy người dùng để phê duyệt.");
+    }
+
+    return approvedProfile;
   },
 
   rejectUser: async (userId: string): Promise<boolean> => {
     try {
-      const res = await apiClient<{ success: boolean }>("/admin/reject-user", {
+      await apiClient<{ success: boolean }>("/admin/reject-user", {
         method: "POST",
         body: JSON.stringify({ userId })
       });
-      return res.success;
     } catch {
-      const accounts = getStoredAccounts();
-      for (const [email, record] of Object.entries(accounts)) {
-        if (record.id === userId) {
-          record.accountStatus = "rejected";
-          record.status = "offline";
-          saveStoredAccounts(accounts);
-          return true;
-        }
-      }
-      return false;
+      // Backend unavailable
     }
+
+    const accounts = getStoredAccounts();
+    for (const [email, record] of Object.entries(accounts)) {
+      if (record.id === userId) {
+        record.accountStatus = "rejected";
+        record.status = "offline";
+        saveStoredAccounts(accounts);
+        return true;
+      }
+    }
+    return false;
+  },
+
+  resetMockPendingApplicant: async (): Promise<UserProfile> => {
+    const accounts = getStoredAccounts();
+    const defaultPending = INITIAL_USER_ACCOUNTS["khach.moi@vinfast.vn"];
+    accounts["khach.moi@vinfast.vn"] = { ...defaultPending };
+    saveStoredAccounts(accounts);
+    const { passwordHash, ...profile } = defaultPending;
+    return profile;
   },
 
   logout: async (): Promise<{ success: boolean }> => {

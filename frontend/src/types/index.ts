@@ -253,7 +253,11 @@ export type NotificationType =
   | "new_assignment" 
   | "policy_update" 
   | "practice_completed" 
-  | "system";
+  | "system"
+  | "user_approval_needed"
+  | "system_audit"
+  | "review_needed"
+  | "performance";
 
 export interface AppNotification {
   id: string;

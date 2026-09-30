@@ -44,9 +44,60 @@ function playNotificationSound() {
   }
 }
 
-export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { currentUser, isAuthenticated } = useAuth();
-  const [notifications, setNotifications] = useState<AppNotification[]>([
+const getInitialNotificationsForRole = (userRole?: string): AppNotification[] => {
+  if (userRole === "admin") {
+    return [
+      {
+        id: "notif-adm-01",
+        userId: "adm-001",
+        userRole: "admin",
+        title: "Tài khoản khách mới chờ phê duyệt",
+        message: "Nguyễn Văn Khách Mới (khach.moi@vinfast.vn) vừa đăng ký tài khoản và đang chờ Admin xét duyệt phân quyền vai trò.",
+        timestamp: "11:45 hôm nay",
+        read: false,
+        type: "user_approval_needed",
+        targetTab: "users"
+      },
+      {
+        id: "notif-adm-02",
+        userId: "adm-001",
+        userRole: "admin",
+        title: "Kiểm toán an toàn hệ thống AI",
+        message: "Cơ sở dữ liệu Vector Store và phân hệ xác thực phân quyền RBAC đang hoạt động ổn định 100%.",
+        timestamp: "09:00 hôm nay",
+        read: false,
+        type: "system_audit",
+        targetTab: "audit_logs"
+      }
+    ];
+  }
+  if (userRole === "manager") {
+    return [
+      {
+        id: "notif-mgr-01",
+        userId: "mgr-001",
+        userRole: "manager",
+        title: "Bài luyện roleplay cần phê duyệt",
+        message: "Tư vấn viên Võ Trường An vừa hoàn thành bài luyện tập Tư vấn VF 8 Plus với điểm sơ bộ 88/100.",
+        timestamp: "10:15 hôm nay",
+        read: false,
+        type: "review_needed",
+        targetTab: "assignments"
+      },
+      {
+        id: "notif-mgr-02",
+        userId: "mgr-001",
+        userRole: "manager",
+        title: "Tiến độ showroom tuần này",
+        message: "Showroom VinFast Vinh đạt tỷ lệ hoàn thành 92% chỉ tiêu đào tạo nhân viên tư vấn.",
+        timestamp: "08:00 hôm nay",
+        read: false,
+        type: "performance",
+        targetTab: "performance"
+      }
+    ];
+  }
+  return [
     {
       id: "notif-init-01",
       userId: "adv-001",
@@ -67,9 +118,22 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       timestamp: "10:15 hôm nay",
       read: false,
       type: "review_approved",
-      targetTab: "session_result"
+      targetTab: "progress"
     }
-  ]);
+  ];
+};
+
+export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { currentUser, isAuthenticated } = useAuth();
+  const [notifications, setNotifications] = useState<AppNotification[]>(() =>
+    getInitialNotificationsForRole(currentUser?.role)
+  );
+
+  useEffect(() => {
+    if (currentUser?.role) {
+      setNotifications(getInitialNotificationsForRole(currentUser.role));
+    }
+  }, [currentUser?.role]);
 
   const [activeToast, setActiveToast] = useState<AppNotification | null>(null);
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
